@@ -30,17 +30,13 @@ The following is an outline of the sources we plan on using:
  
 ### Global:
 #### Internet Usage Indicators
- + [WikiLocation](http://wikilocation.org/documentation/index.html): Note the API. A count of the number of articles within a given location could be an indicator.
  + [ITU data](https://www.itu.int/en/ITU-D/Statistics/Documents/statistics/2018/Individuals_Internet_2000-2017) International Telephone Union 
 
  #### Economic Indicators
  + [World Bank Development Indicators](https://datahelpdesk.worldbank.org/knowledgebase/articles/898599-api-indicator-queries): All kinds of other economics indicators, callable by ISO 3 letter country code.
  + [Big Mac Index](https://github.com/TheEconomist/big-mac-data): This is an indicator we can compare to the economic data.
 
- I wonder what happens if we make the OECD a disjoint set from the rest of the data? **You might have to explain this more to me. Would we union the data of the member countries with the Wiki/ITU internet or WorldBank/BigMac datasets?
-
-**Additional Quesitons on this Section** 
-??  Which specific indicators do you want to examine? I think inflation (Consumer Price Index) could be an interesting one to look at. The project rubric does say narrow scope though, so I want to make sure that we keep our research targeted (for now) and we can expand more as we see fit. For exapmle, I was thinking we could either look at 1-2 economic indicators from each listed source, or perform a deeper analysis of just the OECD or Global data. Let me know what you think! 
+We can run this analysis twice. Once for the OECD and once for all other countries. 
 
 ## CSVs
 
