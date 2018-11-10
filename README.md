@@ -1,22 +1,25 @@
  
 # Proposal
 
-We are interested in researching internet access on a country level and comparing the findings against various global economic indicators. For the purposes of this project, we will be examining data from the Organization for Economic Cooperation and Development (OECD), WikiLocation, the Internet Telecommunications Union (ITU), the World Bank, and the Big Mac Index.
+Our goal is to examine internet access and equity on a gloal scale. We seek to measure the relationship between internet access and selected socio-economic indicators. 
+
+For the purposes of this project, we will be examining data from the Internet Telecommunications Union (ITU), U.N., World Bank, and Big Mac Index.
 
 We have outlined our questions, data sources, and folder structure below for those interested in replicating our work. 
 
 ## Questions
 
-> Are internet access and certain economic indicators correlated in the OECD?
+> Does internet access *(usage?)* correlate with the chosen economic indicators?
 
-$H_0$: Internet penetration rates are not correlated with the chosen economic indicator
-$H_A$: Internet penetrateion rates are correlated with the chosen economic indicator
+$H_0$: Internet penetration rates are not correlated with the chosen economic indicator.  
 
-> Do these trends hold for a broader dataset?
+$H_A$: Internet penetrateion rates are correlated with the chosen economic indicator.
 
-$H_0$: The economic effect due to Internet access is the same in OECD and non-OECD countries
+> Do these trends hold true for broader socio-economic indicators?
 
-$H_A$: The economic effect due to Internet access is different amongst OECD and non-OECD countries
+$H_0$: The economic effect due to Internet access correlates with the chosen socio-economic measurements. 
+
+$H_A$: The economic effect due to Internet access does not correlate with the chosen socio-economic measurements. 
 
 
 ## Data
@@ -24,19 +27,14 @@ Each folder will have it's own data-scraping/cleaning location, named after the 
 
 The following is an outline of the sources we plan on using:
 
-### OECD:
-+ [OECD Broadband Statistics](https://www.oecd.org/sti/broadband/1.5-BBPenetrationHistorical-Data-2017-12.xls): This shows time series  broadband data across 35 OECD countries
- + [OECD Economic Data](https://stats.oecd.org/viewhtml.aspx?datasetcode=MEI_CLI&lang=en):  This shows time-series economics data across 35 OECD countries. Note the api query maker. It will make our life easy. 
- 
-### Global:
-#### Internet Usage Indicators
+### Internet Usage Indicators
  + [ITU data](https://www.itu.int/en/ITU-D/Statistics/Documents/statistics/2018/Individuals_Internet_2000-2017) International Telephone Union 
 
- #### Economic Indicators
+### Socio-Economic Indicators
+ + [The Human Development Index](http://hdr.undp.org/en/indicators/137506): Composite index containing measurements of education, life expectancy, and gross national income. 
  + [World Bank Development Indicators](https://datahelpdesk.worldbank.org/knowledgebase/articles/898599-api-indicator-queries): All kinds of other economics indicators, callable by ISO 3 letter country code.
  + [Big Mac Index](https://github.com/TheEconomist/big-mac-data): This is an indicator we can compare to the economic data.
 
-We can run this analysis twice. Once for the OECD and once for all other countries. 
 
 ## CSVs
 
