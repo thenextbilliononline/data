@@ -1,25 +1,23 @@
  
 # Proposal
 
-Our goal is to examine internet access and equity on a gloal scale. We seek to measure the relationship between internet access and selected socio-economic indicators. 
-
-For the purposes of this project, we will be examining data from the Internet Telecommunications Union (ITU), U.N., World Bank, and Big Mac Index.
+Through this project, we seek to understand the relationship between internet access and inequality on a global scale. We will use data from the United Nations to compare selected socio-economic indexes to international communication measurements.
 
 We have outlined our questions, data sources, and folder structure below for those interested in replicating our work. 
 
 ## Questions
 
-> Does internet access *(usage?)* correlate with the chosen economic indicators?
+> Does internet access correlate with the chosen indicators of inequality?
 
-$H_0$: Internet penetration rates are not correlated with the chosen economic indicator.  
+$H_0$: Internet penetration rates are not correlated with the chosen equity indicators.  
 
-$H_A$: Internet penetrateion rates are correlated with the chosen economic indicator.
+$H_A$: Internet penetrateion rates are correlated with the chosen equity indicator.
 
-> Do these trends hold true for broader socio-economic indicators?
+> Do the economic indicators have a stronger affect on internet access than the social equity indicators?
 
-$H_0$: The economic effect due to Internet access correlates with the chosen socio-economic measurements. 
+$H_0$: Economic indicators have a stronger effect than social measurements on Internet access. 
 
-$H_A$: The economic effect due to Internet access does not correlate with the chosen socio-economic measurements. 
+$H_A$: Economic indicators do not have a stronger effect than social measurements on Internet access. 
 
 
 ## Data
@@ -31,7 +29,7 @@ The following is an outline of the sources we plan on using:
  + [ITU data](https://www.itu.int/en/ITU-D/Statistics/Documents/statistics/2018/Individuals_Internet_2000-2017) International Telephone Union 
 
 ### Socio-Economic Indicators
- + [The Human Development Index](http://hdr.undp.org/en/indicators/137506): Composite index containing measurements of education, life expectancy, and gross national income. 
+ + [The Human Development Index](http://hdr.undp.org/en/indicators/137506): Composite index containing measurements of education, life expectancy, and gross national income.  *Maybe use [Multidimensional Poverty Index(MPI)](http://hdr.undp.org/en/2018-MPI) in addition to or instead of HDI*
  + [World Bank Development Indicators](https://datahelpdesk.worldbank.org/knowledgebase/articles/898599-api-indicator-queries): All kinds of other economics indicators, callable by ISO 3 letter country code.
  + [Big Mac Index](https://github.com/TheEconomist/big-mac-data): This is an indicator we can compare to the economic data.
 
