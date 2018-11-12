@@ -9,15 +9,15 @@ We have outlined our questions, data sources, and folder structure below for tho
 
 > Does internet access correlate with the chosen indicators of inequality?
 
-$H_0$: Internet penetration rates are not correlated with the chosen equity indicators.  
+Null: Internet penetration rates are not correlated with the chosen equity indicators.  
 
-$H_A$: Internet penetrateion rates are correlated with the chosen equity indicator.
+Alternate: Internet penetrateion rates are correlated with the chosen equity indicator.
 
 > Do the economic indicators have a stronger affect on internet access than the social equity indicators?
 
-$H_0$: Economic indicators have a stronger effect than social measurements on Internet access. 
+Null: Economic indicators have a stronger effect than social measurements on Internet access. 
 
-$H_A$: Economic indicators do not have a stronger effect than social measurements on Internet access. 
+Alternate: Economic indicators do not have a stronger effect than social measurements on Internet access. 
 
 ## Motivation
 
