@@ -9,16 +9,19 @@ We have outlined our questions, data sources, and folder structure below for tho
 
 > Does internet access correlate with the chosen indicators of inequality?
 
-$H_0$: Internet penetration rates are not correlated with the chosen equity indicators.  
+Null: Internet penetration rates are not correlated with the chosen equity indicators.  
 
-$H_A$: Internet penetrateion rates are correlated with the chosen equity indicator.
+Alternate: Internet penetrateion rates are correlated with the chosen equity indicator.
 
 > Do the economic indicators have a stronger affect on internet access than the social equity indicators?
 
-$H_0$: Economic indicators have a stronger effect than social measurements on Internet access. 
+Null: Economic indicators have a stronger effect than social measurements on Internet access. 
 
-$H_A$: Economic indicators do not have a stronger effect than social measurements on Internet access. 
+Alternate: Economic indicators do not have a stronger effect than social measurements on Internet access. 
 
+## Motivation
+
+We are interested in this problem as data scientists because our field is a mixed bag. On one hand, big data can be used to influence elections, spread hateful propaganda, and be used to track every purchase and decision we make. However, the Internet as a whole provides many positive economic outlets. We want to investigate the link between internet infrastructure and economic output as a way to measure the positive effects of internet access. 
 
 ## Data
 Each folder will have it's own data-scraping/cleaning location, named after the indicator in question. Inside that folder, we will place a .R file (with plenty of comments!) that collects the data locally and uses as much automation as possible. Then, each file will be stored in the csvs section.
