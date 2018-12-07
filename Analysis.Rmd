@@ -1,0 +1,31 @@
+---
+title: "Analysis"
+author: "simplymathematics"
+date: "December 7, 2018"
+output: html_document
+---
+
+
+# Dependencies
+
+``` {r}
+
+```
+
+# Motivation
+# Question
+# Data
+```{r}
+internet.statistics <- read.csv("internet/internet.csv")
+poverty.index <- read.csv("poverty/hdi.csv", header=FALSE)
+internet.statistics
+```
+```{r}
+poverty.index
+```
+## Internet Indicators
+## HDI
+## Database
+# Analysis
+# Conclusion
+

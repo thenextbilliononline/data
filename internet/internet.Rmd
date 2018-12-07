@@ -11,32 +11,41 @@ Try executing this chunk by clicking the *Run* button within the chunk or by pla
 library(curl)
 library(XML)
 library(wbstats)
+library(data.table)
 ```
 
 ```{r}
-curl_download("http://api.worldbank.org/v2/countries/all/indicators/2.0.cov.Math.pl_2.all?per_page=1000", "math_proficiency.xml")
-curl_download("http://api.worldbank.org/v2/countries/all/indicators/1.1_ACCESS.ELECTRICITY.TOT?per_page=1000", "electricity.xml")
-curl_download("http://api.worldbank.org/v2/countries/all/indicators/1.1_YOUTH.LITERACY.RATE?per_page=1000", "youth_literacy.xml")
-curl_download("http://api.worldbank.org/v2/countries/all/indicators/1.1.PGap.Poor4uds?per_page=1000", "poverty_gap.xml")
+curl_download("http://api.worldbank.org/v2/countries/all/indicators/2.0.cov.Math.pl_2.all?per_page=10000", "math_proficiency.xml")
+curl_download("http://api.worldbank.org/v2/countries/all/indicators/1.1_ACCESS.ELECTRICITY.TOT?per_page=10000", "electricity.xml")
+curl_download("http://api.worldbank.org/v2/countries/all/indicators/1.1_YOUTH.LITERACY.RATE?per_page=10000", "youth_literacy.xml")
+curl_download("http://api.worldbank.org/v2/countries/all/indicators/1.1.PGap.Poor4uds?per_page=10000", "poverty_gap.xml")
 ```
 
 
 ```{r}
-curl_download("http://api.worldbank.org/v2/countries/all/indicators/IT.NET.USER.P3?per_page=1000", "internet_users_per_thousand.xml")
-curl_download("http://api.worldbank.org/v2/countries/all/indicators/IT.NET.SECR.P6?per_page=1000", "secure_servers.xml")
-curl_download("http://api.worldbank.org/v2/countries/all/indicators/2.0.cov.Int?per_page=1000", "internet_coverage.xml")
-curl_download("http://api.worldbank.org/v2/countries/all/indicators/IT.NET.HOST.P4?per_page=1000", "internet_hosts.xml")
+curl_download("http://api.worldbank.org/v2/countries/all/indicators/IT.NET.USER.P3?per_page=10000", "internet_users_per_thousand.xml")
+curl_download("http://api.worldbank.org/v2/countries/all/indicators/IT.NET.SECR.P6?per_page=10000", "secure_servers.xml")
+curl_download("http://api.worldbank.org/v2/countries/all/indicators/2.0.cov.Int?per_page=10000", "internet_coverage.xml")
 
 ```
 
+```{r echo = FALSE}
+poverty.index <- curl_download("http://api.worldbank.org/v2/countries/all/indicators/UNDP.HDI.XD?per_page=20000", "poverty.xml");
+xmlParse("poverty.xml");
+xml.data <- xmlParse("poverty.xml");
+rootNode <- xmlRoot(xml.data);
+xml.data <- xmlSApply(rootNode,function(x) xmlSApply(x, xmlValue));
+xml.frame <- data.frame(t(xml.data),row.names=NULL);
+hdi <- xml.frame;
+hdi
+```
 ```{r}
-internet <- xmlParse("internet_coverage.xml")
-internet <- xmlToDataFrame(internet)
+annual.hdi <- c()
+for (year in 2000:2017){
+ annual.hdi[[year-1999]] <- subset(hdi, date==year)
+}
+annual.hdi[2000]
 ```
-```{r}
-wbsearch("internet")
-```
-
 
 ```{r}
 indicators <- c("IT.NET.USER.P3", "IT.NET.SECR.P6", "IT.NET.BNDW.PC",  "gwp1", "IT.NET.BBND.P2", "IT.MOB.INVS.CD")
@@ -49,9 +58,24 @@ mobile_investment <- wb(indicator = indicators[6])
 ```
 
 ```{r}
-internet_stats <- wb(indicator = indicators, return_wide = TRUE)
-colnames(internet_stats) <- c("users", "servers", "bandwidth", "home internet", "fixed broadband", "mobile investment")
-internet_stats
+internet.stats <- wb(indicator = indicators, return_wide = TRUE, startdate = 2000, enddate = 2017)
+internet.stats
+```
+```{r}
+countries <- unique(internet.stats$iso3c)
+annual.int <- c()
+country.int <- c()
+for (year in 2000:2017){
+  annual.int[[year-1999]] <- subset(internet.stats, date==year)
+}
+annual.int[1]
+country.int[1]
+```
+
+
+
+```{r}
+write.csv(internet.stats, "internet.csv")
 ```
 
 

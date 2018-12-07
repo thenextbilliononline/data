@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<wb:data page="1" pages="1" per_page="1000" total="330" lastupdated="2016-04-06" xmlns:wb="http://www.worldbank.org">
+<wb:data page="1" pages="1" per_page="10000" total="330" lastupdated="2016-04-06" xmlns:wb="http://www.worldbank.org">
   <wb:data>
     <wb:indicator id="2.0.cov.Int">Coverage: Internet</wb:indicator>
     <wb:country id="">Andean Region</wb:country>
