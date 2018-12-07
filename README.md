@@ -29,12 +29,11 @@ Each folder will have it's own data-scraping/cleaning location, named after the 
 The following is an outline of the sources we plan on using:
 
 ### Internet Usage Indicators
- + [ITU data](https://www.itu.int/en/ITU-D/Statistics/Documents/statistics/2018/Individuals_Internet_2000-2017) International Telephone Union 
+ + [ITU data](https://www.itu.int/) International Telephone Union 
 
 ### Socio-Economic Indicators
  + [The Human Development Index](http://hdr.undp.org/en/indicators/137506): Composite index containing measurements of education, life expectancy, and gross national income.  *Maybe use [Multidimensional Poverty Index(MPI)](http://hdr.undp.org/en/2018-MPI) in addition to or instead of HDI*
- + [World Bank Development Indicators](https://datahelpdesk.worldbank.org/knowledgebase/articles/898599-api-indicator-queries): All kinds of other economics indicators, callable by ISO 3 letter country code.
- + [Big Mac Index](https://github.com/TheEconomist/big-mac-data): This is an indicator we can compare to the economic data.
+
 
 
 ## CSVs
