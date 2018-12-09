@@ -1,4 +1,11 @@
 ---
+<<<<<<< HEAD
+title: "Analysis"
+author: "simplymathematics"
+date: "December 7, 2018"
+output: html_document
+---
+
 title: "Final Project"
 date: "December 09, 2018"
 output:
@@ -56,32 +63,16 @@ We used the `curl` package to download our selected indicators from the [World B
 The indicators, and their corresponding World Bank definitions, are outlined below:
 
 1. Socio-Economic Indicators:
-    - **UNDP.HDI.XD**: (NEED TO REMOVE OR CHANGE TO PREVIOUS UN CSV VERSION; WB API DATA FOR AFRICA ONLY)
     - **SI.POV.GINI**: Gini index measures the extent to which the distribution of income...among individuals or households within an economy deviates from a perfectly equal distribution.
-    - **1.1.PGap.Poor4uds:** The poverty gap captures the mean aggregate income or consumption shortfall relative to the poverty line across the entire population. 
-    - **SI.POV.RUHC:** Rural poverty headcount ratio is the percentage of the rural population living below the national poverty lines.
-    - **SI.POV.URHC:** Urban poverty headcount ratio is the percentage of the urban population living below the national poverty lines.
-    -**EG.GDP.PUSE.KO.PP:** GDP per unit of energy use (PPP $ per kg of oil equivalent. Differences in this ratio over time and across economies reflect structural changes in an economy, changes in sectoral energy efficiency, and differences in fuel mixes.
-    - **NY.GDP.MKTP.PP.KD:** PPP GDP is gross domestic product converted to international dollars using purchasing power parity rates. An international dollar has the same purchasing power over GDP as the U.S. dollar has in the United States. 
+
+    - **NY.GDP.MKTP.KD.ZG:** Raw GDP. We chose raw GDP to see if internet infrastructure contributes more to social mobility than a generalized economy. 
+    - **SE.ADT.LITR.ZS:** Literacy rate, adult total (% of people ages 15 and above)
     
      
 2. Internet Indicators
-    - **IT.NET.USER.P3:** Internet users (per 1,000 people)
-    - **IT.NET.SECR.P6:** Secure Internet servers (per 1 million people)
-    - **2.0.cov.Int:** Coverage: Internet. The coverage rate is the childhood access rate of a given opportunity used in calculating the Human Opportunities Index (HOI). The coverage rate does not take into account inequality of access between different circumstance groups.
-    - **1.1_ACCESS.ELECTRICITY.TOT:** Access to electricity is the percentage of population with access to electricity. Electrification data are collected from industry, national surveys and international sources.
-    - **IT.NET.USER.ZS:** Internet users are individuals who have used the Internet (from any location) in the last 3 months. The Internet can be used via a computer, mobile phone, personal digital assistant, games machine, digital TV etc.
+    - **IT.NET.USER.ZS:** Internet users are individuals who have used the Internet (from any location) in the last 3 months. The Internet can be used via a computer, mobile phone, personal digital assistant, games machine, digital TV etc. This is the only dataset we had that was complete enough to be useful. While other indicators are available through the World Bank, they overselect for highly developed nations as they are able to measure and report such figures.
 
 ### Socio-Economic Indicators
-
-#### Human Development Index (HDI)
-
-``` {r hdi-table, echo=FALSE, warning=FALSE, message=FALSE}
-kable(hdi.wide, caption = 'HDI for African Countries', format = "html")  %>%
-  kable_styling(bootstrap_options = c("striped", "hover"), full_width = T, position = "c") %>%
-  row_spec(row = 0:0, background = "lightgrey") %>%
-  column_spec(column = 1, bold = T) 
-```
 
 #### GINI Index
 
@@ -97,36 +88,6 @@ kable(gini.wide, caption = 'GINI Values 1980 - 2016', format = "html")  %>%
   column_spec(column = 1, bold = T) 
 ```
 
-#### Poverty Gap Indicators 
-
-**WB Note:**  National poverty lines reflect local perceptions of the level and composition of consumption or income needed to be non-poor. The perceived boundary between poor and non-poor typically rises with the average income of a country and thus does not provide a uniform measure for comparing poverty rates across countries. While poverty rates at national poverty lines should not be used for comparing poverty rates across countries, they are appropriate for guiding and monitoring the results of country-specific national poverty reduction strategies. 
-
-For this reason, I think the National Levels could be useful for individiual country analysis or coefficient. We should not use these rates for cross-country comparrison on their own though.
-
-Also note, I could not find the Poor4usd indicator you selected at the urban level. Data output is only for the urban population. 
-
-
-``` {r poor4usd-table, echo=FALSE, warning=FALSE, message=FALSE}
-kable(poor4usd.wide, caption = 'Poverty Gap ($4 a day)-Rural.', format = "html")  %>%
-kable_styling(bootstrap_options = c("striped", "hover"), full_width = F, position = "c") %>%
-row_spec(row = 0:0, background = "lightgrey") %>%
-column_spec(column = 1, bold = T) 
-```
-
-``` {r ruhc-table, echo=FALSE, warning=FALSE, message=FALSE}
-kable(ruhc.wide,caption ='% of Rural Population Below the National Poverty Line',format="html") %>%
-kable_styling(bootstrap_options = c("striped", "hover"), full_width = F, position = "c") %>%
-row_spec(row = 0:0, background = "lightgrey") %>%
-column_spec(column = 1, bold = T) 
-```
-
-``` {r urhc-table, echo=FALSE, warning=FALSE, message=FALSE}
-kable(urhc.wide, caption = '% of Urban Population Below the National Poverty Line',format="html") %>%
-kable_styling(bootstrap_options = c("striped", "hover"), full_width = F, position = "c") %>%
-row_spec(row = 0:0, background = "lightgrey") %>%
-column_spec(column = 1, bold = T) 
-```
-
 #### Gross Domestic Product, Purchasing Power Parity (GDP, PPP) rates
 
 ``` {r gdp-table, echo=FALSE, warning=FALSE, message=FALSE}
@@ -136,11 +97,50 @@ row_spec(row = 0:0, background = "lightgrey") %>%
 column_spec(column = 1, bold = T) 
 ```
 
-### Internet Indicators
+### TODO Literacy
 
-## DATABASE
+### Internet Indicators
+```{r}
+internet <- read.csv("internet/internet_over_time.csv")
+plot(internet$annual.mean~internet$years)
+model <- lm(internet$annual.mean~internet$years)
+abline(model)
+summary(model)
+```
+The average speed of internet access around the world grows by a factor of 2.652 every year! Furthermore, this model has an $R^2$ value of .998, meaning that global internet access speeds are almost entirely a function of time.
+
 
 ## ANALYSIS 
 
+First, I'd compare gini vs internet
+```{r}
+plot(gini.annual~internet$annual.mean)
+model <- lm(gini.annual~internet$annual.mean)
+model2 <- lm(gini.annual~gdp.annual)
+summary(model)
+summary(model2)
+```
+
+Repeat for lit vs internet (make sure to use correct indicator i.e. literacy$)
+```{r}
+plot(lit.annual~internet$annual.mean)
+model <- lm(lit.annual~internet$annual.mean)
+model2 <- lm(lit.annual~gdp.annual)
+summary(model)
+summary(model2)
+
+```
+
+```{r}
+plot(internet$annual.mean ~ gdp.annual)
+model <- lm(internet$annual.mean ~gdp.annual)
+abline(model)
+summary(model)
+```
+
 # CONCLUSION
+
+GDP is a stronger indicator of literacy or wealth inequality than internet access rates are. 
+
+Challenge: Finding an internet indicator that had enough data points. Finding a social indicator that was a good comparison across countries. Finding a measure of social equity was hard for similar reasons.
 

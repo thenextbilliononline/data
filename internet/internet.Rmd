@@ -1,0 +1,52 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+library(curl)
+library(XML)
+library(wbstats)
+library(data.table)
+```
+
+```{r}
+internet.stats <- wb(indicator = "IT.NET.USER.ZS", return_wide = TRUE, startdate = 2000, enddate = 2017)
+```
+
+```{r}
+annual.int <- c()
+annual.mean <- c()
+internet.stats$iso3c
+for (year in 2000:2016){
+  annual.int[[year-1999]] <- subset(internet.stats, date==year)
+  annual.int[[year-1999]] <- head(annual.int[[year-1999]],245)
+  annual.mean[[year-1999]] <- mean(annual.int[[year-1999]]$IT.NET.USER.ZS,
+                                   na.rm= TRUE)
+}
+internet.over.time <- plot(annual.mean)
+```
+
+```{r}
+years <- c(2000:2016)
+annual.mean <-cbind(years, annual.mean)
+annual.mean
+
+write.csv(annual.mean, "internet_over_time.csv")
+```
+
+
+
+```{r}
+#countries <- unique(internet.stats$iso3c)
+
+internet.by.country <- split(internet.stats, as.factor(internet.stats$iso3c))
+
+```
+
+
+
