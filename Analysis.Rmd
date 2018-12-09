@@ -1,4 +1,5 @@
 ---
+<<<<<<< HEAD
 title: "Analysis"
 author: "simplymathematics"
 date: "December 7, 2018"
@@ -28,4 +29,150 @@ poverty.index
 ## Database
 # Analysis
 # Conclusion
+=======
+title: "Final Project"
+date: "December 09, 2018"
+output:
+  html_document:
+    highlight: monochrome
+    theme: cosmo
+  pdf_document: default
+---
+
+# Global Analysis of Internet Infrustucture & Equity
+
+## ABSTRACT
+
+As Data Scientists, we recognize that "big data" can be used to influence elections, spread hateful propaganda, and track every purchase and decision we make one. However, we believe that the Internet, as a whole provides, many positive economic outlets.  
+
+We seek to quantify the positive effects of internet access on a global scale through our analysis of internet infrastructure and select social and economic indicators. 
+
+We used data from the World Bank to measure this relationship and found XYZ....  
+
+Our research process is outlined below for those interested in replicating our work.  
+
+## R DEPENDENCIES
+
+Replication of our work requires the use of the following dependencies:
+
+```{r dependencies, echo=TRUE, warning=FALSE, message=FALSE}
+library(curl) 
+library(XML) 
+library(wbstats)
+library(data.table)
+library(tidyr)
+library(dplyr)
+library(knitr)
+library(kableExtra)
+suppressWarnings(source("indicators.R"))
+```
+
+## RESEARCH QUESTION
+
+> Does internet access correlate with the chosen indicators of inequality?
+
+    H0: Internet penetration rates are not correlated with the chosen equity indicators.
+    HA: Internet penetrateion rates are correlated with the chosen equity indicator.
+
+> Does the selected indicator have a stronger affect on internet access than the social equity indicators?
+    
+    H0 Economic indicators have a stronger effect than social measurements on Internet access.
+    HA: Economic indicators do not have a stronger effect than social measurements on Internet access.
+
+
+## INDICATORS 
+
+We used the `curl` package to download our selected indicators from the [World Bank Indicator API Queries](https://datahelpdesk.worldbank.org/knowledgebase/articles/898599-indicator-api-queries). Documentation for this process can be found in the `indicator.R` file within this directory. 
+ 
+The indicators, and their corresponding World Bank definitions, are outlined below:
+
+1. Socio-Economic Indicators:
+    - **UNDP.HDI.XD**: (NEED TO REMOVE OR CHANGE TO PREVIOUS UN CSV VERSION; WB API DATA FOR AFRICA ONLY)
+    - **SI.POV.GINI**: Gini index measures the extent to which the distribution of income...among individuals or households within an economy deviates from a perfectly equal distribution.
+    - **1.1.PGap.Poor4uds:** The poverty gap captures the mean aggregate income or consumption shortfall relative to the poverty line across the entire population. 
+    - **SI.POV.RUHC:** Rural poverty headcount ratio is the percentage of the rural population living below the national poverty lines.
+    - **SI.POV.URHC:** Urban poverty headcount ratio is the percentage of the urban population living below the national poverty lines.
+    -**EG.GDP.PUSE.KO.PP:** GDP per unit of energy use (PPP $ per kg of oil equivalent. Differences in this ratio over time and across economies reflect structural changes in an economy, changes in sectoral energy efficiency, and differences in fuel mixes.
+    - **NY.GDP.MKTP.PP.KD:** PPP GDP is gross domestic product converted to international dollars using purchasing power parity rates. An international dollar has the same purchasing power over GDP as the U.S. dollar has in the United States. 
+    
+     
+2. Internet Indicators
+    - **IT.NET.USER.P3:** Internet users (per 1,000 people)
+    - **IT.NET.SECR.P6:** Secure Internet servers (per 1 million people)
+    - **2.0.cov.Int:** Coverage: Internet. The coverage rate is the childhood access rate of a given opportunity used in calculating the Human Opportunities Index (HOI). The coverage rate does not take into account inequality of access between different circumstance groups.
+    - **1.1_ACCESS.ELECTRICITY.TOT:** Access to electricity is the percentage of population with access to electricity. Electrification data are collected from industry, national surveys and international sources.
+    - **IT.NET.USER.ZS:** Internet users are individuals who have used the Internet (from any location) in the last 3 months. The Internet can be used via a computer, mobile phone, personal digital assistant, games machine, digital TV etc.
+
+### Socio-Economic Indicators
+
+#### Human Development Index (HDI)
+
+``` {r hdi-table, echo=FALSE, warning=FALSE, message=FALSE}
+kable(hdi.wide, caption = 'HDI for African Countries', format = "html")  %>%
+  kable_styling(bootstrap_options = c("striped", "hover"), full_width = T, position = "c") %>%
+  row_spec(row = 0:0, background = "lightgrey") %>%
+  column_spec(column = 1, bold = T) 
+```
+
+#### GINI Index
+
+**WB Note:** Gini index of 0 represents perfect equality, while an index of 100 implies perfect inequality."
+
+NOTE: Look at this table from the [WB](http://wdi.worldbank.org/table/1.3). WB uses different reference year as data is not largely available during many periods. We may want to do something similiar. 
+
+
+``` {r gini-table, echo=FALSE, warning=FALSE, message=FALSE}
+kable(gini.wide, caption = 'GINI Values 1980 - 2016', format = "html")  %>%
+  kable_styling(bootstrap_options = c("striped", "hover"), full_width = F, position = "c") %>%
+  row_spec(row = 0:0, background = "lightgrey") %>%
+  column_spec(column = 1, bold = T) 
+```
+
+#### Poverty Gap Indicators 
+
+**WB Note:**  National poverty lines reflect local perceptions of the level and composition of consumption or income needed to be non-poor. The perceived boundary between poor and non-poor typically rises with the average income of a country and thus does not provide a uniform measure for comparing poverty rates across countries. While poverty rates at national poverty lines should not be used for comparing poverty rates across countries, they are appropriate for guiding and monitoring the results of country-specific national poverty reduction strategies. 
+
+For this reason, I think the National Levels could be useful for individiual country analysis or coefficient. We should not use these rates for cross-country comparrison on their own though.
+
+Also note, I could not find the Poor4usd indicator you selected at the urban level. Data output is only for the urban population. 
+
+
+``` {r poor4usd-table, echo=FALSE, warning=FALSE, message=FALSE}
+kable(poor4usd.wide, caption = 'Poverty Gap ($4 a day)-Rural.', format = "html")  %>%
+kable_styling(bootstrap_options = c("striped", "hover"), full_width = F, position = "c") %>%
+row_spec(row = 0:0, background = "lightgrey") %>%
+column_spec(column = 1, bold = T) 
+```
+
+``` {r ruhc-table, echo=FALSE, warning=FALSE, message=FALSE}
+kable(ruhc.wide,caption ='% of Rural Population Below the National Poverty Line',format="html") %>%
+kable_styling(bootstrap_options = c("striped", "hover"), full_width = F, position = "c") %>%
+row_spec(row = 0:0, background = "lightgrey") %>%
+column_spec(column = 1, bold = T) 
+```
+
+``` {r urhc-table, echo=FALSE, warning=FALSE, message=FALSE}
+kable(urhc.wide, caption = '% of Urban Population Below the National Poverty Line',format="html") %>%
+kable_styling(bootstrap_options = c("striped", "hover"), full_width = F, position = "c") %>%
+row_spec(row = 0:0, background = "lightgrey") %>%
+column_spec(column = 1, bold = T) 
+```
+
+#### Gross Domestic Product, Purchasing Power Parity (GDP, PPP) rates
+
+``` {r gdp-table, echo=FALSE, warning=FALSE, message=FALSE}
+kable(gdp.wide, caption = 'GDP, PPP (constant 2011 international $) ',format="html") %>%
+kable_styling(bootstrap_options = c("striped", "hover"), full_width = F, position = "c") %>%
+row_spec(row = 0:0, background = "lightgrey") %>%
+column_spec(column = 1, bold = T) 
+```
+
+### Internet Indicators
+
+## DATABASE
+
+## ANALYSIS 
+
+# CONCLUSION
+
 
