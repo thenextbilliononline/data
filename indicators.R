@@ -34,19 +34,26 @@ arrange(countryiso3code, date) %>%
 filter(countryiso3code != '')  %>%
 filter(date > 1999)
 
-gini.wide <- gini %>% spread(date, value) # STORE WIDE FRAMES FOR ANALYSIS TABLE
+gini.wide <- gini %>% spread(date, value) %>% sample_n(10) # STORE WIDE FRAMES FOR ANALYSIS TABLE
 
-gini.by.year <- split(gini, as.factor(gini$date))
-gini.by.year
+
+gini.stats <- wb(indicator = "SI.POV.GINI", return_wide = TRUE, startdate = 2000, enddate = 2017)
+
 annual.int <- c()
 annual.mean <- c()
-years <- c(2000:2016)
-
-for (index in 1:17){
-  annual.mean[[index]] <- mean(gini.by.year[[index]]$value, na.rm=TRUE)
+gini$value
+for (year in 2000:2016){
+  annual.int[[year-1999]] <- subset(gini.stats, date==year)
+  annual.int[[year-1999]] <- head(annual.int[[year-1999]],245)
+  annual.mean[[year-1999]] <- mean(annual.int[[year-1999]]$SI.POV.GINI,
+                                   na.rm= TRUE)
 }
+gini.over.time <- plot(annual.mean)
 
-gini.annual <- annual.mean
+
+
+
+
 
 #Tidy GDP PPP data
 
