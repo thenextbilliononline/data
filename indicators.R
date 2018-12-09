@@ -51,7 +51,7 @@ for (index in 1:17){
   annual.mean[[index]] <- mean(gini.by.year[[index]]$value, na.rm=TRUE)
 }
 
-gini.annual <- annual.mean
+gini.annual <- cbind(2000:2016, annual.mean)
 
 #Tidy GDP PPP data
 
@@ -70,6 +70,8 @@ gdp <- xml.frame %>%
   filter(date > 1999) %>%
   ungroup()
 
+names(gdp)[2]<-"iso3code"
+
 gdp.wide <- gdp %>% spread(date, value) # STORE WIDE FRAMES FOR ANALYSIS TABLE
 gdp.by.year <- split(gdp, as.factor(gdp$date))
 gdp.by.year
@@ -81,7 +83,7 @@ for (index in 1:17){
   annual.mean[[index]] <- mean(gdp.by.year[[index]]$value, na.rm=TRUE)
 }
 
-gdp.annual <- annual.mean
+gdp.annual <- cbind(2000:2016, annual.mean)
 
 #Tidy Literacy Data
  
@@ -100,6 +102,8 @@ literacy <- xml.frame %>%
   filter(date > 1999) %>%
   ungroup()
 
+names(literacy)[2]<-"iso3code"
+
 literacy.wide <- literacy %>% spread(date, value) # STORE WIDE FRAMES FOR ANALYSIS TABLE
 
 lit.by.year <- split(literacy, as.factor(literacy$date))
@@ -112,7 +116,7 @@ for (index in 1:17){
   annual.mean[[index]] <- mean(lit.by.year[[index]]$value, na.rm=TRUE)
 }
 
-lit.annual <- annual.mean
+lit.annual <- cbind(2000:2016, annual.mean)
 
 
 
