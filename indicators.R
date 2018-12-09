@@ -36,7 +36,7 @@ filter(date > 1999)
 
 gini.wide <- gini %>% spread(date, value) # STORE WIDE FRAMES FOR ANALYSIS TABLE
 
-gini.by.year <- split(literacy, as.factor(literacy$date))
+gini.by.year <- split(gini, as.factor(gini$date))
 gini.by.year
 annual.int <- c()
 annual.mean <- c()

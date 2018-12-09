@@ -1,5 +1,4 @@
 ---
-
 title: "Analysis"
 author: "simplymathematics & jemceach"
 date: "December 09, 2018"
