@@ -33,7 +33,10 @@ select(-indicator, -unit:-decimal) %>%
 group_by(countryiso3code) %>%
 arrange(countryiso3code, date) %>%
 filter(countryiso3code != '')  %>%
-filter(date > 1999)
+filter(date > 1999) %>%
+ungroup()
+
+names(gini)[2]<-"iso3code"
 
 gini.wide <- gini %>% spread(date, value) # STORE WIDE FRAMES FOR ANALYSIS TABLE
 
@@ -64,7 +67,8 @@ gdp <- xml.frame %>%
   group_by(countryiso3code) %>%
   arrange(countryiso3code, date) %>%
   filter(countryiso3code != '') %>%
-  filter(date > 1999)
+  filter(date > 1999) %>%
+  ungroup()
 
 gdp.wide <- gdp %>% spread(date, value) # STORE WIDE FRAMES FOR ANALYSIS TABLE
 gdp.by.year <- split(gdp, as.factor(gdp$date))
@@ -93,7 +97,8 @@ literacy <- xml.frame %>%
   group_by(countryiso3code) %>%
   arrange(countryiso3code, date) %>%
   filter(countryiso3code != '') %>%
-  filter(date > 1999)
+  filter(date > 1999) %>%
+  ungroup()
 
 literacy.wide <- literacy %>% spread(date, value) # STORE WIDE FRAMES FOR ANALYSIS TABLE
 
