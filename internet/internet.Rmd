@@ -48,34 +48,47 @@ annual.hdi[2000]
 ```
 
 ```{r}
-indicators <- c("IT.NET.USER.P3", "IT.NET.SECR.P6", "IT.NET.BNDW.PC",  "gwp1", "IT.NET.BBND.P2", "IT.MOB.INVS.CD")
+indicators <- c("IT.NET.USER.P3", "IT.NET.SECR.P6", "2.0.cov.Int", "HOU.ELC.ACSN.ZS", "IT.NET.USER.ZS")
 users <- wb(indicator = indicators[1])
 servers <- wb(indicator = indicators[2])
-bw_per_person <- wb(indicator = indicators[3])
-internet_home <- wb(indicator = indicators[4])
-fixed_broadband <- wb(indicator = indicators[5])
-mobile_investment <- wb(indicator = indicators[6])
+coverage_percent <- wb(indicator = indicators[3])
+electricity <- wb(indicator = indicators[4])
+ninety.days <- wb(indicator = indicators[5])
+
 ```
 
 ```{r}
-internet.stats <- wb(indicator = indicators, return_wide = TRUE, startdate = 2000, enddate = 2017)
-internet.stats
+internet.stats <- wb(indicator = "IT.NET.USER.ZS", return_wide = TRUE, startdate = 2000, enddate = 2017)
 ```
 ```{r}
 countries <- unique(internet.stats$iso3c)
 annual.int <- c()
-country.int <- c()
-for (year in 2000:2017){
+annual.mean <- c()
+
+for (year in 2000:2016
+     ){
   annual.int[[year-1999]] <- subset(internet.stats, date==year)
+  annual.int[[year-1999]] <- head(annual.int[[year-1999]],245)
+  annual.mean[[year-1999]] <- mean(annual.int[[year-1999]]$IT.NET.USER.ZS,
+                                   na.rm= TRUE)
 }
-annual.int[1]
-country.int$[1]
+internet.over.time <- plot(annual.mean)
+```
+
+```{r}
+years <- c(2000:2016)
+annual.mean <-cbind(years, annual.mean)
+annual.mean
+
+write.csv(annual.mean, "internet_over_time.csv")
 ```
 
 
 
 ```{r}
-write.csv(internet.stats, "internet.csv")
+countries <- unique(internet.stats$iso3c)
+index <- 1
+countries <- split(internet.stats, as.factor(internet.stats$iso3c))
 ```
 
 
