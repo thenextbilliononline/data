@@ -73,10 +73,7 @@ We have outlined the selected indicators and their corresponding World Bank defi
 
 We used the GINI index as a socio-economic proxy measure for equity. A Gini index value of 0 represents perfect equality, whereas an value of 100 constitutes perfect inequality.
 
-As shown below, GINI index data is widely unavailable for certain countries, across certain years. The World Bank choose different reference year in their analysis of each country, as shown on Table 1.3 of the [World Development Indicators](http://wdi.worldbank.org/table/1.3). 
-
-However, our project focuses on time-series comparisions, thus our analysis examines this data through annual aggregates.  We note that the absence of data for certain countries and time periods could potentially skew our results. 
-
+As shown below, GINI index data is widely unavailable for certain countries, across certain years. The World Bank choose different reference year in their analysis of each country, as shown on Table 1.3 of the [World Development Indicators](http://wdi.worldbank.org/table/1.3). A selected portion of the data we parsed from this table can be seen below:
 
 ``` {r gini-table, echo=FALSE, warning=FALSE, message=FALSE}
 gini.slice <- sample_n(gini.wide, 10, replace = F)
@@ -86,6 +83,40 @@ kable(gini.slice, caption = 'Selected GINI Values, 2000 - 2016', format = "html"
   row_spec(row = 0:0, background = "lightgrey") %>%
   column_spec(column = 1, bold = T) 
 ```
+
+We choose to analyze the gini data through annual aggregates. However, we note that the absence of data for certain countries and time periods could potentially affect our results. 
+
+Our initial review of this data shows that almost 3/4ths of this data contains missing values. Less than 5% of index values represent countries with a rating of higher inequality levels above 50. The median index value for the gini dataset is 35.7, while the mean value is 37.88. 
+
+The summary statistics and visual inspection of the histogram and boxplot show that data for this indicator is unimodal and skewed to the right.
+
+
+```{r gini-summary, echo=FALSE, warning=FALSE, message=FALSE}
+
+hist(gini$value)
+boxplot(gini$value, horizontal = T)
+
+summary(gini$value)
+
+gini.unequal <- subset(gini, value > 50) %>% count()
+gini.equal <- subset(gini, value < 50) %>% count()
+gini.na <- subset(gini, is.na(value)) %>% count()
+
+freq <- c(sum(gini.unequal$freq), sum(gini.equal$freq), sum(gini.na$freq))
+gini.sum <- (sum(gini.freq))
+prop <- round(gini.freq/gini.sum, 2)
+
+index <- c("more inequal", "more equal", "n.a. value")
+
+gini.tbl <- data.frame(index, freq, prop)
+names(gini.tbl[1:3]) <- c("freq", "value", "prop")
+kable(gini.tbl, caption = 'GINI Index Proportion Table', format = "html") %>%
+kable_styling(bootstrap_options = c("striped", "hover"), full_width = F, position = "c") %>%
+row_spec(row = 0:0, background = "lightgrey") %>%
+column_spec(column = 1, bold = T) 
+
+```
+
 
 #### Selected GDP growth (annual %) Indicator
 
@@ -136,7 +167,23 @@ The average speed of internet access around the world grows by a factor of 2.652
 
 ## ANALYSIS 
 
-First, I'd compare gini vs internet
+First, we examined the relationship between our three socio-economic indicators and found that. 
+
+
+```{r}
+plot(lit.annual~gini.annual)
+plot(gdp.annual~gini.annual)
+plot(gdp.annual~lit.annual)
+
+model <- lm(gini.annual~lit.annual)
+model2 <- lm(gini.annual~lit.annual)
+summary(model)
+summary(model2)
+```
+
+
+I'd compare gini vs internet usage. There is a weak, downward sloping correlation between these variables which suggests nations with higher levels of inequality use the internet to a lesser extent. 
+
 ```{r}
 plot(gini.annual~internet$annual.mean)
 model <- lm(gini.annual~internet$annual.mean)
@@ -145,7 +192,7 @@ summary(model)
 summary(model2)
 ```
 
-Repeat for lit vs internet (make sure to use correct indicator i.e. literacy$)
+We repeated for lit vs internet (make sure to use correct indicator i.e. literacy$)
 ```{r}
 plot(lit.annual~internet$annual.mean)
 model <- lm(lit.annual~internet$annual.mean)

@@ -70,6 +70,8 @@ gdp <- xml.frame %>%
   filter(date > 1999) %>%
   ungroup()
 
+names(gdp)[2]<-"iso3code"
+
 gdp.wide <- gdp %>% spread(date, value) # STORE WIDE FRAMES FOR ANALYSIS TABLE
 gdp.by.year <- split(gdp, as.factor(gdp$date))
 gdp.by.year
@@ -99,6 +101,8 @@ literacy <- xml.frame %>%
   filter(countryiso3code != '') %>%
   filter(date > 1999) %>%
   ungroup()
+
+names(literacy)[2]<-"iso3code"
 
 literacy.wide <- literacy %>% spread(date, value) # STORE WIDE FRAMES FOR ANALYSIS TABLE
 
