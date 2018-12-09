@@ -51,7 +51,7 @@ for (index in 1:17){
   annual.mean[[index]] <- mean(gini.by.year[[index]]$value, na.rm=TRUE)
 }
 
-gini.annual <- cbind(2000:2016, annual.mean)
+gini.annual <- data.frame(cbind(2000:2016, annual.mean))
 
 #Tidy GDP PPP data
 
@@ -83,7 +83,7 @@ for (index in 1:17){
   annual.mean[[index]] <- mean(gdp.by.year[[index]]$value, na.rm=TRUE)
 }
 
-gdp.annual <- cbind(2000:2016, annual.mean)
+gdp.annual <- data.frame(cbind(2000:2016, annual.mean))
 
 #Tidy Literacy Data
  
@@ -116,7 +116,7 @@ for (index in 1:17){
   annual.mean[[index]] <- mean(lit.by.year[[index]]$value, na.rm=TRUE)
 }
 
-lit.annual <- cbind(2000:2016, annual.mean)
+lit.annual <- data.frame(cbind(2000:2016, annual.mean))
 
 
 
