@@ -65,7 +65,7 @@ gdp <- xml.frame %>%
   filter(date > 1999)
 
 gdp.wide <- gdp %>% spread(date, value) # STORE WIDE FRAMES FOR ANALYSIS TABLE
-gdp.by.year <- split(literacy, as.factor(literacy$date))
+gdp.by.year <- split(gdp, as.factor(gdp$date))
 gdp.by.year
 annual.int <- c()
 annual.mean <- c()
