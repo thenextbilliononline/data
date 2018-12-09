@@ -103,8 +103,9 @@ column_spec(column = 1, bold = T)
 ```{r}
 internet <- read.csv("internet/internet_over_time.csv")
 plot(internet$annual.mean~internet$years)
+lm(internet$annual.mean~internet$years)
 ```
-
+The average speed of internet access around the world grows by a factor of 2.652 every year!
 
 
 ## ANALYSIS 
