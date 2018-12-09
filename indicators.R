@@ -178,7 +178,7 @@ annual.int[[year-1999]] <- subset(internet.stats, date==year)
 annual.int[1]
 country.int[1]
 
-write.csv(internet.stats, "internet.csv")
+write.csv(internet.stats, "csv/internet.csv")
 
 
 
