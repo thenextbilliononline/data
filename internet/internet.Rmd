@@ -69,7 +69,7 @@ for (year in 2000:2017){
   annual.int[[year-1999]] <- subset(internet.stats, date==year)
 }
 annual.int[1]
-country.int[1]
+country.int$[1]
 ```
 
 
