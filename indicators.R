@@ -12,14 +12,14 @@ library(tidyr)
 library(dplyr)
 
 
-## DOWNLOAD INDICATORS INTO XML FOLDER
+# DOWNLOAD INDICATORS INTO XML FOLDER
 
-### social and economic indicators
+# social and economic indicators
 curl_download("http://api.worldbank.org/v2/countries/all/indicators/SI.POV.GINI?date=2000:2016&per_page=10000", "xml/gini.xml")
-curl_download("http://api.worldbank.org/v2/countries/all/indicators/NY.GDP.MKTP.PP.KD?date=2000:2016&per_page=10000", "xml/gdp.xml")
+curl_download("http://api.worldbank.org/v2/countries/all/indicators/NY.GDP.MKTP.KD.ZG?date=2000:2016&per_page=10000", "xml/gdp.xml")
 curl_download("http://api.worldbank.org/v2/countries/all/indicators/SE.ADT.LITR.ZS?date=2000:2016&per_page=10000", "xml/literacy.xml")
 
-#### GINI Index
+#Tidy GINI Index
 
 xml.data <- xmlParse("xml/gini.xml");
 rootNode <- xmlRoot(xml.data);
@@ -36,67 +36,26 @@ filter(date > 1999)
 
 gini.wide <- gini %>% spread(date, value) # STORE WIDE FRAMES FOR ANALYSIS TABLE
 
+gini.by.year <- split(literacy, as.factor(literacy$date))
+gini.by.year
+annual.int <- c()
+annual.mean <- c()
+years <- c(2000:2016)
 
+for (index in 1:17){
+  annual.mean[[index]] <- mean(gini.by.year[[index]]$value, na.rm=TRUE)
+}
 
-#### Poverty Gap Indicators
+gini.annual <- annual.mean
 
-#Download & tidy Poverty Gap, Less Than 4$ per Day data
-xml.data <- xmlParse("xml/gini.xml");
-rootNode <- xmlRoot(xml.data);
-xml.data <- xmlSApply(rootNode,function(x) xmlSApply(x, xmlValue));
-xml.frame <- data.frame(t(xml.data),row.names=NULL);
-xml.frame$date <- as.numeric(as.character(xml.frame$date));
-
-poor4usd <- xml.frame %>%
-  select(-indicator, -unit:-decimal) %>%
-  group_by(countryiso3code) %>%
-  arrange(countryiso3code, date) %>%
-  filter(countryiso3code != '')  %>%
-  filter(date > 1999)
-
-poor4usd.wide <- poor4usd %>% spread(date, value) # STORE WIDE FRAMES FOR ANALYSIS TABLE
-
-#Download & tidy National Rural Poverty Gap data
-xml.data <- xmlParse("xml/pov.ruhc.xml");
-rootNode <- xmlRoot(xml.data);
-xml.data <- xmlSApply(rootNode,function(x) xmlSApply(x, xmlValue));
-xml.frame <- data.frame(t(xml.data),row.names=NULL);
-xml.frame$date <- as.numeric(as.character(xml.frame$date));
-
-ruhc <- xml.frame %>%
-  select(-indicator, -unit:-decimal) %>%
-  group_by(countryiso3code) %>%
-  arrange(countryiso3code, date) %>%
-  filter(countryiso3code != '')  %>%
-  filter(date > 1999)
-
-ruhc.wide <- ruhc %>% spread(date, value) # STORE WIDE FRAMES FOR ANALYSIS TABLE
-
-#Download & tidy National Urban Poverty Gap data
-
-xml.data <- xmlParse("xml/pov.urhc.xml");
-rootNode <- xmlRoot(xml.data);
-xml.data <- xmlSApply(rootNode,function(x) xmlSApply(x, xmlValue));
-xml.frame <- data.frame(t(xml.data),row.names=NULL);
-xml.frame$date <- as.numeric(as.character(xml.frame$date));
-
-urhc  <- xml.frame %>%
-select(-indicator, -unit:-decimal) %>%
-group_by(countryiso3code) %>%
-arrange(countryiso3code, date) %>%
-filter(countryiso3code != '') %>%
-filter(date > 1999)
-
-urhc.wide <- urhc %>% spread(date, value) # STORE WIDE FRAMES FOR ANALYSIS TABLE
-
-
-#Download & tidy GDP PPP data
+#Tidy GDP PPP data
 
 xml.data <- xmlParse("xml/gdp.xml");
 rootNode <- xmlRoot(xml.data);
 xml.data <- xmlSApply(rootNode,function(x) xmlSApply(x, xmlValue));
 xml.frame <- data.frame(t(xml.data),row.names=NULL);
 xml.frame$date <- as.numeric(as.character(xml.frame$date));
+xml.frame$value <- as.numeric(as.character(xml.frame$value));
 
 gdp <- xml.frame %>%
   select(-indicator, -unit:-decimal) %>%
@@ -106,15 +65,26 @@ gdp <- xml.frame %>%
   filter(date > 1999)
 
 gdp.wide <- gdp %>% spread(date, value) # STORE WIDE FRAMES FOR ANALYSIS TABLE
+gdp.by.year <- split(literacy, as.factor(literacy$date))
+gdp.by.year
+annual.int <- c()
+annual.mean <- c()
+years <- c(2000:2016)
 
+for (index in 1:17){
+  annual.mean[[index]] <- mean(gdp.by.year[[index]]$value, na.rm=TRUE)
+}
 
-# Literacy Data
+gdp.annual <- annual.mean
+
+#Tidy Literacy Data
  
 xml.data <- xmlParse("xml/literacy.xml");
 rootNode <- xmlRoot(xml.data);
 xml.data <- xmlSApply(rootNode,function(x) xmlSApply(x, xmlValue));
 xml.frame <- data.frame(t(xml.data),row.names=NULL);
-xml.frame$date <- as.numeric(xml.frame$date);
+xml.frame$date <- as.numeric(as.character(xml.frame$date));
+xml.frame$value <- as.numeric(as.character(xml.frame$value));
 
 literacy <- xml.frame %>%
   select(-indicator, -unit:-decimal) %>%
@@ -125,9 +95,22 @@ literacy <- xml.frame %>%
 
 literacy.wide <- literacy %>% spread(date, value) # STORE WIDE FRAMES FOR ANALYSIS TABLE
 
+lit.by.year <- split(literacy, as.factor(literacy$date))
+lit.by.year
+annual.int <- c()
+annual.mean <- c()
+years <- c(2000:2016)
 
-write.csv(gini.wide, "csv/gini.csv")
-write.csv(gdp.wide, "csv/gdp.csv")
+for (index in 1:17){
+  annual.mean[[index]] <- mean(lit.by.year[[index]]$value, na.rm=TRUE)
+}
+
+lit.annual <- annual.mean
+
+
+
+write.csv(gini.wide, "csv/gini.csv");
+write.csv(gdp.wide, "csv/gdp.csv");
 write.csv(literacy.wide, "csv/literacy.csv")
 
 

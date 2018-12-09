@@ -15,58 +15,14 @@ library(data.table)
 ```
 
 ```{r}
-curl_download("http://api.worldbank.org/v2/countries/all/indicators/2.0.cov.Math.pl_2.all?per_page=10000", "math_proficiency.xml")
-curl_download("http://api.worldbank.org/v2/countries/all/indicators/1.1_ACCESS.ELECTRICITY.TOT?per_page=10000", "electricity.xml")
-curl_download("http://api.worldbank.org/v2/countries/all/indicators/1.1_YOUTH.LITERACY.RATE?per_page=10000", "youth_literacy.xml")
-curl_download("http://api.worldbank.org/v2/countries/all/indicators/1.1.PGap.Poor4uds?per_page=10000", "poverty_gap.xml")
-```
-
-
-```{r}
-curl_download("http://api.worldbank.org/v2/countries/all/indicators/IT.NET.USER.P3?per_page=10000", "internet_users_per_thousand.xml")
-curl_download("http://api.worldbank.org/v2/countries/all/indicators/IT.NET.SECR.P6?per_page=10000", "secure_servers.xml")
-curl_download("http://api.worldbank.org/v2/countries/all/indicators/2.0.cov.Int?per_page=10000", "internet_coverage.xml")
-
-```
-
-```{r echo = FALSE}
-poverty.index <- curl_download("http://api.worldbank.org/v2/countries/all/indicators/UNDP.HDI.XD?per_page=20000", "poverty.xml");
-xmlParse("poverty.xml");
-xml.data <- xmlParse("poverty.xml");
-rootNode <- xmlRoot(xml.data);
-xml.data <- xmlSApply(rootNode,function(x) xmlSApply(x, xmlValue));
-xml.frame <- data.frame(t(xml.data),row.names=NULL);
-hdi <- xml.frame;
-hdi
-```
-```{r}
-annual.hdi <- c()
-for (year in 2000:2017){
- annual.hdi[[year-1999]] <- subset(hdi, date==year)
-}
-annual.hdi[2000]
-```
-
-```{r}
-indicators <- c("IT.NET.USER.P3", "IT.NET.SECR.P6", "2.0.cov.Int", "HOU.ELC.ACSN.ZS", "IT.NET.USER.ZS")
-users <- wb(indicator = indicators[1])
-servers <- wb(indicator = indicators[2])
-coverage_percent <- wb(indicator = indicators[3])
-electricity <- wb(indicator = indicators[4])
-ninety.days <- wb(indicator = indicators[5])
-
-```
-
-```{r}
 internet.stats <- wb(indicator = "IT.NET.USER.ZS", return_wide = TRUE, startdate = 2000, enddate = 2017)
 ```
+
 ```{r}
-countries <- unique(internet.stats$iso3c)
 annual.int <- c()
 annual.mean <- c()
-
-for (year in 2000:2016
-     ){
+internet.stats$iso3c
+for (year in 2000:2016){
   annual.int[[year-1999]] <- subset(internet.stats, date==year)
   annual.int[[year-1999]] <- head(annual.int[[year-1999]],245)
   annual.mean[[year-1999]] <- mean(annual.int[[year-1999]]$IT.NET.USER.ZS,
@@ -86,9 +42,10 @@ write.csv(annual.mean, "internet_over_time.csv")
 
 
 ```{r}
-countries <- unique(internet.stats$iso3c)
-index <- 1
-countries <- split(internet.stats, as.factor(internet.stats$iso3c))
+#countries <- unique(internet.stats$iso3c)
+
+internet.by.country <- split(internet.stats, as.factor(internet.stats$iso3c))
+
 ```
 
 

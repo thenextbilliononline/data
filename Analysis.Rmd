@@ -65,7 +65,7 @@ The indicators, and their corresponding World Bank definitions, are outlined bel
 1. Socio-Economic Indicators:
     - **SI.POV.GINI**: Gini index measures the extent to which the distribution of income...among individuals or households within an economy deviates from a perfectly equal distribution.
 
-    - **NY.GDP.MKTP.PP.KD:** PPP GDP is gross domestic product converted to international dollars using purchasing power parity rates. An international dollar has the same purchasing power over GDP as the U.S. dollar has in the United States. 
+    - **NY.GDP.MKTP.KD.ZG:** Raw GDP. We chose raw GDP to see if internet infrastructure contributes more to social mobility than a generalized economy. 
     - **SE.ADT.LITR.ZS:** Literacy rate, adult total (% of people ages 15 and above)
     
      
@@ -103,38 +103,44 @@ column_spec(column = 1, bold = T)
 ```{r}
 internet <- read.csv("internet/internet_over_time.csv")
 plot(internet$annual.mean~internet$years)
-lm(internet$annual.mean~internet$years)
+model <- lm(internet$annual.mean~internet$years)
+abline(model)
+summary(model)
 ```
-The average speed of internet access around the world grows by a factor of 2.652 every year!
+The average speed of internet access around the world grows by a factor of 2.652 every year! Furthermore, this model has an $R^2$ value of .998, meaning that global internet access speeds are almost entirely a function of time.
 
 
 ## ANALYSIS 
 
 First, I'd compare gini vs internet
 ```{r}
-plot(gini~internet$annual.mean)
-model <- lm(gini~internet$annual.mean)
-model2 <- lm(gini~gdp)
-abline(model)
-abline(model2)
+plot(gini.annual~internet$annual.mean)
+model <- lm(gini.annual~internet$annual.mean)
+model2 <- lm(gini.annual~gdp.annual)
 summary(model)
 summary(model2)
 ```
 
 Repeat for lit vs internet (make sure to use correct indicator i.e. literacy$)
 ```{r}
-plot(literacy$value~internet$annual.mean)
-model <- lm(literacy~internet$annual.mean)
-model2 <- lm(literacy~gdp)
-abline(model)
-abline(model2)
+plot(lit.annual~internet$annual.mean)
+model <- lm(lit.annual~internet$annual.mean)
+model2 <- lm(lit.annual~gdp.annual)
 summary(model)
 summary(model2)
+
+```
+
+```{r}
+plot(internet$annual.mean ~ gdp.annual)
+model <- lm(internet$annual.mean ~gdp.annual)
+abline(model)
+summary(model)
 ```
 
 # CONCLUSION
 
-Draw conclusions based off summaries.
+GDP is a stronger indicator of literacy or wealth inequality than internet access rates are. 
 
 Challenge: Finding an internet indicator that had enough data points. Finding a social indicator that was a good comparison across countries. Finding a measure of social equity was hard for similar reasons.
 
