@@ -103,8 +103,8 @@ gini.equal <- subset(gini, value < 50) %>% count()
 gini.na <- subset(gini, is.na(value)) %>% count()
 
 freq <- c(sum(gini.unequal$freq), sum(gini.equal$freq), sum(gini.na$freq))
-gini.sum <- (sum(gini.freq))
-prop <- round(gini.freq/gini.sum, 2)
+gini.sum <- (sum(freq))
+prop <- round(freq/gini.sum, 2)
 
 index <- c("more inequal", "more equal", "n.a. value")
 
@@ -167,20 +167,29 @@ The average speed of internet access around the world grows by a factor of 2.652
 
 ## ANALYSIS 
 
-First, we examined the relationship between our three socio-economic indicators and found that. 
+First, we examined the relationship between our three socio-economic indicators and found weak correlations between the selected variables.   
 
 
-```{r}
-plot(lit.annual~gini.annual)
+```{r lit-gdp, echo=T, eval=T, message=F, fig.align="right"}
+plot(lit.annual~gdp.annual)
+lit.gdp <- lm(lit.annual~gdp.annual)
+summary(lit.gdp)
+```
+Weak, downward sloping correlation.
+
+```{r gdp-gini, echo=T, eval=T, message=F}
 plot(gdp.annual~gini.annual)
-plot(gdp.annual~lit.annual)
-
-model <- lm(gini.annual~lit.annual)
-model2 <- lm(gini.annual~lit.annual)
+gdp.gini <- lm(gdp.annual~gini.annual)
 summary(model)
-summary(model2)
 ```
 
+Weak, downward sloping correlation.
+
+```{r gini-lit, echo=T, eval=T, message=F}
+plot(gini.annual~lit.annual)
+gini.lit <- lm(gini.annual~lit.annual)
+summary(gini.lit)
+```
 
 I'd compare gini vs internet usage. There is a weak, downward sloping correlation between these variables which suggests nations with higher levels of inequality use the internet to a lesser extent. 
 
@@ -212,5 +221,10 @@ summary(model)
 
 GDP is a stronger indicator of literacy or wealth inequality than internet access rates are. 
 
-Challenge: Finding an internet indicator that had enough data points. Finding a social indicator that was a good comparison across countries. Finding a measure of social equity was hard for similar reasons.
+Challenge: 
+Time-series data within the selected indicators contained many missing values across country and time variables.
+
+1. Finding an internet indicator that had enough data points. 
+2. Finding a social indicator that was a good comparison across countries. 
+3. Finding a measure of social equity was hard for similar reasons.
 
