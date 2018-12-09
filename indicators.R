@@ -26,17 +26,22 @@ rootNode <- xmlRoot(xml.data);
 xml.data <- xmlSApply(rootNode,function(x) xmlSApply(x, xmlValue));
 xml.frame <- data.frame(t(xml.data),row.names=NULL);
 xml.frame$date <- as.numeric(as.character(xml.frame$date));
+xml.frame$value <- as.numeric(as.character(xml.frame$value));
 
 gini <- xml.frame %>%
 select(-indicator, -unit:-decimal) %>%
 group_by(countryiso3code) %>%
 arrange(countryiso3code, date) %>%
 filter(countryiso3code != '')  %>%
-filter(date > 1999)
+filter(date > 1999) %>%
+ungroup()
+
+names(gini)[2]<-"iso3code"
 
 gini.wide <- gini %>% spread(date, value) # STORE WIDE FRAMES FOR ANALYSIS TABLE
 
-gini.by.year <- split(literacy, as.factor(literacy$date))
+
+gini.by.year <- split(gini, as.factor(gini$date))
 gini.by.year
 annual.int <- c()
 annual.mean <- c()
@@ -62,10 +67,11 @@ gdp <- xml.frame %>%
   group_by(countryiso3code) %>%
   arrange(countryiso3code, date) %>%
   filter(countryiso3code != '') %>%
-  filter(date > 1999)
+  filter(date > 1999) %>%
+  ungroup()
 
 gdp.wide <- gdp %>% spread(date, value) # STORE WIDE FRAMES FOR ANALYSIS TABLE
-gdp.by.year <- split(literacy, as.factor(literacy$date))
+gdp.by.year <- split(gdp, as.factor(gdp$date))
 gdp.by.year
 annual.int <- c()
 annual.mean <- c()
@@ -91,7 +97,8 @@ literacy <- xml.frame %>%
   group_by(countryiso3code) %>%
   arrange(countryiso3code, date) %>%
   filter(countryiso3code != '') %>%
-  filter(date > 1999)
+  filter(date > 1999) %>%
+  ungroup()
 
 literacy.wide <- literacy %>% spread(date, value) # STORE WIDE FRAMES FOR ANALYSIS TABLE
 
