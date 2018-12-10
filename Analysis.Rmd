@@ -32,12 +32,16 @@ library(wbstats)
 library(data.table)
 library(tidyr)
 library(dplyr)
+suppressWarnings(source("indicators.R"))
+```
+
+```{r format-dependencies, echo=FALSE, warning=FALSE, message=FALSE}
 library(knitr)
 library(kableExtra)
 library(ggplot2)
 library(ggExtra)
 library(cowplot)
-suppressWarnings(source("indicators.R"))
+library(gridExtra)
 ```
 
 ## RESEARCH QUESTION
@@ -95,28 +99,29 @@ The summary statistics and visual inspection of the histogram and boxplot show t
 
 
 ```{r gini-summary, echo=FALSE, warning=FALSE, message=FALSE}
-ggplot(gini, aes(x = value)) + geom_histogram(col = "navy", fill = "grey", binwidth=5, na.rm = TRUE)+labs(title="GINI Index Value Histogram",x="Value", y = "Count")
-
-boxplot(gini$value, horizontal = T)
-
 summary(gini$value)
 
 gini.unequal <- subset(gini, value > 50) %>% count()
 gini.equal <- subset(gini, value < 50) %>% count()
 gini.na <- subset(gini, is.na(value)) %>% count()
 
-freq <- c(sum(gini.unequal$freq), sum(gini.equal$freq), sum(gini.na$freq))
+freq <- c(sum(gini.unequal), sum(gini.equal), sum(gini.na))
 gini.sum <- (sum(freq))
 prop <- round(freq/gini.sum, 2)
 
 index <- c("more inequal", "more equal", "n.a. value")
 
+ggplot(gini, aes(x = value)) + geom_histogram(col = "navy", fill = "grey", binwidth=5, na.rm = TRUE)+labs(title="GINI Index Value Histogram",x="Value", y = "Count")
+
+
 gini.tbl <- data.frame(index, freq, prop)
-names(gini.tbl[1:3]) <- c("freq", "value", "prop")
+names(gini.tbl[1:3]) <- c("freq", "count", "prop")
 kable(gini.tbl, caption = 'GINI Index Proportion Table', format = "html") %>%
-kable_styling(bootstrap_options = c("striped", "hover"), full_width = F, position = "left") %>%
+kable_styling(bootstrap_options = c("striped", "hover"), full_width = F, position = "float_right") %>%
 row_spec(row = 0:0, background = "lightgrey") %>%
 column_spec(column = 1, bold = T) 
+
+boxplot(gini$value, horizontal = T)
 ```
 
 
@@ -137,13 +142,11 @@ The annual GDP measurement was much more robust than the GINI index. This indica
 
 
 ```{r gdp-summary, echo=FALSE, warning=FALSE, message=FALSE}
+summary(gdp$value)
+
 ggplot(gdp, aes(x = value)) + geom_histogram(col = "navy", fill = "grey", binwidth=5, na.rm = TRUE)+labs(title="GDP Value Histogram",x="Value", y = "Count")
 
 boxplot(gdp$value, horizontal = T)
-
-summary(gdp$value)
-
-310/nrow(gdp)
 ```
 
 
@@ -152,7 +155,7 @@ summary(gdp$value)
 We used this adult literacy indicator as a socio-economic proxy measure for poverty. We are interested in examining the relationship between internet useage and literacy as well as literacy and GDP.  Below is an output of the data parsed and tidied from the World Bank:
 
 ``` {r lit-table, echo=FALSE, warning=FALSE, message=FALSE}
-lit.slice <- sample_n(literacy.wide, 10, replace = F)
+lit.slice <- sample_n(literacy.wide, 5, replace = F)
 
 kable(lit.slice, caption = 'Selected Literacy Values, 2000-2016', format = "html") %>%
 kable_styling(bootstrap_options = c("striped", "hover"), full_width = F, position = "c") %>%
@@ -163,13 +166,11 @@ column_spec(column = 1, bold = T)
 Like the GINI index, this measurement also contained a significant amount missing values. Approximately 86% of values in this dataset were missing. Out of the data reported, we countries to have high literacy rates on average. You can see in the histogram and boxplot below that this data is unimodal and skewed to the left. 
 
 ```{r literacy-summary, echo=FALSE, warning=FALSE, message=FALSE}
+summary(literacy$value)
+
 ggplot(literacy, aes(x = value)) + geom_histogram(col = "navy", fill = "grey", binwidth=5, na.rm = TRUE)+labs(title="literacy Value Histogram",x="Value", y = "Count")
 
 boxplot(literacy$value, horizontal = T)
-
-summary(literacy$value)
-
-3163/nrow(literacy)
 ```
 
 
@@ -207,12 +208,21 @@ lit.gdp  <- inner_join(lit.annual, gdp.annual, by = "V1")
 annual.means <- inner_join(lit.gdp, gini.annual, by = "V1")
 names(annual.means) <- c("year", "lit", "gdp", "gini")
 
+annual.combo <- gather(annual.means, "indicator", "value", 2:4)
+
 theme_set(theme_cowplot(font_size=12)) 
 
-lit.gdp <- ggplot(annual.means, aes(x=lit, y=gdp)) + geom_point(size=2.5)
-gdp.gini <- ggplot(annual.means, aes(x=gdp, y=gini)) + geom_point(size=2.5)
-gini.lit <- ggplot(annual.means, aes(x=gini, y=lit)) + geom_point(size=2.5)
-plot_grid(lit.gdp, gdp.gini, gini.lit, labels = c('1', '2', '3'))
+lit.gdp <- ggplot(annual.means, aes(x=lit, y=gdp)) + geom_point(size=2.5, na.rm=TRUE, color="navy")
+gdp.gini <- ggplot(annual.means, aes(x=gdp, y=gini)) + geom_point(size=2.5, na.rm=TRUE, color="maroon")
+gini.lit <- ggplot(annual.means, aes(x=gini, y=lit)) + geom_point(size=2.5, na.rm=TRUE, color="grey")
+combo <- ggplot(annual.combo, aes(x=year, y=value, group=indicator)) + geom_line(aes(linetype=indicator), size=1) + geom_point(size=2) 
+
+grid.arrange(lit.gdp, gdp.gini, gini.lit, combo, ncol=3, nrow=2, layout_matrix = rbind(c(1,2,3), c(4,4,4)), top = "Socio-Economic Indicators")
+
+
+
+
+ 
 ```
 
 We also compared these values using the linear model and found...
