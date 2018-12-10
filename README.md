@@ -1,7 +1,7 @@
  
 # Proposal
 
-Through this project, we seek to understand the relationship between internet access and inequality on a global scale. We will use data from the United Nations to compare selected socio-economic indexes to international communication measurements.
+Through this project, we seek to understand the relationship between internet usage and proxy-measurements of global prosperty. We will use data from the World Bank to compare selected socio-economic indexes to international communication measurements.
 
 We have outlined our questions, data sources, and folder structure below for those interested in replicating our work. 
 
@@ -21,28 +21,27 @@ Alternate: Economic indicators do not have a stronger effect than social measure
 
 ## Motivation
 
-We are interested in this problem as data scientists because our field is a mixed bag. On one hand, big data can be used to influence elections, spread hateful propaganda, and be used to track every purchase and decision we make. However, the Internet as a whole provides many positive economic outlets. We want to investigate the link between internet infrastructure and economic output as a way to measure the positive effects of internet access. 
+As Data Scientists, we recognize that “big data” can be used to influence elections, spread hateful propaganda, and track every purchase and decision we make one. However, we believe that the Internet, as a whole provides, many positive economic outlets.
+
+We seek to quantify the positive effects of internet access on a global scale through our analysis of internet usage rates and the social and economic indicators outlined below.
 
 ## Data
-Each folder will have it's own data-scraping/cleaning location, named after the indicator in question. Inside that folder, we will place a .R file (with plenty of comments!) that collects the data locally and uses as much automation as possible. Then, each file will be stored in the csvs section.
+The indicators are in two different data-scraping/cleaning locations. You can find the `.Rmd` file for internet indicators in the inside the internet folder. The socio-economic variables are all in the indicator.R file in the main folder. Our storage method allows us to collect and tidy the data locally and optimizes as much automation as possible. 
 
-The following is an outline of the sources we plan on using:
+The data outputs for these indicators have each been stored in the xml and csv folders.
 
-### Internet Usage Indicators
- + [ITU data](https://www.itu.int/) International Telephone Union 
+The following are the World Bank indicators we selected: 
+1. Socio-Economic Indicators: 
+- SI.POV.GINI: Gini Index.
+- NY.GDP.MKTP.KD.ZG: GDP Growth Rate (annual %).
+- SE.ADT.LITR.ZS: Literacy rate, adult total (% of people ages 15 and above).
 
-### Socio-Economic Indicators
- + [The Human Development Index](http://hdr.undp.org/en/indicators/137506): Composite index containing measurements of education, life expectancy, and gross national income.  *Maybe use [Multidimensional Poverty Index(MPI)](http://hdr.undp.org/en/2018-MPI) in addition to or instead of HDI*
+Internet Indicators 
+- IT.NET.USER.ZS: Individuals using the Internet (% of population).
 
+## CSV & XML Folders
 
-
-## CSVs
-
-This folder contains cleaned versions of all the datasets used. This way, it will be easy to import each data set. We will be left with internet penetration rates, a Wikipedia density indicator, a World Bank indicator, and a Big Mac Indicator, all indexed by the ISO 3 letter country code.
-
-## Database
-
-Each of these csvs will be imported and read into a database using R.
+These folder contains pre-parsed xml and cleaned csv versions of all the datasets used. 
 
 ## Analysis
 
