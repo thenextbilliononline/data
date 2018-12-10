@@ -45,4 +45,4 @@ These folder contains pre-parsed xml and cleaned csv versions of all the dataset
 
 ## Analysis
 
-Our final analysis will live in the root directory and will have all of the fancy features needed to get an A. This are being tracked in the issues page for this repository.
+Analysis.Rmd contains the R markdown file for of our analysis. Otherwise, the slides can be found at thenextbillion.online/data.
