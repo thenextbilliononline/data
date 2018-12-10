@@ -68,11 +68,13 @@ We have outlined the selected indicators and their corresponding World Bank defi
 1. Socio-Economic Indicators:
     - **SI.POV.GINI**: Gini index measures global distribution of income or consumption. This measurement captures extent to which the distribution of income or consumption among individuals or households within an economy deviates from a perfectly equal distribution.
     - **NY.GDP.MKTP.KD.ZG:**  Annual percentage growth rate of GDP at market prices based on constant local currency. Aggregates are based on constant 2010 U.S. dollars. 
-    - **SE.ADT.LITR.ZS:** Literacy rate, adult total (% of people ages 15 and above).
+    - **SE.ADT.LITR.ZS:** Literacy rate, adult total (% of people ages 15 and above). 
     
-     
 2. Internet Indicators
     - **IT.NET.USER.ZS:** Internet users are individuals who have used the Internet (from any location) in the last 3 months. The Internet can be used via a computer, mobile phone, personal digital assistant, games machine, digital TV etc. 
+
+### Collection
+All socio-economic indicators were collected via the web api for the world bank. Please check out the indicators.R file found in the repository. All internet indicators were collected from the wb() package which presumably does the same thing. However, after cleaning and analysis, that was saved as a csv and re-imported to fulfill the requirements of the assignment.
 
 ### Socio-Economic Indicators
 
@@ -249,22 +251,29 @@ model <- lm(lit.annual$annual.mean~internet$annual.mean)
 summary(model)
 
 ```
-
+The bandwidth per capita is weakly correlated with the gini index as well as literacy. It slightly weaker in the case of literacy given the respective R^2 values. 
 ```{r}
-plot(internet$annual.mean ~ gdp.annual$annual.mean)
-model <- lm(internet$annual.mean ~gdp.annual$annual.mean)
+plot(internet$annual.mean ~ gdp.annual$annual.mean, xlab = "GDP", ylab='Bandwidth per capita')
+
+model <- lm(internet$annual.mean ~gdp.annual$annual.mea)
 abline(model)
 summary(model)
+
 ```
+Additionally, we find that there is almost no correlation between an nation's gdp and its bandwidth per capita.
 
-# CONCLUSION
+# Conclusion
 
-GDP is a stronger indicator of literacy or wealth inequality than internet access rates are. 
+GDP is a stronger indicator of literacy or wealth inequality than internet speeds. However, there is a weak, positive correlation between internet speeds and each of these indicators. Sparsity in the data prevented further analysis by country and would have inherently selected for OECD countries (which maintain a wonderful dataset). However, we were more interested in investigating developing nations. Further research will require a more comprehensive dataset.
 
-Challenge: 
+### Challenges: 
 Time-series data within the selected indicators contained many missing values across country and time variables.
 
 1. Finding an internet indicator that had enough data points. 
 2. Finding a social indicator that was a good comparison across countries. 
 3. Finding a measure of social equity was hard for similar reasons.
+
+### Further:
+
+With a more complete dataset we could compare these data points by country rather than year. Furthermore, we could include other indicators (both economic and technical) and do a covariance analysis. However, without complete data both of these tasks are useless.
 
