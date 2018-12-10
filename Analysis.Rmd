@@ -200,7 +200,7 @@ The average speed of internet access around the world grows by a factor of 2.652
 First, we examined the relationship between our three socio-economic indicators and found weak correlations between the selected variables.   
 
 
-```{r socio-economic-plots, echo=T, eval=T, message=F, fig.align="center"}
+```{r socio-economic-plots, echo=F, eval=T, message=F, fig.align="center"}
 lit.annual$V1 <- as.factor(lit.annual$V1)
 gdp.annual$V1 <- as.factor(gdp.annual$V1)
 gini.annual$V1 <- as.factor(gini.annual$V1)
@@ -218,11 +218,6 @@ gini.lit <- ggplot(annual.means, aes(x=gini, y=lit)) + geom_point(size=2.5, na.r
 combo <- ggplot(annual.combo, aes(x=year, y=value, group=indicator)) + geom_line(aes(linetype=indicator), size=1) + geom_point(size=2) 
 
 grid.arrange(lit.gdp, gdp.gini, gini.lit, combo, ncol=3, nrow=2, layout_matrix = rbind(c(1,2,3), c(4,4,4)), top = "Socio-Economic Indicators")
-
-
-
-
- 
 ```
 
 We also compared these values using the linear model and found...
