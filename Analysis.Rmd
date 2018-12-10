@@ -17,8 +17,6 @@ As Data Scientists, we recognize that "big data" can be used to influence electi
 
 We seek to quantify the positive effects of internet access on a global scale through our analysis of internet infrastructure and select social and economic indicators. 
 
-We used data from the World Bank to measure this relationship and found XYZ....  
-
 Our research process is outlined below for those interested in replicating our work.  
 
 ## R DEPENDENCIES
@@ -184,9 +182,6 @@ This indicator measures the number of individuals using the Internet as a percen
 
 While other internet indicators are available through the World Bank, this is the only dataset we had that was complete enough to be useful. 
 
-You can see below
-
-
 ```{r}
 internet <- read.csv("internet/internet_over_time.csv")
 plot(internet$annual.mean~internet$years)
@@ -222,7 +217,7 @@ combo <- ggplot(annual.combo, aes(x=year, y=value, group=indicator)) + geom_line
 grid.arrange(lit.gdp, gdp.gini, gini.lit, combo, ncol=3, nrow=2, layout_matrix = rbind(c(1,2,3), c(4,4,4)), top = "Socio-Economic Indicators")
 ```
 
-We also compared these values using the linear model and found...
+We also compared these values using the linear model:
 
 ```{r socio-economic-lm, eval=TRUE, echo=TRUE, message=FALSE}
 lit.gdp.lm <- lm(annual.means$lit~annual.means$gdp)
@@ -235,8 +230,7 @@ gini.lit.lm <- lm(annual.means$gini~annual.means$lit)
 summary(gini.lit.lm)
 ```
 
-
-I'd compare gini vs internet usage. There is a weak, downward sloping correlation between these variables which suggests nations with higher levels of inequality use the internet to a lesser extent. 
+There is a weak, downward sloping correlation between the gini and internet indicators which suggests nations with higher levels of inequality use the internet to a lesser extent. 
 
 ```{r}
 plot(gini.annual$annual.mean~internet$annual.mean)
@@ -244,14 +238,16 @@ model <- lm(gini.annual$annual.mean~internet$annual.mean)
 summary(model)
 ```
 
-We repeated for lit vs internet (make sure to use correct indicator i.e. literacy$)
+We repeated for lit vs internet (make sure to use correct indicator i.e. literacy$):
+
 ```{r}
 plot(lit.annual$annual.mean~internet$annual.mean)
 model <- lm(lit.annual$annual.mean~internet$annual.mean)
 summary(model)
-
 ```
+
 The bandwidth per capita is weakly correlated with the gini index as well as literacy. It slightly weaker in the case of literacy given the respective R^2 values. 
+
 ```{r}
 plot(internet$annual.mean ~ gdp.annual$annual.mean, xlab = "GDP", ylab='Bandwidth per capita')
 
@@ -266,14 +262,14 @@ Additionally, we find that there is almost no correlation between an nation's gd
 
 GDP is a stronger indicator of literacy or wealth inequality than internet speeds. However, there is a weak, positive correlation between internet speeds and each of these indicators. Sparsity in the data prevented further analysis by country and would have inherently selected for OECD countries (which maintain a wonderful dataset). However, we were more interested in investigating developing nations. Further research will require a more comprehensive dataset.
 
-### Challenges: 
+## Challenges: 
 Time-series data within the selected indicators contained many missing values across country and time variables.
 
 1. Finding an internet indicator that had enough data points. 
 2. Finding a social indicator that was a good comparison across countries. 
 3. Finding a measure of social equity was hard for similar reasons.
 
-### Further:
+## Further:
 
 With a more complete dataset we could compare these data points by country rather than year. Furthermore, we could include other indicators (both economic and technical) and do a covariance analysis. However, without complete data both of these tasks are useless.
 
