@@ -7,43 +7,62 @@ We have outlined our questions, data sources, and folder structure below for tho
 
 ## Questions
 
-> Does internet access correlate with the chosen indicators of inequality?
+> Has the internet become more centralized since 2000? That is to say: "Has number of internet providers kept pace with the number of users?"
 
-Null: Internet penetration rates are not correlated with the chosen equity indicators.  
+Null: The relative number of internet access providers has not changed since 2000.
 
-Alternate: Internet penetrateion rates are correlated with the chosen equity indicator.
+Alternate: The relative number of internet access providers has changed since 2000.
 
-> Do the economic indicators have a stronger affect on internet access than the social equity indicators?
+> Does this change in provider/user density indicate a change in the larger economics of technology.
 
-Null: Economic indicators have a stronger effect than social measurements on Internet access. 
+Null: There are no signs that this density change has transformed the economics of tech. 
 
-Alternate: Economic indicators do not have a stronger effect than social measurements on Internet access. 
+Alternate: There are signs that this density change has transformed the economics of tech.  
 
 ## Motivation
 
-We are interested in this problem as data scientists because our field is a mixed bag. On one hand, big data can be used to influence elections, spread hateful propaganda, and be used to track every purchase and decision we make. However, the Internet as a whole provides many positive economic outlets. We want to investigate the link between internet infrastructure and economic output as a way to measure the positive effects of internet access. 
+We are interested in this problem as data scientists because our field is a mixed bag. On one hand, big data can be used to influence elections, spread hateful propaganda, and be used to track every purchase and decision we make. These political consequences are well known. However, the Internet has a history of 
 
-## Data
-Each folder will have it's own data-scraping/cleaning location, named after the indicator in question. Inside that folder, we will place a .R file (with plenty of comments!) that collects the data locally and uses as much automation as possible. Then, each file will be stored in the csvs section.
-
-The following is an outline of the sources we plan on using:
-
-### Internet Usage Indicators
- + [ITU data](https://www.itu.int/) International Telephone Union 
-
-### Socio-Economic Indicators
- + [The Human Development Index](http://hdr.undp.org/en/indicators/137506): Composite index containing measurements of education, life expectancy, and gross national income.  *Maybe use [Multidimensional Poverty Index(MPI)](http://hdr.undp.org/en/2018-MPI) in addition to or instead of HDI*
+## Data 
+[Question1](https://stat.ripe.net/docs/data_api)
+[Question 2](https://data.worldbank.org/indicator/IT.MLT.MAIN)
 
 
+### Data Collection
+Q1:
+	+ No of Internet Providers
+	+ User density
+	+ Bandwidth?
 
-## CSVs
+Q2:
+	+ Mobile Cellular subscriptions
+	+ Fixed telephone rate
+	+ Fixed broadband rate
+	+ Server rate
 
-This folder contains cleaned versions of all the datasets used. This way, it will be easy to import each data set. We will be left with internet penetration rates, a Wikipedia density indicator, a World Bank indicator, and a Big Mac Indicator, all indexed by the ISO 3 letter country code.
+### Data Exploration
 
-## Database
+### Data Preparation
 
-Each of these csvs will be imported and read into a database using R.
+## Tests
+	+ Chi-Square
+	+ R^2 
+	+ Correlation
+	(depends on data from worldbank)
 
-## Analysis
+## Further Modelling
 
-Our final analysis will live in the root directory and will have all of the fancy features needed to get an A. This are being tracked in the issues page for this repository.
++ What we propose to offer. I suggest a website and data analysis application. The 608 'Dash' stuff, essentially.
+
+## Further Collection
+
++ Automate data collection
++ create database
++ store data
+
+## Filesystem
+	+ old/: old paper
+	+ Readme.md: this document
+
+
+
