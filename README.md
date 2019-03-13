@@ -30,25 +30,25 @@ We are interested in this problem as data scientists because our field is a mixe
 
 ### Data Collection
 Q1:
-	+ No of Internet Providers
-	+ User density
-	+ Bandwidth?
++ No of Internet Providers
++ User density
++ Bandwidth?
 
 Q2:
-	+ Mobile Cellular subscriptions
-	+ Fixed telephone rate
-	+ Fixed broadband rate
-	+ Server rate
++ Mobile Cellular subscriptions
++ Fixed telephone rate
++ Fixed broadband rate
++ Server rate
 
 ### Data Exploration
 
 ### Data Preparation
 
 ## Tests
-	+ Chi-Square
-	+ R^2 
-	+ Correlation
-	(depends on data from worldbank)
++ Chi-Square
++ R^2 
++ Correlation
++(depends on data from worldbank)
 
 ## Further Modelling
 
@@ -61,8 +61,8 @@ Q2:
 + store data
 
 ## Filesystem
-	+ old/: old paper
-	+ Readme.md: this document
++ old/: old paper
++ Readme.md: this document
 
 
 
