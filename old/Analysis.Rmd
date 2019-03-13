@@ -1,12 +1,6 @@
----
-<<<<<<< HEAD
+sub---
 title: "Analysis"
-author: "simplymathematics"
-date: "December 7, 2018"
-output: html_document
----
-
-title: "Final Project"
+author: "simplymathematics & jemceach"
 date: "December 09, 2018"
 output:
   html_document:
@@ -23,13 +17,11 @@ As Data Scientists, we recognize that "big data" can be used to influence electi
 
 We seek to quantify the positive effects of internet access on a global scale through our analysis of internet infrastructure and select social and economic indicators. 
 
-We used data from the World Bank to measure this relationship and found XYZ....  
-
 Our research process is outlined below for those interested in replicating our work.  
 
 ## R DEPENDENCIES
 
-Replication of our work requires the use of the following dependencies:
+Replication requires the use of the following dependencies:
 
 ```{r dependencies, echo=TRUE, warning=FALSE, message=FALSE}
 library(curl) 
@@ -38,9 +30,16 @@ library(wbstats)
 library(data.table)
 library(tidyr)
 library(dplyr)
+suppressWarnings(source("indicators.R"))
+```
+
+```{r format-dependencies, echo=FALSE, warning=FALSE, message=FALSE}
 library(knitr)
 library(kableExtra)
-suppressWarnings(source("indicators.R"))
+library(ggplot2)
+library(ggExtra)
+library(cowplot)
+library(gridExtra)
 ```
 
 ## RESEARCH QUESTION
@@ -58,21 +57,134 @@ suppressWarnings(source("indicators.R"))
 
 ## INDICATORS 
 
-We used the `curl` package to download our selected indicators from the [World Bank Indicator API Queries](https://datahelpdesk.worldbank.org/knowledgebase/articles/898599-indicator-api-queries). Documentation for this process can be found in the `indicator.R` file within this directory. 
+Aggregated indicators were selected from the [World Bank Indicator API Queries](https://datahelpdesk.worldbank.org/knowledgebase/articles/898599-indicator-api-queries). We used the `curl` and `xml` packages to download and parse the socio-economic indicators. In addition, we used the `wb`package for the internet data. This package directly communicates with the API to download WB data.
+
+Documentation for this process can be found in the `internet.Rmd` and `indicator.R` file within this repository. 
  
-The indicators, and their corresponding World Bank definitions, are outlined below:
+We have outlined the selected indicators and their corresponding World Bank definitions below:
 
 1. Socio-Economic Indicators:
-    - **SI.POV.GINI**: Gini index measures the extent to which the distribution of income...among individuals or households within an economy deviates from a perfectly equal distribution.
-
-    - **NY.GDP.MKTP.KD.ZG:** Raw GDP. We chose raw GDP to see if internet infrastructure contributes more to social mobility than a generalized economy. 
-    - **SE.ADT.LITR.ZS:** Literacy rate, adult total (% of people ages 15 and above)
+    - **SI.POV.GINI**: Gini index measures global distribution of income or consumption. This measurement captures extent to which the distribution of income or consumption among individuals or households within an economy deviates from a perfectly equal distribution.
+    - **NY.GDP.MKTP.KD.ZG:**  Annual percentage growth rate of GDP at market prices based on constant local currency. Aggregates are based on constant 2010 U.S. dollars. 
+    - **SE.ADT.LITR.ZS:** Literacy rate, adult total (% of people ages 15 and above). 
     
-     
 2. Internet Indicators
-    - **IT.NET.USER.ZS:** Internet users are individuals who have used the Internet (from any location) in the last 3 months. The Internet can be used via a computer, mobile phone, personal digital assistant, games machine, digital TV etc. This is the only dataset we had that was complete enough to be useful. While other indicators are available through the World Bank, they overselect for highly developed nations as they are able to measure and report such figures.
+    - **IT.NET.USER.ZS:** Internet users are individuals who have used the Internet (from any location) in the last 3 months. The Internet can be used via a computer, mobile phone, personal digital assistant, games machine, digital TV etc. 
+
+### Collection
+All socio-economic indicators were collected via the web api for the world bank. Please check out the indicators.R file found in the repository. All internet indicators were collected from the wb() package which presumably does the same thing. However, after cleaning and analysis, that was saved as a csv and re-imported to fulfill the requirements of the assignment.
+
+<<<<<<< HEAD:old/Analysis.Rmd
+=======
+### Socio-Economic Indicators
+
+#### GINI Index
+
+We used the GINI index as a socio-economic proxy measure for equity. A Gini index value of 0 represents perfect equality, whereas an value of 100 constitutes perfect inequality.
+
+As shown below, GINI index data is widely unavailable for certain countries, across certain years. The World Bank choose different reference year in their analysis of each country, as shown on Table 1.3 of the [World Development Indicators](http://wdi.worldbank.org/table/1.3). A selected portion of the data we parsed from this table can be seen below:
+
+``` {r gini-table, echo=FALSE, warning=FALSE, message=FALSE}
+gini.slice <- sample_n(gini.wide, 5, replace = F)
+
+kable(gini.slice, caption = 'Selected GINI Values, 2000 - 2016', format = "html")  %>%
+  kable_styling(bootstrap_options = c("striped", "hover"), full_width = F, position = "left") %>%
+  row_spec(row = 0:0, background = "lightgrey") %>%
+  column_spec(column = 1, bold = T) 
+```
+
+We choose to analyze the gini data through annual aggregates. However, we note that the absence of data for certain countries and time periods could potentially affect our results. 
+
+Our initial review of this data shows that almost 3/4ths of this data contains missing values. Less than 5% of index values represent countries with a rating of higher inequality levels above 50. The median index value for the gini dataset is 35.7, while the mean value is 37.88. 
+
+The summary statistics and visual inspection of the histogram and boxplot show that data for this indicator is unimodal and skewed to the right.
+
+
+```{r gini-summary, echo=FALSE, warning=FALSE, message=FALSE}
+summary(gini$value)
+
+gini.unequal <- subset(gini, value > 50) %>% count()
+gini.equal <- subset(gini, value < 50) %>% count()
+gini.na <- subset(gini, is.na(value)) %>% count()
+
+freq <- c(sum(gini.unequal), sum(gini.equal), sum(gini.na))
+gini.sum <- (sum(freq))
+prop <- round(freq/gini.sum, 2)
+
+index <- c("more inequal", "more equal", "n.a. value")
+
+ggplot(gini, aes(x = value)) + geom_histogram(col = "navy", fill = "grey", binwidth=5, na.rm = TRUE)+labs(title="GINI Index Value Histogram",x="Value", y = "Count")
+
+
+gini.tbl <- data.frame(index, freq, prop)
+names(gini.tbl[1:3]) <- c("freq", "count", "prop")
+kable(gini.tbl, caption = 'GINI Index Proportion Table', format = "html") %>%
+kable_styling(bootstrap_options = c("striped", "hover"), full_width = F, position = "float_right") %>%
+row_spec(row = 0:0, background = "lightgrey") %>%
+column_spec(column = 1, bold = T) 
+
+boxplot(gini$value, horizontal = T)
+```
+
+
+#### Selected GDP growth (annual %) Indicator
+
+We chose raw GDP to see if internet infrastructure contributes more to social mobility than a generalized economy. Below is an output of the data parsed and tidied from the World Bank: 
+
+``` {r gdp-table, echo=FALSE, warning=FALSE, message=FALSE}
+gdp.slice <- sample_n(gdp.wide, 5, replace = F)
+
+kable(gdp.slice, caption = 'Selected GDP growth (annual %) Values, 2000-2016', format = "html") %>%
+kable_styling(bootstrap_options = c("striped", "hover"), full_width = F, position = "c") %>%
+row_spec(row = 0:0, background = "lightgrey") %>%
+column_spec(column = 1, bold = T) 
+```
+
+The annual GDP measurement was much more robust than the GINI index. This indicator contained only 310 missing values, accounting for 8.4% of all values. The summary statistics and visual inspection of the histogram and boxplot show that data for this indicator is unimodal and slightly skewed to the right.
+
+
+```{r gdp-summary, echo=FALSE, warning=FALSE, message=FALSE}
+summary(gdp$value)
+
+ggplot(gdp, aes(x = value)) + geom_histogram(col = "navy", fill = "grey", binwidth=5, na.rm = TRUE)+labs(title="GDP Value Histogram",x="Value", y = "Count")
+
+boxplot(gdp$value, horizontal = T)
+```
+
+
+#### Literacy
+
+We used this adult literacy indicator as a socio-economic proxy measure for poverty. We are interested in examining the relationship between internet useage and literacy as well as literacy and GDP.  Below is an output of the data parsed and tidied from the World Bank:
+
+``` {r lit-table, echo=FALSE, warning=FALSE, message=FALSE}
+lit.slice <- sample_n(literacy.wide, 5, replace = F)
+
+kable(lit.slice, caption = 'Selected Literacy Values, 2000-2016', format = "html") %>%
+kable_styling(bootstrap_options = c("striped", "hover"), full_width = F, position = "c") %>%
+row_spec(row = 0:0, background = "lightgrey") %>%
+column_spec(column = 1, bold = T) 
+```
+
+Like the GINI index, this measurement also contained a significant amount missing values. Approximately 86% of values in this dataset were missing. Out of the data reported, we countries to have high literacy rates on average. You can see in the histogram and boxplot below that this data is unimodal and skewed to the left. 
+
+```{r literacy-summary, echo=FALSE, warning=FALSE, message=FALSE}
+summary(literacy$value)
+
+ggplot(literacy, aes(x = value)) + geom_histogram(col = "navy", fill = "grey", binwidth=5, na.rm = TRUE)+labs(title="literacy Value Histogram",x="Value", y = "Count")
+
+boxplot(literacy$value, horizontal = T)
+```
+
+
 
 ### Internet Indicators
+
+#### Internet Usage
+
+This indicator measures the number of individuals using the Internet as a percentage of country population.
+
+While other internet indicators are available through the World Bank, this is the only dataset we had that was complete enough to be useful. 
+
 ```{r}
 internet <- read.csv("internet/internet_over_time.csv")
 plot(internet$annual.mean~internet$years)
@@ -85,17 +197,54 @@ The average speed of internet access around the world grows by a factor of 2.652
 
 ## ANALYSIS 
 
-First, I'd compare gini vs internet
-```{r}
-plot(gini.annual~internet$annual.mean)
-model <- lm(gini.annual~internet$annual.mean)
-model2 <- lm(gini.annual~gdp.annual)
-summary(model)
-summary(model2)
+First, we examined the relationship between our three socio-economic indicators and found weak correlations between the selected variables.   
+
+
+```{r socio-economic-plots, echo=F, eval=T, message=F, fig.align="center"}
+lit.annual$V1 <- as.factor(lit.annual$V1)
+gdp.annual$V1 <- as.factor(gdp.annual$V1)
+gini.annual$V1 <- as.factor(gini.annual$V1)
+lit.gdp  <- inner_join(lit.annual, gdp.annual, by = "V1")
+annual.means <- inner_join(lit.gdp, gini.annual, by = "V1")
+names(annual.means) <- c("year", "lit", "gdp", "gini")
+
+annual.combo <- gather(annual.means, "indicator", "value", 2:4)
+
+theme_set(theme_cowplot(font_size=12)) 
+
+lit.gdp <- ggplot(annual.means, aes(x=lit, y=gdp)) + geom_point(size=2.5, na.rm=TRUE, color="navy")
+gdp.gini <- ggplot(annual.means, aes(x=gdp, y=gini)) + geom_point(size=2.5, na.rm=TRUE, color="maroon")
+gini.lit <- ggplot(annual.means, aes(x=gini, y=lit)) + geom_point(size=2.5, na.rm=TRUE, color="grey")
+combo <- ggplot(annual.combo, aes(x=year, y=value, group=indicator)) + geom_line(aes(linetype=indicator), size=1) + geom_point(size=2) 
+
+grid.arrange(lit.gdp, gdp.gini, gini.lit, combo, ncol=3, nrow=2, layout_matrix = rbind(c(1,2,3), c(4,4,4)), top = "Socio-Economic Indicators")
 ```
 
-Repeat for lit vs internet (make sure to use correct indicator i.e. literacy$)
+We also compared these values using the linear model:
+
+```{r socio-economic-lm, eval=TRUE, echo=TRUE, message=FALSE}
+lit.gdp.lm <- lm(annual.means$lit~annual.means$gdp)
+summary(lit.gdp.lm)
+
+gdp.gini.lm <- lm(annual.means$gdp~annual.means$gini)
+summary(gdp.gini.lm)
+
+gini.lit.lm <- lm(annual.means$gini~annual.means$lit)
+summary(gini.lit.lm)
+```
+
+There is a weak, downward sloping correlation between the gini and internet indicators which suggests nations with higher levels of inequality use the internet to a lesser extent. 
+
 ```{r}
+plot(gini.annual$annual.mean~internet$annual.mean)
+model <- lm(gini.annual$annual.mean~internet$annual.mean)
+summary(model)
+```
+
+We repeated for lit vs internet (make sure to use correct indicator i.e. literacy$):
+
+```{r}
+<<<<<<< HEAD:old/Analysis.Rmd
 plot(lit.annual~internet$annual.mean)
 model <- lm(lit.annual~internet$annual.mean)
 
@@ -106,18 +255,36 @@ summary(model)
 model2 <- lm(lit.annual~gdp.annual)
 summary(model2)
 
-```
-
-```{r}
-plot(internet$annual.mean ~ gdp.annual)
-model <- lm(internet$annual.mean ~gdp.annual)
-abline(model)
+=======
+plot(lit.annual$annual.mean~internet$annual.mean)
+model <- lm(lit.annual$annual.mean~internet$annual.mean)
 summary(model)
 ```
 
-# CONCLUSION
+The bandwidth per capita is weakly correlated with the gini index as well as literacy. It slightly weaker in the case of literacy given the respective R^2 values. 
 
-GDP is a stronger indicator of literacy or wealth inequality than internet access rates are. 
+```{r}
+plot(internet$annual.mean ~ gdp.annual$annual.mean, xlab = "GDP", ylab='Bandwidth per capita')
 
-Challenge: Finding an internet indicator that had enough data points. Finding a social indicator that was a good comparison across countries. Finding a measure of social equity was hard for similar reasons.
+model <- lm(internet$annual.mean ~gdp.annual$annual.mea)
+abline(model)
+summary(model)
+
+```
+Additionally, we find that there is almost no correlation between an nation's gdp and its bandwidth per capita.
+
+# Conclusion
+
+GDP is a stronger indicator of literacy or wealth inequality than internet speeds. However, there is a weak, positive correlation between internet speeds and each of these indicators. Sparsity in the data prevented further analysis by country and would have inherently selected for OECD countries (which maintain a wonderful dataset). However, we were more interested in investigating developing nations. Further research will require a more comprehensive dataset.
+
+## Challenges: 
+Time-series data within the selected indicators contained many missing values across country and time variables.
+
+1. Finding an internet indicator that had enough data points. 
+2. Finding a social indicator that was a good comparison across countries. 
+3. Finding a measure of social equity was hard for similar reasons.
+
+## Further:
+
+With a more complete dataset we could compare these data points by country rather than year. Furthermore, we could include other indicators (both economic and technical) and do a covariance analysis. However, without complete data both of these tasks are useless.
 
