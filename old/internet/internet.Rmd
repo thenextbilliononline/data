@@ -15,26 +15,33 @@ library(data.table)
 ```
 
 ```{r}
+wbsearch('internet')
+```
+
+```{r}
 internet.stats <- wb(indicator = "IT.NET.USER.ZS", return_wide = TRUE, startdate = 2000, enddate = 2017)
+
 ```
 
 ```{r}
 annual.int <- c()
 annual.mean <- c()
-internet.stats$iso3c
 for (year in 2000:2016){
   annual.int[[year-1999]] <- subset(internet.stats, date==year)
   annual.int[[year-1999]] <- head(annual.int[[year-1999]],245)
-  annual.mean[[year-1999]] <- mean(annual.int[[year-1999]]$IT.NET.USER.ZS,
+  mean(annual.int[[year-1999]]$IT.NET.USER.ZS,
                                    na.rm= TRUE)
 }
-internet.over.time <- plot(annual.mean)
+internet.annual <- annual.mean
+years <- c(2000:2016)
+
 ```
 
 ```{r}
 years <- c(2000:2016)
 annual.mean <-cbind(years, annual.mean)
 annual.mean
+plot(annual.mean)
 
 write.csv(annual.mean, "internet_over_time.csv")
 ```
@@ -45,7 +52,21 @@ write.csv(annual.mean, "internet_over_time.csv")
 #countries <- unique(internet.stats$iso3c)
 
 internet.by.country <- split(internet.stats, as.factor(internet.stats$iso3c))
+plot(internet.by.country$USA$IT.NET.USER.ZS~internet.by.country$USA$date)
 
+plot(internet.by.country$SYR$IT.NET.USER.ZS~internet.by.country$SYR$date)
+
+plot(internet.by.country$BRA$IT.NET.USER.ZS~internet.by.country$BRA$date)
+
+plot(internet.by.country$CHN$IT.NET.USER.ZS~internet.by.country$CHN$date)
+```
+
+```{r}
+these <- split(internet.stats, as.factor(internet.stats$country))
+thse
+gdp.by.country$SYR
+#those <- split(gdp.by.country, asf)
+#plot(these$Cuba
 ```
 
 

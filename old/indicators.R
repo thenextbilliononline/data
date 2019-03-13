@@ -36,14 +36,14 @@ filter(date > 1999)
 
 gini.wide <- gini %>% spread(date, value) # STORE WIDE FRAMES FOR ANALYSIS TABLE
 
-gini.by.year <- split(literacy, as.factor(literacy$date))
-gini.by.year
+gini.by.country <- split(literacy, as.factor(literacy$countryiso3code))
+gini.by.country
 annual.int <- c()
 annual.mean <- c()
 years <- c(2000:2016)
 
 for (index in 1:17){
-  annual.mean[[index]] <- mean(gini.by.year[[index]]$value, na.rm=TRUE)
+  annual.mean[[index]] <- mean(gini.by.country[[index]]$value, na.rm=TRUE)
 }
 
 gini.annual <- annual.mean
@@ -65,14 +65,14 @@ gdp <- xml.frame %>%
   filter(date > 1999)
 
 gdp.wide <- gdp %>% spread(date, value) # STORE WIDE FRAMES FOR ANALYSIS TABLE
-gdp.by.year <- split(literacy, as.factor(literacy$date))
-gdp.by.year
+gdp.by.country <- split(literacy, as.factor(literacy$countryiso3code))
+gdp.by.country
 annual.int <- c()
 annual.mean <- c()
 years <- c(2000:2016)
 
 for (index in 1:17){
-  annual.mean[[index]] <- mean(gdp.by.year[[index]]$value, na.rm=TRUE)
+  annual.mean[[index]] <- mean(gdp.by.country[[index]]$value, na.rm=TRUE)
 }
 
 gdp.annual <- annual.mean
@@ -95,14 +95,14 @@ literacy <- xml.frame %>%
 
 literacy.wide <- literacy %>% spread(date, value) # STORE WIDE FRAMES FOR ANALYSIS TABLE
 
-lit.by.year <- split(literacy, as.factor(literacy$date))
-lit.by.year
+lit.by.country <- split(literacy, as.factor(literacy$countryiso3code))
+lit.by.country
 annual.int <- c()
 annual.mean <- c()
 years <- c(2000:2016)
 
 for (index in 1:17){
-  annual.mean[[index]] <- mean(lit.by.year[[index]]$value, na.rm=TRUE)
+  annual.mean[[index]] <- mean(lit.by.country[[index]]$value, na.rm=TRUE)
 }
 
 lit.annual <- annual.mean
