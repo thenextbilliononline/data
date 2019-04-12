@@ -7,52 +7,28 @@ We have outlined our questions, data sources, and folder structure below for tho
 
 ## Questions
 
-> Has the internet become more centralized since 2000? That is to say: "Has number of internet providers kept pace with the number of users?"
+> What economic indicators are most strongly correlated with internet access rates? Can we build a model that accurately predicts said rates?
 
-Null: The relative number of internet access providers has not changed since 2000.
-
-Alternate: The relative number of internet access providers has changed since 2000.
-
-> Does this change in provider/user density indicate a change in the larger economics of technology.
-
-Null: There are no signs that this density change has transformed the economics of tech. 
-
-Alternate: There are signs that this density change has transformed the economics of tech.  
+> Does this model change when our internet access parameter changes?
+  
 
 ## Motivation
 
-We are interested in this problem as data scientists because our field is a mixed bag. On one hand, big data can be used to influence elections, spread hateful propaganda, and be used to track every purchase and decision we make. These political consequences are well known. However, the Internet has a history of 
+We are interested in this problem as data scientists because our field is a mixed bag. On one hand, big data can be used to influence elections, spread hateful propaganda, and be used to track every purchase and decision we make. These political consequences are well known. However, the Internet has a history of advancing economies. We'd like to investigate the relationship between technology and the economy and see if we can build models resilient to the particle type of device.
 
 ## Data 
-[Question1](https://stat.ripe.net/docs/data_api)
-[Question 2](https://data.worldbank.org/indicator/IT.MLT.MAIN)
+[American Community Survey](https://www.census.gov/data/developers/data-sets/acs-1year.html)
 
 
 ### Data Collection
-Q1:
-+ No of Internet Providers
-+ User density
-+ Bandwidth?
-
-Q2:
-+ Mobile Cellular subscriptions
-+ Fixed telephone rate
-+ Fixed broadband rate
-+ Server rate
 
 ### Data Exploration
 
 ### Data Preparation
 
 ## Tests
-+ Chi-Square
-+ R^2 
-+ Correlation
-+(depends on data from worldbank)
 
 ## Further Modelling
-
-+ What we propose to offer. I suggest a website and data analysis application. The 608 'Dash' stuff, essentially.
 
 ## Further Collection
 
