@@ -1,0 +1,58 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+sex.and.age <- as.data.frame(read_csv("ACS_17_1YR_S0101_with_ann.csv"), header = TRUE)
+foreign.born <- as.data.frame(read_csv("ACS_17_1YR_S0501_with_ann.csv"), header = TRUE)
+school.enrollment <- as.data.frame(read_csv("ACS_17_1YR_S1401_with_ann.csv"), header = TRUE)
+education.level <- as.data.frame(read_csv("ACS_17_1YR_S1501_with_ann.csv"), header = TRUE)
+limited.english.households <- as.data.frame(read_csv("ACS_17_1YR_S1602_with_ann.csv"), header = TRUE)
+poverty <- as.data.frame(read_csv("ACS_17_1YR_S1701_with_ann.csv"), header = TRUE)
+income.by.race <- as.data.frame(read_csv("ACS_17_1YR_S1903_with_ann.csv"), header = TRUE)
+employment.unemployment <- as.data.frame(read_csv("ACS_17_1YR_S2301_with_ann.csv"), header = TRUE)
+occupation <- as.data.frame(read_csv("ACS_17_1YR_S2401_with_ann.csv"), header = TRUE)
+housing <- as.data.frame(read_csv("ACS_17_1YR_S2503_with_ann.csv"), header = TRUE)
+computers <- as.data.frame(read_csv("ACS_17_1YR_S2801_with_ann.csv"), header = TRUE)
+computers.by.age <- as.data.frame(read_csv("ACS_17_1YR_S2802_with_ann.csv"), header = TRUE)
+education.level <- as.data.frame(read_csv("ACS_17_1YR_S1502_with_ann.csv"), header = TRUE)
+employment.type <- as.data.frame(read_csv("ACS_17_1YR_S2406_with_ann.csv"), header = TRUE)
+housing <- as.data.frame(read_csv("ACS_17_1YR_S2504_with_ann.csv"), header = TRUE)
+internet <- as.data.frame(read_csv("ACS_17_1YR_S2802_with_ann.csv"), header = TRUE)
+sex.and.age <-as.data.frame(read_csv("ACS_17_1YR_S2901_with_ann.csv"), header = TRUE)
+```
+
+```{r}
+population <- as.data.frame(read_csv("ACS_17_1YR_B01003_with_ann.csv"), header = TRUE)
+population
+population <- cbind(population$`GEO.display-label`, population$HD01_VD01)
+population <- population[-1,]
+population <- as.data.frame(population, header = TRUE)
+colnames(population) <- c("State" , "Population")
+population
+#population
+```
+
+```{r}
+race <- as.data.frame(read_csv("ACS_17_1YR_B02001_with_ann.csv"), header = TRUE)
+race <- cbind(race$HD01_VD02, race$HD01_VD03, race$HD01_VD04, race$HD01_VD05, race$HD01_VD07, race$HD01_VD10)
+#race <- race[-1,]
+race <- as.data.frame(race, header = TRUE)
+race <- race[-1,]
+colnames(race) <- c("White", "Black", "Native", "Asian", "Other", "Two.or.more" )
+race
+```
+```{r}
+geo.mobility <- as.data.frame(read_csv("ACS_17_1YR_B07001_with_ann.csv"), header = TRUE)
+```
+
+
