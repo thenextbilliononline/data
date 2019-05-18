@@ -3,37 +3,27 @@ title: "R Notebook"
 output: html_notebook
 ---
 
-This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
-
-Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+We selected data from the American Community we thought would be relevant. In particular, we looked at a poverty modelling study conducted about Eritrea in which a wide 
 
 ```{r}
 library(tidyverse)
 ```
 
 ```{r}
-sex.and.age <- as.data.frame(read_csv("ACS_17_1YR_S0101_with_ann.csv"), header = TRUE)
-foreign.born <- as.data.frame(read_csv("ACS_17_1YR_S0501_with_ann.csv"), header = TRUE)
-school.enrollment <- as.data.frame(read_csv("ACS_17_1YR_S1401_with_ann.csv"), header = TRUE)
-education.level <- as.data.frame(read_csv("ACS_17_1YR_S1501_with_ann.csv"), header = TRUE)
-limited.english.households <- as.data.frame(read_csv("ACS_17_1YR_S1602_with_ann.csv"), header = TRUE)
+
+
+
 poverty <- as.data.frame(read_csv("ACS_17_1YR_S1701_with_ann.csv"), header = TRUE)
-income.by.race <- as.data.frame(read_csv("ACS_17_1YR_S1903_with_ann.csv"), header = TRUE)
-employment.unemployment <- as.data.frame(read_csv("ACS_17_1YR_S2301_with_ann.csv"), header = TRUE)
-occupation <- as.data.frame(read_csv("ACS_17_1YR_S2401_with_ann.csv"), header = TRUE)
-housing <- as.data.frame(read_csv("ACS_17_1YR_S2503_with_ann.csv"), header = TRUE)
-computers <- as.data.frame(read_csv("ACS_17_1YR_S2801_with_ann.csv"), header = TRUE)
-computers.by.age <- as.data.frame(read_csv("ACS_17_1YR_S2802_with_ann.csv"), header = TRUE)
-education.level <- as.data.frame(read_csv("ACS_17_1YR_S1502_with_ann.csv"), header = TRUE)
-employment.type <- as.data.frame(read_csv("ACS_17_1YR_S2406_with_ann.csv"), header = TRUE)
-housing <- as.data.frame(read_csv("ACS_17_1YR_S2504_with_ann.csv"), header = TRUE)
-internet <- as.data.frame(read_csv("ACS_17_1YR_S2802_with_ann.csv"), header = TRUE)
-sex.and.age <-as.data.frame(read_csv("ACS_17_1YR_S2901_with_ann.csv"), header = TRUE)
+poverty
+```
+
+
+```{r}
+sex.and.age <- as.data.frame(read_csv("ACS_17_1YR_S0101_with_ann.csv"), header = TRUE)
 ```
 
 ```{r}
 population <- as.data.frame(read_csv("ACS_17_1YR_B01003_with_ann.csv"), header = TRUE)
-population
 population <- cbind(population$`GEO.display-label`, population$HD01_VD01)
 population <- population[-1,]
 population <- as.data.frame(population, header = TRUE)
@@ -51,8 +41,102 @@ race <- race[-1,]
 colnames(race) <- c("White", "Black", "Native", "Asian", "Other", "Two.or.more" )
 race
 ```
+
 ```{r}
 geo.mobility <- as.data.frame(read_csv("ACS_17_1YR_B07001_with_ann.csv"), header = TRUE)
+geo.mobility <- cbind(geo.mobility$`GEO.display-label`, geo.mobility$HD01_VD18 )
+geo.mobility <- as.data.frame(geo.mobility, header = TRUE)
+geo.mobility <- geo.mobility[-1,]
+colnames(geo.mobility) <- c("State", "Moved.In.Last.Year")
+geo.mobility
+```
+
+```{r}
+foreign.born <- as.data.frame(read_csv("ACS_17_1YR_S0501_with_ann.csv"), header = TRUE)
+foreign.born <- cbind(foreign.born$`GEO.display-label`, foreign.born$HC03_EST_VC01)
+foreign.born <- as.data.frame(foreign.born, header = TRUE)
+foreign.born <- foreign.born[-1,]
+colnames(foreign.born) <- c("State", "Foreign.Born")
+foreign.born
+```
+
+```{r}
+school.enrollment <- as.data.frame(read_csv("ACS_17_1YR_S1401_with_ann.csv"), header = TRUE)
+school.enrollment <- cbind(school.enrollment$`GEO.display-label`, school.enrollment$HC01_EST_VC01)
+school.enrollment <- as.data.frame(school.enrollment)
+school.enrollment <- school.enrollment[-1,]
+colnames(school.enrollment) <- c("State","Over.Three.In.School")
+school.enrollment
+```
+
+```{r}
+median.income <- as.data.frame(read_csv("ACS_17_1YR_S1903_with_ann.csv"), header = TRUE)
+
+median.income <- cbind(median.income$`GEO.display-label`, median.income$HC03_EST_VC02)
+median.income <- as.data.frame(median.income)
+median.income <- median.income[-1,]
+colnames(median.income) <- c("State","Median.Annual.Income")
+median.income
+```
+
+```{r}
+employment.unemployment <- as.data.frame(read_csv("ACS_17_1YR_S2301_with_ann.csv"), header = TRUE)
+employment.unemployment <- cbind(employment.unemployment$`GEO.display-label`, employment.unemployment$HC03_EST_VC01)
+employment.unemployment <- as.data.frame(employment.unemployment)
+
+employment.unemployment <- employment.unemployment[-1,]
+colnames(employment.unemployment) <- c("State","Median.Annual.Income")
+employment.unemployment
+```
+
+```{r}
+occupation <- as.data.frame(read_csv("ACS_17_1YR_S2401_with_ann.csv"), header = TRUE)
+occupation
+```
+
+```{r}
+housing <- as.data.frame(read_csv("ACS_17_1YR_S2503_with_ann.csv"), header = TRUE)
 ```
 
 
+```{r}
+computers <- as.data.frame(read_csv("ACS_17_1YR_S2801_with_ann.csv"), header = TRUE)
+```
+
+```{r}
+computers.by.age <- as.data.frame(read_csv("ACS_17_1YR_S2802_with_ann.csv"), header = TRUE)
+```
+
+```{r}
+education.level <- as.data.frame(read_csv("ACS_17_1YR_S1502_with_ann.csv"), header = TRUE)
+```
+
+```{r}
+employment.type <- as.data.frame(read_csv("ACS_17_1YR_S2406_with_ann.csv"), header = TRUE)
+```
+
+```{r}
+housing <- as.data.frame(read_csv("ACS_17_1YR_S2504_with_ann.csv"), header = TRUE)
+```
+
+```{r}
+internet <- as.data.frame(read_csv("ACS_17_1YR_S2802_with_ann.csv"), header = TRUE)
+```
+
+```{r}
+sex.and.age <-as.data.frame(read_csv("ACS_17_1YR_S2901_with_ann.csv"), header = TRUE)
+```
+
+```{r}
+education.level <- as.data.frame(read_csv("ACS_17_1YR_S1501_with_ann.csv"), header = TRUE)
+```
+
+```{r}
+limited.english.households <- as.data.frame(read_csv("ACS_17_1YR_S1602_with_ann.csv"), header = TRUE)
+
+```
+
+
+Source: 
+
+http://repec.org/esAUSM04/up.26810.1088476172.pdf
