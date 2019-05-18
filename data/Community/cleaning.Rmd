@@ -65,7 +65,7 @@ school.enrollment <- as.data.frame(read_csv("ACS_17_1YR_S1401_with_ann.csv"), he
 school.enrollment <- cbind(school.enrollment$`GEO.display-label`, school.enrollment$HC01_EST_VC01)
 school.enrollment <- as.data.frame(school.enrollment)
 school.enrollment <- school.enrollment[-1,]
-colnames(school.enrollment) <- c("State","Over.Three.In.School")
+colnames(school.enrollment) <- c("State","Population.In.School")
 school.enrollment
 ```
 
@@ -85,7 +85,7 @@ employment.unemployment <- cbind(employment.unemployment$`GEO.display-label`, em
 employment.unemployment <- as.data.frame(employment.unemployment)
 
 employment.unemployment <- employment.unemployment[-1,]
-colnames(employment.unemployment) <- c("State","Median.Annual.Income")
+colnames(employment.unemployment) <- c("State","Employment")
 employment.unemployment
 ```
 
@@ -96,19 +96,33 @@ occupation
 
 ```{r}
 housing <- as.data.frame(read_csv("ACS_17_1YR_S2503_with_ann.csv"), header = TRUE)
+housing <- cbind(housing$`GEO.display-label`, housing$HC01_EST_VC27 )
+housing <- as.data.frame(housing)
+
+housing <- housing[-1,]
+colnames(housing) <- c("State","Median.Monthly.Housing.Costs")
+housing
 ```
 
 
 ```{r}
 computers <- as.data.frame(read_csv("ACS_17_1YR_S2801_with_ann.csv"), header = TRUE)
+computers <- cbind(computers$`GEO.display-label`, computers$HC01_EST_VC05, computers$HC01_EST_VC07, computers$HC01_EST_VC16)
+computers <- as.data.frame(computers)
+computers <- computers[-1,]
+colnames(computers) <- c("State", "Computer.in.Household", "Smartphone.In.Household" , "No.of.Internet.Subscriptions")
+computers
 ```
 
-```{r}
-computers.by.age <- as.data.frame(read_csv("ACS_17_1YR_S2802_with_ann.csv"), header = TRUE)
-```
+
 
 ```{r}
 education.level <- as.data.frame(read_csv("ACS_17_1YR_S1502_with_ann.csv"), header = TRUE)
+education.level <- cbind(education.level$`GEO.display-label`, education.level$HC02_EST_VC01, education.level$	
+HC01_EST_VC03)
+education.level <- as.data.frame(education.level)
+education.level <- education.level[-1,]
+colnames(education.level) <- c("Bachelors.Degree", "STEM.education")
 ```
 
 ```{r}
