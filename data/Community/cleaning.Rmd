@@ -40,38 +40,36 @@ population
 
 #population
 ```
+```{r}
+state.pops <- as.numeric(as.character(race$Population))
 
+```
 ```{r}
 race <- as.data.frame(read_csv("ACS_17_1YR_B02001_with_ann.csv"), header = TRUE)
-race
+
+
+
 race <- cbind(race$HD01_VD01, race$`GEO.display-label`, race$HD01_VD02, race$HD01_VD03, race$HD01_VD04, race$HD01_VD05, race$HD01_VD07, race$HD01_VD10)
 race <- as.data.frame(race, header = TRUE)
 race <- race[-1,]
 
-state.pops
 colnames(race) <- c("Population", "State", 
 "White", "Black", "Native", "Asian", "Other", "Two.or.more" )
-race[11,]
-race$White <- as.numeric(race$White)/state.pops
-race$Black <- as.numeric(race$Black)/state.pops
-race$Native <- as.numeric(race$Native)/state.pops
-race$Other <- as.numeric(race$Other)/state.pops
-race$Asian <- as.numeric(race$Asian)/state.pops
-race$Two.or.more <- as.numeric(race$Two.or.more)/state.pops
-race[11,3:8] <-race[11,3:8]/100
-race
+
+
+race$White <- as.numeric(as.character(race$White))/state.pops
+race$Black <- as.numeric(as.character(race$Black))/state.pops
+race$Native <- as.numeric(as.character(race$Native))/state.pops
+race$Other <- as.numeric(as.character(race$Other))/state.pops
+race$Asian <- as.numeric(as.character(race$Asian))/state.pops
+race$Two.or.more <- as.numeric(as.character(race$Two.or.more))/state.pops
+race$Population <- NULL
+```
+```{r}
+state.pops <- as.numeric(as.character(geo.mobility$Population))
 ```
 
-```{r}
-geo.mobility <- as.data.frame(read_csv("ACS_17_1YR_B07001_with_ann.csv"), header = TRUE)
-geo.mobility
-geo.mobility <- cbind(geo.mobility$`GEO.display-label`, geo.mobility$HD01_VD18 )
-geo.mobility <- as.data.frame(geo.mobility, header = TRUE)
-geo.mobility <- geo.mobility[-1,]
-colnames(geo.mobility) <- c("State", "Population.Moved.In.Last.Year")
-as.numeric(geo.mobility$Population.Moved.In.Last.Year) / (state.pops)
-geo.mobility
-```
+
 
 ```{r}
 foreign.born <- as.data.frame(read_csv("ACS_17_1YR_S0501_with_ann.csv"), header = TRUE)
@@ -220,7 +218,6 @@ df <- merge(df, employment.unemployment, all = TRUE, by = "State")
 df <- merge(df, median.income, all = TRUE, by = "State")
 df <- merge(df, school.enrollment, all = TRUE, by = "State")
 df <- merge(df, foreign.born, all = TRUE, by = "State")
-df <- merge(df, geo.mobility, all = TRUE, by = "State")
 df <- merge(df, race, all = TRUE, by = "State")
 df <- merge(df, population, all = TRUE, by = "State")
 df <- merge(df, sex.and.age, all = TRUE, by = "State")
