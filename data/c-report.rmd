@@ -1,0 +1,362 @@
+---
+title: "Data 624 Project 2"
+output:
+  html_document:
+    code_folding: hide
+    df_print: paged
+    number_sections: yes
+    toc: yes
+    toc_depth: 6
+    toc_float: yes
+  word_document:
+    toc: yes
+    toc_depth: '6'
+---
+
+
+# Problem Statement
+
+Data related to the manufacturing process of a soft drink are provided, including values of various parameters that control the process. The objective is to build a predictive model to predict the pH content based on the manufacturing process data.
+
+
+# Executive Summary
+
+
+
+## Dependencies
+
+Our code has dependencies on the following R packages.
+
+```{r libs, eval=T, echo=T, warning=F, message=F}
+library(caret)
+library(caTools)
+library(corrplot)
+library(e1071)
+library(fastDummies)
+library(forecast)
+library(ggplot2)
+library(imputeTS)
+library(lattice)
+library(knitr)
+library(ModelMetrics)
+library(nnet)
+library(randomForest)
+library(readxl)
+library(reshape2)
+library(tidyr)
+library(tidyverse)
+library(xlsx)
+
+# Show loaded packages.
+(.packages())
+```
+
+
+# Data Initialization and Preprocessing
+
+Below we can see a sample of the data, as read from Excel files. Our target variable is pH and each data vector, except for brand code, is numeric. However, we can convert this to a numeric vector easily. There are also some missing values that must be imputed. The only non-numeric data is the brand code. All lettered codes have been replaced with the equivalent integers
+($A \rightarrow 1, B \rightarrow 2, ... $). Likewise, the NAs have been replaced with 0 such that they don't contribute to the regression function.
+
+
+
+```{r init1, eval=T, echo=T, warning=F, message=F}
+training <- read_csv(file = "Cleaned_Community_Data.csv")
+#test     <- read_excel("StudentEvaluation.xlsx")
+
+
+#test <- dummy_cols(test, select_columns = test$Brand.Code)training <- as.data.frame(sapply(training, as.numeric))
+#test     <- as.data.frame(sapply(test, as.numeric))
+
+
+#names(test) <- make.names(names(test))
+
+#training$Brand.Code <- NULL
+#test$Brand.Code <- NULL
+states <- training$State
+training$State <- NULL
+training$X1 <- NULL
+head(training)
+
+```
+
+
+## Imputation of Missing Values
+
+Below we impute the missing values using a monotone cubic approximator (known as a Stineman interpolation). It has a tendency to perform well on linear as well as higher-order data vectors.
+
+```{r impute1, eval=T, echo=T, warning=F, message=F}
+training <- na.interpolation(training)
+f=function(x){
+   x<-as.numeric(as.character(x)) #first convert each column into numeric if it is from factor
+   x[is.na(x)] =median(x, na.rm=TRUE) #convert the item with NA to median value from the column
+   x #display the column
+}
+training <- data.frame(sapply(training, f))
+#test <- na.interpolation(test, option = 'stine')
+```
+
+Below we can see the mean and standard deviation for each data vector. As we can see, our data occurs across many orders of magnitude. For the best fit, the data should be centered and scaled. 
+
+```{r mean_sd, eval=T, echo=T, warning=F, message=F}
+means <- sapply(training, mean, na.rm = TRUE)
+sds   <- sapply(training, sd, na.rm = TRUE)
+explore <- as.data.frame(cbind( means, sds))
+ggplot(explore, aes(x = row.names(explore), y = means))+ 
+  geom_bar(stat = 'identity') + 
+  labs(title = "Means of Various Features") + 
+  xlab("Data Features") + 
+  ylab("Mean of Data") +
+  theme(panel.background = element_blank()) + 
+  geom_errorbar(aes(ymin = means - sds, ymax = means + sds))
+```
+
+These plots confirm the non-normality of most of our data. For the non-linear models, we must center and scale them. Additionally, we will need other data transformations (discussed below).
+
+```{r figure1, fig.height=10}
+#ggplot(data = gather(training), mapping = aes(x = value)) + 
+#  geom_histogram(aes(y=..density..,), colour="black", fill="white")+
+#  geom_density(alpha=.2, fill="lightgrey")+
+#  facet_wrap(~key, ncol = 1, scales = 'free') 
+```
+
+
+## Correlation Plot of Predictors
+
+We can see significant covariance in the data. Additionally, many data points have near-zero variance. Excluding these confounding variables will improve our model.
+
+```{r corrplot, eval=T, echo=T, warning=F, message=F}
+results <- cor(training, method = 'pearson')
+corrplot::corrplot(results, method = 'circle')
+```
+
+
+
+## Data Pre-processing
+
+For preprocessing of data, we remove near zero predictors, fill in missing values with KNN method, and transform predictors using the Yeo-Johnson transformation method. We also center and scale the data. Additionally, we remove the covariant terms and the ones with near zero variance here, since they will not improve our models.
+
+```{r pre_proc, eval=T, echo=T, warning=F, message=F}
+x_train <- subset(training, select = -Percent.Below.Poverty.Line )
+y_train <- training$Percent.Below.Poverty.Line
+
+
+
+
+preProcValues <- preProcess(x_train, method = c("center", "scale", "YeoJohnson", "nzv", "corr"))
+trainTransformed <- predict(preProcValues, x_train)
+
+
+```
+
+
+
+# Support Vector Machine
+
+Comparing SVM with Neural Networks (NN), both are non-linear algorithms. A Support Vector Machine with different kernels is comparable to a Neural Network with different layers. One advantage SVMs have over NNs is that NNs need large amounts of data to train, SVMs work with smaller-sized data with less computing power. Finally SVM usually only have 2-3 parameters to tune, they are easy to code, and the results are explainable.
+On the other hand, SVMs might not beat NNs on the accuracy metric.
+
+
+```{r svm1, eval=T, echo=T, warning=F, message=F}
+set.seed(100)
+
+y_train.orig = y_train
+sample = sample.split(y_train.orig, SplitRatio = .75)
+y_train_svm = subset(y_train.orig, sample == TRUE)
+y_test_svm = subset(y_train.orig, sample == FALSE)
+
+training_svm = subset(trainTransformed, sample == TRUE)
+test_svm = subset(trainTransformed, sample == FALSE)
+
+fitControl <- trainControl(## 10-fold CV
+                           method = "repeatedcv",
+                           number = 3,
+                           ## repeated ten times
+                           repeats = 3)
+svmFit <- train(training_svm, y_train_svm,
+                 method = "svmRadial",
+                 trControl = fitControl,
+                 tuneLength = 8,
+                 metric = "RMSE")
+svmFit
+model1 <- svmFit
+
+rmse.svm.train = rmse(predict(svmFit, training_svm), y_train_svm)
+r2.svm.train = R2(predict(svmFit, training_svm), y_train_svm)
+rmse.svm.test = rmse(predict(svmFit, test_svm), y_test_svm)
+r2.svm.test = R2(predict(svmFit, test_svm), y_test_svm)
+
+
+kable(data.frame(Model=c("Support Vector Machine"), RMSE.train=min(rmse.svm.train), RSquared.train=min(r2.svm.train), RMSE.test=min(rmse.svm.test), RSquared.test=min(r2.svm.test)))
+```
+
+
+
+
+
+
+# Random Forest Model
+
+Random forests are a modification of bagging that builds a large collection of de-correlated
+trees [1]. They are considered to belong in the category of non-parametric models since 
+the number of parameters grows with the size of the training set. They are considered to be
+an improvement to the use of CART (Classification and Regression Tree) models because they
+do not suffer from some of the problems associated with CART models, such as the fact that
+CART models are unstable: small changes to the structure of the input data can have large
+effects on the CART model [2]. Random forests are designed to be low-variance estimators.
+
+Random forests are based on the basic idea of aggregating uncorrelated sets of predictors,
+since one way to reduce the variance of an estimate is to average several estimates together [2].
+A random forest trains a randomly chosen set of input variables over a randomly chosen subset of
+the data, and aggregates together several such trees to produce an overall estimator. Random
+forests have proven to be quite successful in a variety of real-world applications and often
+are seen to generalize very well to unseen real-world data.
+
+
+```{r RF1, eval=T, echo=T, warning=F, message=F}
+
+# Split the training data into a portion that is withheld from the model and used to evaluate
+# the model.
+
+set.seed(123)
+sample = sample.split(training$Percent.Below.Poverty.Line, SplitRatio = .75)
+training_forest = subset(training, sample == TRUE)
+training_forest
+test_forest = subset(training, sample == FALSE)
+
+set.seed(123)
+rfFit <- randomForest::randomForest(Percent.Below.Poverty.Line ~ ., data = training_forest, importance = TRUE,
+                                    ntree = 100, keep.forest = TRUE)
+model2 <- rfFit
+
+varImpPlot(rfFit, n.var=5,
+           main="Important Variables in Random Forest Model (top 20 shown)")
+```
+
+
+We now compute RMSE values for the Random Forest model on both the training and the test (withheld) portion of the data set.
+
+```{r RF_rmse, eval=T, echo=T, warning=F, message=F}
+training_forest2 = dplyr::select(training_forest, -Percent.Below.Poverty.Line)
+rfPred.train = predict(rfFit, training_forest2)
+rmse.rf.train = rmse(training_forest$Percent.Below.Poverty.Line, rfPred.train)
+r2.rf.train = R2(training_forest$Percent.Below.Poverty.Line, rfPred.train)
+test_forest2 = dplyr::select(test_forest, -Percent.Below.Poverty.Line)
+rfPred.test = predict(rfFit, test_forest2)
+rmse.rf.test = rmse(test_forest$Percent.Below.Poverty.Line, rfPred.test)
+r2.rf.test = R2(test_forest$Percent.Below.Poverty.Line, rfPred.test)
+kable(data.frame(Model=c("Random Forest"), RMSE.train=c(rmse.rf.train), RSquared.train=c(r2.rf.train), RMSE.test=c(rmse.rf.test), RSquared.test=c(r2.rf.test)))
+```
+
+
+# Neural Network Model
+
+Neural Networks are a powerful nonlinear technique inspired by theories about how the human brain works [5]. Neural Networks can be classifiers (when the output variable is categorical) or regression (when the output variable is numeric). In this problem we use a regression artificial neural network (ANN) using the nnet package in R. Below we build and evaluate a Neural Network model of the regression problem.
+
+
+```{r nnet1, eval=T, echo=T, warning=F, message=F}
+set.seed(123)
+training_nn = training_forest2
+training_nn_ph = training_forest$Percent.Below.Poverty.Line
+test_nn = test_forest2
+test_nn_ph = test_forest$Percent.Below.Poverty.Line
+  
+nnetFit <- nnet(training_nn, training_nn_ph,
+                size = 4,
+                decay = 0.01,
+                linout = TRUE,
+                trace = FALSE,
+                maxit = 500, # Iterations
+                ## Number of parameters used by the model
+                MaxNWts= 4 * (ncol(training_nn) + 1) + 5 + 1)
+nnetFit
+model3 <- nnetFit
+rmse.nnet.train = rmse(training_nn_ph, predict(nnetFit, training_nn))
+r2.nnet.train = R2(training_nn_ph, predict(nnetFit, training_nn))
+rmse.nnet.test = rmse(test_nn_ph, predict(nnetFit, test_nn))
+r2.nnet.test = R2(test_nn_ph, predict(nnetFit, test_nn))
+kable(data.frame(Model=c("NeuralNet"), RMSE.train=c(rmse.nnet.train), RSquared.train=c(r2.nnet.train), RMSE.test=c(rmse.nnet.test), RSquared.test=c(r2.nnet.test)))
+
+```
+
+
+
+# Generalized Linear Model
+
+Because our output value is continuous and our data is numeric, we can use a generalized linear model to compute the pH. These models are generic and assume linearity in response. We will use the "Gaussian" type which assumes normally distributed variables
+
+```{r glm1, eval=T, echo=T, warning=F, message=F}
+set.seed(123)
+training_glm = subset(training, sample == TRUE)
+test_glm = subset(training, sample == FALSE)
+
+glm_train_label <- training_glm$Percent.Below.Poverty.Line
+glm_test_label <- test_glm$Percent.Below.Poverty.Line
+glm_train <- select(training_glm, -Percent.Below.Poverty.Line)
+glm_test <- select(test_glm, -Percent.Below.Poverty.Line)
+
+model4 <- glm(glm_train_label ~., glm_train, family = "gaussian")
+model5 <- step(model4, direction = "backward", trace = FALSE)
+
+sum4 <- summary(model4)
+sum5 <- summary(model5)
+
+plot(model4)
+plot(model5)
+
+
+rmse.glm.train <- rmse(predict(model5, glm_train), glm_train_label)
+r2.glm.train <- R2(predict(model5, glm_train), glm_train_label)
+rmse.glm.test <- rmse(predict(model5, glm_test), glm_test_label)
+r2.glm.test <- R2(predict(model5, glm_test), glm_test_label)
+kable(data.frame(Model=c("GLM"), RMSE.train=c(rmse.glm.train), RSquared.train=c(r2.glm.train), RMSE.test=c(rmse.glm.test), RSquared.test=c(r2.glm.test)))
+```
+
+
+
+Since we see that the Random Forest model produced the lowest RMSE on the withheld training data, we select it as the best model to predict poverty rates.
+
+
+```{r compare_and_predict, eval=T, echo=T, warning=F, message=F}
+modelperf = data.frame(matrix(ncol=4, nrow=10))
+colnames(modelperf) = c("Dataset", "Model", "RMSE", "RSquared")
+
+
+modelperf[1,] = list("Train", "Random Forest", rmse.rf.train, r2.rf.train)
+modelperf[2,] = list("Test", "Random Forest", rmse.rf.test, r2.rf.test)
+modelperf[5,] = list("Train", "SVM", rmse.svm.train, r2.svm.train)
+modelperf[6,] = list("Test", "SVM", rmse.svm.test, r2.svm.test)
+modelperf[7,] = list("Train", "GLM", rmse.glm.train, r2.glm.train)
+modelperf[8,] = list("Test", "GLM", rmse.glm.test, r2.glm.test)
+
+ggplot(data=modelperf, aes(x=reorder(Model, RMSE), y=RMSE, fill=Dataset)) +
+    geom_bar(stat="identity", position=position_dodge()) +
+    ggtitle("Model RMSE for Percent.Below.Poverty.Line Prediction")
+
+ggplot(data=modelperf, aes(x=reorder(Model, -RSquared), y=round(RSquared,3), fill=Dataset)) +
+    geom_bar(stat="identity", position=position_dodge()) +
+    ggtitle("Model RSquared for Percent.Below.Poverty.Line Prediction")
+
+bestFit = model2
+
+
+```
+
+
+# Conclusions
+
+
+
+# Next Step
+
+There are many ways we can continue improving the model performance, one method could be running more times of cross validation on more folds than 3 times 3-fold we have now for SVM and GBM models. It would take a longer time to compute, but the results would likely be better. Finally, more data would help us build a better model, in particular because the gap between the test and train sets tends to be relatively large across all of the models.
+
+We could also use time-series data to examine causal relationships between the data.
+
+
+# References
+
+1. Random Forests. https://uc-r.github.io/random_forests
+2. Kevin Murphy (2012). Machine Learning a Probabilistic Perspective.
+3. Support Vector Machine. https://uc-r.github.io/svm
+4. Support Vector Machines. http://web.mit.edu/6.034/wwwbob/svm.pdf
+5. Kuhn et al (2013). Applied Predictive Modeling
