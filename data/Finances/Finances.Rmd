@@ -7,5 +7,37 @@ output: html_document
 
 ```{r}
 df <- read.csv("../Cleaned_Finance_Data.csv")
+states <- as.factor(df$X)
+df$X <- NULL
+
+df <- sapply(df, function(x){x <- as.numeric(as.character(x))/df$Total.revenue})
+df <- as.data.frame(df)
+df$Liquor.stores.expenditure <- NULL
+df$Liquor.stores.revenue <- NULL
+df$State <- states
 df
+```
+
+```{r}
+df2 <- read.csv("../Cleaned_Community_Data.csv")
+df2 <- df2[- grep("Puerto", df2$State),]
+df2 <- df2[- grep("District", df2$State),]
+
+```
+
+
+
+```{r}
+df$Poverty <- df2$Percent.Below.Poverty.Line
+df$Internet <- df2$Percent.No.of.Internet.Subscriptions
+df$Smartphone <- df2$Percent.Smartphone.In.Household
+df$Computer <- df2$Percent.Computer.in.Household
+df$Broadband <- df2$Percent.With.Broadband
+df
+```
+
+```{r}
+
+df$State
+df2$State
 ```

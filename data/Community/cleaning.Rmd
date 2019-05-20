@@ -22,7 +22,7 @@ poverty
 
 ```{r}
 sex.and.age <- as.data.frame(read_csv("ACS_17_1YR_S0101_with_ann.csv"), header = TRUE)
-sex.and.age <- cbind(sex.and.age$`GEO.display-label`, sex.and.age$HC01_EST_VC37, sex.and.age$HC01_EST_VC38)
+sex.and.age <- cbind(sex.and.age$`GEO.display-label`, sex.and.age$HC01_EST_VC37, as.numeric(as.character(sex.and.age$HC01_EST_VC38))/2)
 sex.and.age <- as.data.frame(sex.and.age)
 sex.and.age <- sex.and.age[-1,]
 colnames(sex.and.age) <- c("State", "Median.Age", "Percent.male")
@@ -74,13 +74,17 @@ state.pops <- as.numeric(as.character(geo.mobility$Population))
 ```{r}
 foreign.born <- as.data.frame(read_csv("ACS_17_1YR_S0501_with_ann.csv"), header = TRUE)
 foreign.born
-foreign.born <- cbind(foreign.born$`GEO.display-label`, foreign.born$HC05_EST_VC03)
+
+foreign.born <- cbind(foreign.born$`GEO.display-label`, foreign.born$HC02_EST_VC01, foreign.born$HC03_EST_VC01
+)
 foreign.born <- as.data.frame(foreign.born, header = TRUE)
 
 foreign.born <- foreign.born[-1,]
-colnames(foreign.born) <- c("State", "Percent.Not.Citizen")
+colnames(foreign.born) <- c("State", "Native", "Foreign.Born")
+foreign.born$Percent.Foreign.Born <- as.numeric(as.character(foreign.born$Foreign.Born))/as.numeric(as.character(foreign.born$Native))
+foreign.born$Native <- NULL
+foreign.born$Foreign.Born <- NULL
 foreign.born
-
 ```
 
 ```{r}
@@ -192,7 +196,7 @@ education.level <- cbind(education.level$`GEO.display-label`, education.level$HC
 HC02_EST_VC12,  education.level$HC02_EST_VC14, education.level$HC02_EST_VC15)
 education.level <- as.data.frame(education.level)
 education.level <- education.level[-1,]
-colnames(education.level) <- c("State", "Percent.Less.Than.HS", "Percent.HS", "Percent.Some.College", "Percent.Bachelors", "Population.Graduate")
+colnames(education.level) <- c("State", "Percent.Less.Than.High.School", "Percent.High.School", "Percent.Some.College", "Percent.Bachelors", "Population.Graduate")
 education.level
 ```
 
