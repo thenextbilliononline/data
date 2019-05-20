@@ -92,6 +92,7 @@ f=function(x){
    x #display the column
 }
 training <- data.frame(sapply(training, f))
+training
 #test <- na.interpolation(test, option = 'stine')
 ```
 
