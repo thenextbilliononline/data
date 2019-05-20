@@ -74,7 +74,6 @@ state.pops <- as.numeric(as.character(geo.mobility$Population))
 ```{r}
 foreign.born <- as.data.frame(read_csv("ACS_17_1YR_S0501_with_ann.csv"), header = TRUE)
 foreign.born
-foreign.born[idx]
 foreign.born <- cbind(foreign.born$`GEO.display-label`, foreign.born$HC05_EST_VC03)
 foreign.born <- as.data.frame(foreign.born, header = TRUE)
 
@@ -203,7 +202,7 @@ limited.english.households
 limited.english.households <- cbind(limited.english.households$`GEO.display-label`, limited.english.households$HC04_EST_VC01)
 limited.english.households <- as.data.frame(limited.english.households)
 limited.english.households <- limited.english.households[-1,]
-colnames(limited.english.households) <- c("State", "Percent..Limited.English.Households")
+colnames(limited.english.households) <- c("State", "Percent.Limited.English.Households")
 limited.english.households
 ```
 ```{r}
@@ -229,17 +228,7 @@ df$Median.Monthly.Housing.Costs.y <- NULL
 ```
 
 ```{r}
-indx <- grepl('Population' , colnames(df))
-new.df <- df[!indx]
-pops <- df[indx]
-as.numeric(pops$Population)
-divide.by.population <- function(x){
-  x <- as.numeric(x)/as.numeric(pops$Population)
-}
-pops <- sapply(pops, divide.by.population)
-pops
-#pops
-
+df
 ```
 
 ```{r}
