@@ -70,7 +70,7 @@ geo.mobility <- as.data.frame(geo.mobility, header = TRUE)
 geo.mobility <- geo.mobility[-1,]
 colnames(geo.mobility) <- c("State", "Population.Moved.In.Last.Year")
 as.numeric(geo.mobility$Population.Moved.In.Last.Year) / (state.pops)
-
+geo.mobility
 ```
 
 ```{r}
