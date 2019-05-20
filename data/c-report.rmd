@@ -228,8 +228,8 @@ rfFit <- randomForest::randomForest(Percent.Below.Poverty.Line ~ ., data = train
                                     ntree = 100, keep.forest = TRUE)
 model2 <- rfFit
 
-varImpPlot(rfFit, n.var=5,
-           main="Important Variables in Random Forest Model (top 20 shown)")
+varImpPlot(rfFit, n.var=10,
+           main="Important Variables in Random Forest Model (top 10 shown)")
 ```
 
 
@@ -256,11 +256,11 @@ Neural Networks are a powerful nonlinear technique inspired by theories about ho
 ```{r nnet1, eval=T, echo=T, warning=F, message=F}
 set.seed(123)
 training_nn = training_forest2
-training_nn_ph = training_forest$Percent.Below.Poverty.Line
+training_nn_y = training_forest$Percent.Below.Poverty.Line
 test_nn = test_forest2
-test_nn_ph = test_forest$Percent.Below.Poverty.Line
+test_nn_y = test_forest$Percent.Below.Poverty.Line
   
-nnetFit <- nnet(training_nn, training_nn_ph,
+nnetFit <- nnet(training_nn, training_nn_y,
                 size = 4,
                 decay = 0.01,
                 linout = TRUE,
@@ -268,13 +268,15 @@ nnetFit <- nnet(training_nn, training_nn_ph,
                 maxit = 500, # Iterations
                 ## Number of parameters used by the model
                 MaxNWts= 4 * (ncol(training_nn) + 1) + 5 + 1)
-nnetFit
 model3 <- nnetFit
-rmse.nnet.train = rmse(training_nn_ph, predict(nnetFit, training_nn))
-r2.nnet.train = R2(training_nn_ph, predict(nnetFit, training_nn))
-rmse.nnet.test = rmse(test_nn_ph, predict(nnetFit, test_nn))
-r2.nnet.test = R2(test_nn_ph, predict(nnetFit, test_nn))
+nnetFit
+rmse.nnet.train = rmse(training_nn_y, predict(nnetFit, training_nn))
+r2.nnet.train = mean(cor(training_nn_y, training_nn)^2)
+rmse.nnet.test = rmse(test_nn_y, predict(nnetFit, test_nn))
+r2.nnet.test = mean(cor(test_nn_y, test_nn)^2)
 kable(data.frame(Model=c("NeuralNet"), RMSE.train=c(rmse.nnet.train), RSquared.train=c(r2.nnet.train), RMSE.test=c(rmse.nnet.test), RSquared.test=c(r2.nnet.test)))
+
+
 
 ```
 
@@ -300,7 +302,7 @@ model5 <- step(model4, direction = "backward", trace = FALSE)
 sum4 <- summary(model4)
 sum5 <- summary(model5)
 
-plot(model4)
+
 plot(model5)
 
 
@@ -317,20 +319,23 @@ Since we see that the Random Forest model produced the lowest RMSE on the withhe
 
 
 ```{r compare_and_predict, eval=T, echo=T, warning=F, message=F}
-modelperf = data.frame(matrix(ncol=4, nrow=10))
+modelperf = data.frame(matrix(ncol=4, nrow=8))
 colnames(modelperf) = c("Dataset", "Model", "RMSE", "RSquared")
 
 
 modelperf[1,] = list("Train", "Random Forest", rmse.rf.train, r2.rf.train)
 modelperf[2,] = list("Test", "Random Forest", rmse.rf.test, r2.rf.test)
-modelperf[5,] = list("Train", "SVM", rmse.svm.train, r2.svm.train)
-modelperf[6,] = list("Test", "SVM", rmse.svm.test, r2.svm.test)
-modelperf[7,] = list("Train", "GLM", rmse.glm.train, r2.glm.train)
-modelperf[8,] = list("Test", "GLM", rmse.glm.test, r2.glm.test)
+modelperf[3,] = list("Train", "SVM", rmse.svm.train, r2.svm.train)
+modelperf[4,] = list("Test", "SVM", rmse.svm.test, r2.svm.test)
+modelperf[5,] = list("Train", "GLM", rmse.glm.train, r2.glm.train)
+modelperf[6,] = list("Test", "GLM", rmse.glm.test, r2.glm.test)
+modelperf[7,] = list("Train", "Nnet", rmse.nnet.test, r2.nnet.train)
+modelperf[8,] = list("Test", "NNet", rmse.nnet.train, r2.nnet.test)
 
 ggplot(data=modelperf, aes(x=reorder(Model, RMSE), y=RMSE, fill=Dataset)) +
     geom_bar(stat="identity", position=position_dodge()) +
     ggtitle("Model RMSE for Percent.Below.Poverty.Line Prediction")
+
 
 ggplot(data=modelperf, aes(x=reorder(Model, -RSquared), y=round(RSquared,3), fill=Dataset)) +
     geom_bar(stat="identity", position=position_dodge()) +
