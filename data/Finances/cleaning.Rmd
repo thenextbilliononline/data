@@ -1,0 +1,28 @@
+---
+title: "cleaning.Rmd"
+author: "simplymathematics"
+date: "5/18/2019"
+output: html_document
+---
+
+```{r}
+library(readxl)
+library(bnstruct)
+library(tidyverse)
+finances <- read_excel("2017_ ASFIN_State_Totals.xlsx" , skip = 0)
+names <- finances$`(Thousands of Dollars)`
+
+finances <- t(finances)
+colnames(finances) <- names
+finances <- as.data.frame(finances)
+finances <- finances[-1,]
+finances <- finances[-1,]
+
+df <- finances
+emptycols <- sapply(df, function (k) all(is.na(k)))
+df <- df[!emptycols]
+df
+write.csv(df, "../Cleaned_Finance_Data.csv")
+```
+
+`
