@@ -313,7 +313,7 @@ r2.glm.test <- R2(predict(model5, glm_test), glm_test_label)
 kable(data.frame(Model=c("GLM"), RMSE.train=c(rmse.glm.train), RSquared.train=c(r2.glm.train), RMSE.test=c(rmse.glm.test), RSquared.test=c(r2.glm.test)))
 ```
 
-
+# Conclusion
 
 Since we see that the Random Forest model produced the lowest RMSE on the withheld training data, we select it as the best model to predict poverty rates.
 
@@ -329,8 +329,8 @@ modelperf[3,] = list("Train", "SVM", rmse.svm.train, r2.svm.train)
 modelperf[4,] = list("Test", "SVM", rmse.svm.test, r2.svm.test)
 modelperf[5,] = list("Train", "GLM", rmse.glm.train, r2.glm.train)
 modelperf[6,] = list("Test", "GLM", rmse.glm.test, r2.glm.test)
-modelperf[7,] = list("Train", "Nnet", rmse.nnet.test, r2.nnet.train)
-modelperf[8,] = list("Test", "NNet", rmse.nnet.train, r2.nnet.test)
+modelperf[8,] = list("Train", "Nnet", rmse.nnet.test, r2.nnet.train)
+modelperf[7,] = list("Test", "NNet", rmse.nnet.train, r2.nnet.test)
 
 ggplot(data=modelperf, aes(x=reorder(Model, RMSE), y=RMSE, fill=Dataset)) +
     geom_bar(stat="identity", position=position_dodge()) +
@@ -345,9 +345,6 @@ bestFit = model2
 
 
 ```
-
-
-# Conclusions
 
 
 
