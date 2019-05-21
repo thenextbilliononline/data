@@ -94,7 +94,7 @@ library(rworldmap)
 ```{r map1, eval=T, echo=T, warning=F, message=F}
 df <- read.csv("Global/InternetIndicators.csv")
 
-map <- joinCountryData2Map(df, nameJoinColumn = "Country", joinCode = "ISO3")
+map <- suppressWarnings( joinCountryData2Map(df, nameJoinColumn = "Country", joinCode = "ISO3"))
 
 df$IXP[is.na(df$IXP)] <- 0
 
@@ -452,11 +452,11 @@ finances$Public.welfare,
 finances$Debt.at.end.of.fiscal.year))
 
 
-
-
 preProcValues <- preProcess(finances, method = c("center", "scale", "YeoJohnson", "nzv", "corr"))
-trainTransformed <- predict(preProcValues, finances)
-colnames(finances) <- c("Education", "Hospitals", "Health", "Highways", "Parks", "Police",  "Administration", "Prisons", "Natural.Resources", "Internet", "Smartphone", "Computer", "Public.Welfare", "Debt")
+finances <- predict(preProcValues, finances)
+finances
+
+colnames(finances) <- c("Education", "Hospitals", "Health", "Highways", "Parks", "Police",  "Administration", "Prisons", "Internet", "Smartphone", "Computer", "Public.Welfare", "Debt")
 
 finances$Poverty <- target
 
@@ -509,9 +509,6 @@ model5 <- step(model4, direction = "backward", trace = FALSE)
 
 sum4 <- summary(model4)
 sum5 <- summary(model5)
-
-
-plot(model5)
 
 
 rmse.glm.train <- rmse(predict(model5, glm_train), glm_train_label)
