@@ -430,8 +430,96 @@ bestFit = model2
 
 # Finance Analysis
 
+```{r}
+finances <- read.csv("Cleaned_Finance_Data.csv")
+
+target <- finances$Poverty
+
+finances$X <- NULL
+finances <- as.data.frame(cbind(finances$Education,
+finances$Hospitals,
+finances$Health,
+finances$Highways,
+finances$Parks.and.recreation,
+finances$Police.protection,
+finances$Governmental.administration,
+finances$Correction,
+finances$Natural.resources,
+finances$Internet,
+finances$Smartphone,
+finances$Computer,
+finances$Public.welfare,
+finances$Debt.at.end.of.fiscal.year))
 
 
+
+
+preProcValues <- preProcess(finances, method = c("center", "scale", "YeoJohnson", "nzv", "corr"))
+trainTransformed <- predict(preProcValues, finances)
+colnames(finances) <- c("Education", "Hospitals", "Health", "Highways", "Parks", "Police",  "Administration", "Prisons", "Natural.Resources", "Internet", "Smartphone", "Computer", "Public.Welfare", "Debt")
+
+finances$Poverty <- target
+
+finances
+```
+
+
+```{r RF2, eval=T, echo=T, warning=F, message=F}
+
+# Split the training data into a portion that is withheld from the model and used to evaluate
+# the model.
+
+set.seed(123)
+set.seed(123)
+rfFit <- randomForest::randomForest(Poverty ~ ., data = training_forest, importance = TRUE,
+                                    ntree = 100, keep.forest = TRUE)
+model6 <- rfFit
+
+varImpPlot(rfFit, n.var=10,
+           main="Important Variables in Random Forest Model (top 10 shown)")
+
+sample = sample.split(finances$Poverty, SplitRatio = .75)
+training_forest = subset(finances, sample == TRUE)
+test_forest = subset(finances, sample == FALSE)
+as.data.frame(training_forest)
+training_forest2 = dplyr::select(training_forest, -Poverty)
+rfPred.train = predict(rfFit, training_forest2)
+rmse.rf.train = rmse(training_forest$Poverty, rfPred.train)
+r2.rf.train = R2(training_forest$Poverty, rfPred.train)
+test_forest2 = dplyr::select(test_forest, -Poverty)
+rfPred.test = predict(rfFit, test_forest2)
+rmse.rf.test = rmse(test_forest$Poverty, rfPred.test)
+r2.rf.test = R2(test_forest$Poverty, rfPred.test)
+kable(data.frame(Model=c("Random Forest"), RMSE.train=c(rmse.rf.train), RSquared.train=c(r2.rf.train), RMSE.test=c(rmse.rf.test), RSquared.test=c(r2.rf.test)))
+
+```
+
+```{r glm1, eval=T, echo=T, warning=F, message=F}
+set.seed(123)
+training_glm = subset(finances, sample == TRUE)
+test_glm = subset(finances, sample == FALSE)
+
+glm_train_label <- training_glm$Poverty
+glm_test_label <- test_glm$Poverty
+glm_train <- select(training_glm, -Poverty)
+glm_test <- select(test_glm, -Poverty)
+
+model4 <- glm(glm_train_label ~., glm_train, family = "gaussian")
+model5 <- step(model4, direction = "backward", trace = FALSE)
+
+sum4 <- summary(model4)
+sum5 <- summary(model5)
+
+
+plot(model5)
+
+
+rmse.glm.train <- rmse(predict(model5, glm_train), glm_train_label)
+r2.glm.train <- R2(predict(model5, glm_train), glm_train_label)
+rmse.glm.test <- rmse(predict(model5, glm_test), glm_test_label)
+r2.glm.test <- R2(predict(model5, glm_test), glm_test_label)
+kable(data.frame(Model=c("GLM"), RMSE.train=c(rmse.glm.train), RSquared.train=c(r2.glm.train), RMSE.test=c(rmse.glm.test), RSquared.test=c(r2.glm.test)))
+```
 # Next Steps
 
 There are many ways we can continue improving the model performance, one method could be running more times of cross validation on more folds than 3 times 3-fold we have now for SVM and GBM models. It would take a longer time to compute, but the results would likely be better. Finally, more data would help us build a better model, in particular because the gap between the test and train sets tends to be relatively large across all of the models, with the exception of the Random Forest regressor because it builds its model over 1000 iterations.
