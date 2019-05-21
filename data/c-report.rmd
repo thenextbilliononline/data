@@ -1,5 +1,5 @@
 ---
-title: "Data 624 Project 2"
+title: "Some Internet Data"
 output:
   html_document:
     code_folding: hide
@@ -35,10 +35,14 @@ We are interested in this problem as data scientists because our field is a mixe
 ## Literature Review
 
 ## Data 
-[American Community Survey](https://www.census.gov/data/developers/data-sets/acs-1year.html)  
+[American Community Survey](https://www.census.gov/data/developers/data-sets/acs-1year.html)    
+
 [Annual Survey of State Finances](https://www.census.gov/programs-surveys/state.html)  
+
 [World Bank Data](https://data.worldbank.org/indicator)  
+
 [IEE MAC Address Blocks](http://standards-oui.ieee.org/oui.txt)  
+
 [List of Internet Exchange Points](https://en.wikipedia.org/wiki/List_of_Internet_exchange_points#Active_internet_exchanges)
 
 
@@ -59,7 +63,7 @@ Pew Research says that [20% of teens are unable to finish their homework](https:
 # Executive Summary
 
 
-
+TODO
 
 
 ```{r libs, eval=T, echo=F, warning=F, message=F}
@@ -97,34 +101,47 @@ df$IXP[is.na(df$IXP)] <- 0
 mapCountryData(map, nameColumnToPlot = "Broadband", mapTitle = "Broadband Subcriptions per 100 people", catMethod = 'FixedWidth', colourPalette = "diverging", missingCountryCol = "grey")
 ```
 
+Immediately, we can see that broadband subscription rates are higher in strongly developed places like North America, Western Europe, and Australia. Conversely, poor countries across South America, Africa, and South Asia have significantly lower broadband access rates. Please note that countries in grey have unknown values.
+
 ```{r map2, eval=T, echo=T, warning=F, message=F}
 mapCountryData(map, nameColumnToPlot = "Cells", mapTitle = "Cell Phone Subscriptions per 100 People", catMethod = 'FixedWidth',colourPalette = "diverging" , missingCountryCol = "grey")
 
 ```
+
+
+However, the number of cell phone subscriptions per 100 people is much more uniform. That is due to the lower cost of wireless network deployment compared to the capital-intesive processes of digging trenches to lay copper or fiber.
+
 ```{r map3, eval=T, echo=T, warning=F, message=F}
 mapCountryData(map, nameColumnToPlot = "Servers", mapTitle = "Servers per 10,000 people", catMethod = 'FixedWidth',colourPalette = "diverging" , missingCountryCol = "grey")
 
 ```
 
+When we look at the number of servers available in each country, we find that Western Europe has the highest per capita server load. Countries like New Zealand and South Africa are also high because they are conveniently located for undersea cables that compose the back-bone of the internet. TODO Source
+
 ```{r map4, eval=T, echo=T, warning=F, message=F}
 mapCountryData(map, nameColumnToPlot = "mac.addresses", mapTitle = "Mac Addresses Blocks Assigned per Country", catMethod = 'FixedWidth',colourPalette = "diverging" , missingCountryCol = "grey")
 ```
+
+The IEEE is a global organization that manages technological standards, publishes and circulates literature about electronics and and electrical engineering. In addition, they allocate MAC addresses which are the physical address of every bluetooth/wifi radio, ethernet port, and fiber cable on the internet. As we can see, a relatively small number of countries have original electronics manufacturers, with the US registering more than twice the number of devices as the next country (China). 
+
 ```{r map5, eval=T, echo=T, warning=F, message=F}
 mapCountryData(map, nameColumnToPlot = "IXP", mapTitle = "Internet Exchange Points by Country", catMethod = 'FixedWidth',colourPalette = "diverging" , missingCountryCol = "grey")
 ```
+
+The undersea cables mentioned earlier wind up at one of 600 buildings around the world where network operators connect their computers to their peers and create what we think of as the 'inter' net. These 600 buildings are not even distributed, with most countries only have a single access point to the Internet. In addition, regimes known for censorship (ie Egypt, Turkey, and China) have relatively few internet exchange points, allowing for centralized control and censorship. TODO: Source
+
 ```{r map6, eval=T, echo=T, warning=F, message=F}
 mapCountryData(map, nameColumnToPlot = "Exports", mapTitle = "High Tech Exports (2017 USD)", catMethod = 'fixedWidth', colourPalette = "diverging" , missingCountryCol = "grey")
 
 
 ```
 
+The net result of the modern Internet infrastructure is a centralized model with a few players making all of the profits. Above we see the total amount of high tech exports as measured in 2017 USD. Three countries account for the bulk of the profit here, seeming to indicate that a centralized Internet infrastructure does not raise the standards for everybody. It is apparent that today's paradigm encourages consumption over creation.
 
 # Correlation between Various Technology Indicators and Poverty Rates
 
 ## Data Initialization and Preprocessing
 
-Below we can see a sample of the data, as read from Excel files. Our target variable is pH and each data vector, except for brand code, is numeric. However, we can convert this to a numeric vector easily. There are also some missing values that must be imputed. The only non-numeric data is the brand code. All lettered codes have been replaced with the equivalent integers
-($A \rightarrow 1, B \rightarrow 2, ... $). Likewise, the NAs have been replaced with 0 such that they don't contribute to the regression function.
 
 
 
@@ -417,7 +434,7 @@ bestFit = model2
 
 # Next Steps
 
-There are many ways we can continue improving the model performance, one method could be running more times of cross validation on more folds than 3 times 3-fold we have now for SVM and GBM models. It would take a longer time to compute, but the results would likely be better. Finally, more data would help us build a better model, in particular because the gap between the test and train sets tends to be relatively large across all of the models.
+There are many ways we can continue improving the model performance, one method could be running more times of cross validation on more folds than 3 times 3-fold we have now for SVM and GBM models. It would take a longer time to compute, but the results would likely be better. Finally, more data would help us build a better model, in particular because the gap between the test and train sets tends to be relatively large across all of the models, with the exception of the Random Forest regressor because it builds its model over 1000 iterations.
 
 We could also use time-series data to examine causal relationships between the data.
 
