@@ -14,7 +14,7 @@ output:
 ---
 
 
-# Problem Statement
+# Introduction
 
 
 Through this project, we seek to understand the relationship between internet access and inequality on a global scale before examining the factors in detail using American Census Data. We take this dual-pronged approach so that we can get a picture of Internet Inequality globally while using reliable US Census data to do the quantitaive analysis. We will use data from the United Nations to compare selected socio-economic indexes to international communication measurements.
@@ -26,11 +26,13 @@ Through this project, we seek to understand the relationship between internet ac
 > Are internet access rates a stronger predictor of poverty rates than other forms of social investment (ie roads, schools, hospitals)?
 
 > Do these effects extend across internet technologies (cell phones and broadband internet)? If not, which type of infrastructure investment is better.
-  
+
 
 ## Motivation
 
 We are interested in this problem as data scientists because our field is a mixed bag. On one hand, big data can be used to influence elections, spread hateful propaganda, and be used to track every purchase and decision we make. These political consequences are well known. However, the Internet has a history of advancing economies, and those without the internet [tend to be left behind](https://www.pewresearch.org/fact-tank/2015/04/30/racial-and-ethnic-differences-in-how-people-use-mobile-technology/). To speak about this in particular, we need to investigate the ways in which internet access influences occupational outlook while controlling for other confounding factors like geography, race, and infrastructure investment more generally. 
+
+## Literature Review
 
 ## Data 
 [American Community Survey](https://www.census.gov/data/developers/data-sets/acs-1year.html)  
@@ -40,11 +42,14 @@ We are interested in this problem as data scientists because our field is a mixe
 [List of Internet Exchange Points](https://en.wikipedia.org/wiki/List_of_Internet_exchange_points#Active_internet_exchanges)
 
 
+
 ## Methodology
 
 First we will examine the problem on a global scale using chloropleth maps that will inform our future choices.
 
 We will build several models for predicting poverty rate, using both the generalized logistic model and the generalized linear model. In this way, we'll see how things like internet access and infrastructure investment influence poverty rates. The American Community Survey includes internet access rates, poverty, race, industry, language, occupation, place of birth, and familial origin. Using this data alone, we should be able to see if race or occupation is a better indicator of aggregate povery than internet access rates.
+
+
 
 
 ## Hypothesis
@@ -55,11 +60,9 @@ Pew Research says that [20% of teens are unable to finish their homework](https:
 
 
 
-## Dependencies
 
-Our code has dependencies on the following R packages.
 
-```{r libs, eval=T, echo=T, warning=F, message=F}
+```{r libs, eval=T, echo=F, warning=F, message=F}
 library(caret)
 library(caTools)
 library(corrplot)
@@ -116,8 +119,9 @@ mapCountryData(map, nameColumnToPlot = "Exports", mapTitle = "High Tech Exports 
 ```
 
 
+# Correlation between Various Technology Indicators and Poverty Rates
 
-# Data Initialization and Preprocessing
+## Data Initialization and Preprocessing
 
 Below we can see a sample of the data, as read from Excel files. Our target variable is pH and each data vector, except for brand code, is numeric. However, we can convert this to a numeric vector easily. There are also some missing values that must be imputed. The only non-numeric data is the brand code. All lettered codes have been replaced with the equivalent integers
 ($A \rightarrow 1, B \rightarrow 2, ... $). Likewise, the NAs have been replaced with 0 such that they don't contribute to the regression function.
@@ -145,7 +149,7 @@ head(training)
 ```
 
 
-## Imputation of Missing Values
+### Fixing Missing Data
 
 Below we impute the missing values using a monotone cubic approximator (known as a Stineman interpolation). It has a tendency to perform well on linear as well as higher-order data vectors.
 
@@ -190,7 +194,7 @@ TODO: Density Plots
 
 We can see significant covariance in the data. Additionally, many data points have near-zero variance. Excluding these confounding variables will improve our model.
 
-```{r corrplot, eval=T, echo=T, warning=F, message=F}
+```{r corrplot, eval=T, echo=T, warning=F, message=F, fig.height=50}
 results <- cor(training, method = 'pearson')
 corrplot::corrplot(results, method = 'circle')
 ```
@@ -205,18 +209,13 @@ For preprocessing of data, we remove near zero predictors, fill in missing value
 x_train <- subset(training, select = -Percent.Below.Poverty.Line )
 y_train <- training$Percent.Below.Poverty.Line
 
-
-
-
 preProcValues <- preProcess(x_train, method = c("center", "scale", "YeoJohnson", "nzv", "corr"))
 trainTransformed <- predict(preProcValues, x_train)
-
-
 ```
 
 
 
-# Support Vector Machine
+## Support Vector Machine
 
 Comparing SVM with Neural Networks (NN), both are non-linear algorithms. A Support Vector Machine with different kernels is comparable to a Neural Network with different layers. One advantage SVMs have over NNs is that NNs need large amounts of data to train, SVMs work with smaller-sized data with less computing power. Finally SVM usually only have 2-3 parameters to tune, they are easy to code, and the results are explainable.
 On the other hand, SVMs might not beat NNs on the accuracy metric.
@@ -260,7 +259,7 @@ kable(data.frame(Model=c("Support Vector Machine"), RMSE.train=min(rmse.svm.trai
 
 
 
-# Random Forest Model
+## Random Forest Model
 
 Random forests are a modification of bagging that builds a large collection of de-correlated
 trees [1]. They are considered to belong in the category of non-parametric models since 
@@ -314,7 +313,7 @@ kable(data.frame(Model=c("Random Forest"), RMSE.train=c(rmse.rf.train), RSquared
 ```
 
 
-# Neural Network Model
+## Neural Network Model
 
 Neural Networks are a powerful nonlinear technique inspired by theories about how the human brain works [5]. Neural Networks can be classifiers (when the output variable is categorical) or regression (when the output variable is numeric). In this problem we use a regression artificial neural network (ANN) using the nnet package in R. Below we build and evaluate a Neural Network model of the regression problem.
 
@@ -348,7 +347,7 @@ kable(data.frame(Model=c("NeuralNet"), RMSE.train=c(rmse.nnet.train), RSquared.t
 
 
 
-# Generalized Linear Model
+## Generalized Linear Model
 
 Because our output value is continuous and our data is numeric, we can use a generalized linear model to compute the pH. These models are generic and assume linearity in response. We will use the "Gaussian" type which assumes normally distributed variables
 
@@ -379,7 +378,7 @@ r2.glm.test <- R2(predict(model5, glm_test), glm_test_label)
 kable(data.frame(Model=c("GLM"), RMSE.train=c(rmse.glm.train), RSquared.train=c(r2.glm.train), RMSE.test=c(rmse.glm.test), RSquared.test=c(r2.glm.test)))
 ```
 
-# Conclusion
+# Conclusion: Correlary Factors
 
 Since we see that the Random Forest model produced the lowest RMSE on the withheld training data, we select it as the best model to predict poverty rates.
 
@@ -412,9 +411,11 @@ bestFit = model2
 
 ```
 
+# Finance Analysis
 
 
-# Next Step
+
+# Next Steps
 
 There are many ways we can continue improving the model performance, one method could be running more times of cross validation on more folds than 3 times 3-fold we have now for SVM and GBM models. It would take a longer time to compute, but the results would likely be better. Finally, more data would help us build a better model, in particular because the gap between the test and train sets tends to be relatively large across all of the models.
 
@@ -422,7 +423,7 @@ We could also use time-series data to examine causal relationships between the d
 
 
 # References
-
+TO DO: APA format
 1. Random Forests. https://uc-r.github.io/random_forests
 2. Kevin Murphy (2012). Machine Learning a Probabilistic Perspective.
 3. Support Vector Machine. https://uc-r.github.io/svm

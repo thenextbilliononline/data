@@ -176,7 +176,6 @@ df <- merge(x = df,  y = df3, by = "Country", all = TRUE)
 df <- merge(x = df,  y = df4, by = "Country", all = TRUE)
 df <- merge(x = df,  y = df5, by = "Country", all = TRUE)
 df <- merge(x = df,  y = df6, by = "Country", all = TRUE)
-df$Country <- countrycode(df$Country, "iso3c", "country.name")
-df
+
 write.csv(df, file = "InternetIndicators.csv")
 ```

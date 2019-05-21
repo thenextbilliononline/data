@@ -41,6 +41,7 @@ population <- as.data.frame(population, header = TRUE)
 colnames(population) <- c("State" , "Population")
 population
 
+
 #population
 ```
 ```{r}
@@ -91,6 +92,7 @@ foreign.born$Percent.Foreign.Born <- as.numeric(as.character(foreign.born$Foreig
 foreign.born$Native <- NULL
 foreign.born$Foreign.Born <- NULL
 foreign.born
+
 
 ```
 
@@ -157,6 +159,7 @@ computers <- computers[-1,]
 colnames(computers) <- c("State", "Percent.Computer.in.Household", "Percent.Smartphone.In.Household" , "Percent.Internet.Subscriptions")
 computers
 
+
 ```
 
 
@@ -194,6 +197,8 @@ empty.housing <- empty.housing[-1,]
 colnames(empty.housing) <- c("State", "Percent.Occupied.Single.Family.Homes")
 empty.housing
 
+
+
 ```
 
 ```{r}
@@ -204,6 +209,8 @@ internet <- as.data.frame(internet)
 internet <- internet[-1,]
 colnames(internet) <- c("State", "Percent.With.Broadband")
 internet
+
+
 
 ```
 
@@ -217,6 +224,7 @@ education.level <- as.data.frame(education.level)
 education.level <- education.level[-1,]
 colnames(education.level) <- c("State", "Percent.Less.Than.High.School", "Percent.High.School", "Percent.Some.College", "Percent.Bachelors", "Population.Graduate")
 education.level
+
 ```
 
 ```{r}
@@ -227,6 +235,7 @@ limited.english.households <- as.data.frame(limited.english.households)
 limited.english.households <- limited.english.households[-1,]
 colnames(limited.english.households) <- c("State", "Percent.Limited.English.Households")
 limited.english.households
+
 ```
 ```{r}
 df <- merge(limited.english.households, internet, all =TRUE, by = "State")
