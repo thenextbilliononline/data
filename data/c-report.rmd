@@ -16,8 +16,40 @@ output:
 
 # Problem Statement
 
-Data related to the manufacturing process of a soft drink are provided, including values of various parameters that control the process. The objective is to build a predictive model to predict the pH content based on the manufacturing process data.
 
+Through this project, we seek to understand the relationship between internet access and inequality on a global scale before examining the factors in detail using American Census Data. We take this dual-pronged approach so that we can get a picture of Internet Inequality globally while using reliable US Census data to do the quantitaive analysis. We will use data from the United Nations to compare selected socio-economic indexes to international communication measurements.
+
+## Questions
+
+> What economic indicators (race, occupation, community poverty rate) are most strongly correlated with internet access rates? Can we build a model that accurately predicts said rates? 
+
+> Are internet access rates a stronger predictor of poverty rates than other forms of social investment (ie roads, schools, hospitals)?
+
+> Do these effects extend across internet technologies (cell phones and broadband internet)? If not, which type of infrastructure investment is better.
+  
+
+## Motivation
+
+We are interested in this problem as data scientists because our field is a mixed bag. On one hand, big data can be used to influence elections, spread hateful propaganda, and be used to track every purchase and decision we make. These political consequences are well known. However, the Internet has a history of advancing economies, and those without the internet [tend to be left behind](https://www.pewresearch.org/fact-tank/2015/04/30/racial-and-ethnic-differences-in-how-people-use-mobile-technology/). To speak about this in particular, we need to investigate the ways in which internet access influences occupational outlook while controlling for other confounding factors like geography, race, and infrastructure investment more generally. 
+
+## Data 
+[American Community Survey](https://www.census.gov/data/developers/data-sets/acs-1year.html)  
+[Annual Survey of State Finances](https://www.census.gov/programs-surveys/state.html)
+[World Bank Data](https://data.worldbank.org/indicator)
+[IEE MAC Address Blocks](http://standards-oui.ieee.org/oui.txt)
+[List of Internet Exchange Points](https://en.wikipedia.org/wiki/List_of_Internet_exchange_points#Active_internet_exchanges)
+
+
+## Methodology
+
+First we will examine the problem on a global scale using chloropleth maps that will inform our future choices.
+
+We will build several models for predicting poverty rate, using both the generalized logistic model and the generalized linear model. In this way, we'll see how things like internet access and infrastructure investment influence poverty rates. The American Community Survey includes internet access rates, poverty, race, industry, language, occupation, place of birth, and familial origin. Using this data alone, we should be able to see if race or occupation is a better indicator of aggregate povery than internet access rates.
+
+
+## Hypothesis
+
+Pew Research says that [20% of teens are unable to finish their homework](https://www.pewresearch.org/fact-tank/2018/10/26/nearly-one-in-five-teens-cant-always-finish-their-homework-because-of-the-digital-divide/) due to the digital divide. The end result of this is likely low-skill careers and lower incomes. In fact, the internet tends to raise the tide for all, as a breadth study (also by Pew) showed that [per capita income and access rates are highly correlated](https://www.pewglobal.org/2016/02/22/internet-access-growing-worldwide-but-remains-higher-in-advanced-economies/technology-report-02-06c/). We'd like to investigate the relationship between technology and the economy and see if we can build models resilient to the particle type of device. [Previous work](https://www.mdpi.com/2072-4292/11/4/375) has used infrastructure invesment to build logistic models for poverty using satellite images of infrastructure. It is also well known that poverty and broadband access rates are [highly correlated](http://overflow.solutions/demographic-data/how-poverty-status-in-each-u-s-county-relates-to-internet-access/). However, it is unknown if there is an underlying causal factor or if internet can, _by itself_, lift people out of poverty. The McKinsey Global Institute did a massive study on the economic potential of [internet investment in China](https://www.mckinsey.com/~/media/McKinsey/Industries/High%20Tech/Our%20Insights/Chinas%20digital%20transformation/MGI%20China%20digital%20Full%20report.ashx) that will inform our approach in this matter. Finally, the Internet Society, a global organization that builds internet infrastructure (mostly in the developing world), has compiled [a list of internet penetration rates and other such metrics](https://www.internetsociety.org/wp-content/uploads/2017/08/Global_Internet_Report_2014_0.pdf) by country across the world. However, due to data collection limitations and the quality of data sources across continents, it would be impossible to investigate these things wtih respect to more generic features like race and infrastructure. Since the United States has a non-uniform income distribution across states, this should allow us to draw from a breadth of circumstances. Due to the multiplicative of effects in education, business opportunities, and spending opportunities available on the Internet, we suspect that governmental investment in digital infrastructure will have at least as much affect as road or school spending. Additionally, we suspect that this multiplier is reduced for cellular infrastructure relative to fixed (broadband) infrastructure because of the productivity gains associated with PCs over smartphones. This research will reveal to governments (both local and national) what kinds of infrastructure investment yields the most economic gains in the digital age. To our knowledge, this particular question has not been answered.
 
 # Executive Summary
 
@@ -46,10 +78,43 @@ library(reshape2)
 library(tidyr)
 library(tidyverse)
 library(xlsx)
-
+library(rworldmap)
 # Show loaded packages.
 (.packages())
 ```
+# Internet Inequality-- A Global Persepective
+
+```{r map1, eval=T, echo=T, warning=F, message=F}
+df <- read.csv("Global/InternetIndicators.csv")
+
+map <- joinCountryData2Map(df, nameJoinColumn = "Country", joinCode = "ISO3")
+
+df$IXP[is.na(df$IXP)] <- 0
+
+mapCountryData(map, nameColumnToPlot = "Broadband", mapTitle = "Broadband Subcriptions per 100 people", catMethod = 'FixedWidth', colourPalette = "diverging", missingCountryCol = "grey")
+```
+
+```{r map2, eval=T, echo=T, warning=F, message=F}
+mapCountryData(map, nameColumnToPlot = "Cells", mapTitle = "Cell Phone Subscriptions per 100 People", catMethod = 'FixedWidth',colourPalette = "diverging" , missingCountryCol = "grey")
+
+```
+```{r map3, eval=T, echo=T, warning=F, message=F}
+mapCountryData(map, nameColumnToPlot = "Servers", mapTitle = "Servers per 10,000 people", catMethod = 'FixedWidth',colourPalette = "diverging" , missingCountryCol = "grey")
+
+```
+
+```{r map4, eval=T, echo=T, warning=F, message=F}
+mapCountryData(map, nameColumnToPlot = "mac.addresses", mapTitle = "Mac Addresses Blocks Assigned per Country", catMethod = 'FixedWidth',colourPalette = "diverging" , missingCountryCol = "grey")
+```
+```{r map5, eval=T, echo=T, warning=F, message=F}
+mapCountryData(map, nameColumnToPlot = "IXP", mapTitle = "Internet Exchange Points by Country", catMethod = 'FixedWidth',colourPalette = "diverging" , missingCountryCol = "grey")
+```
+```{r map6, eval=T, echo=T, warning=F, message=F}
+mapCountryData(map, nameColumnToPlot = "Exports", mapTitle = "High Tech Exports (2017 USD)", catMethod = 'fixedWidth', colourPalette = "diverging" , missingCountryCol = "grey")
+
+
+```
+
 
 
 # Data Initialization and Preprocessing
@@ -112,8 +177,8 @@ ggplot(explore, aes(x = row.names(explore), y = means))+
 ```
 
 These plots confirm the non-normality of most of our data. For the non-linear models, we must center and scale them. Additionally, we will need other data transformations (discussed below).
-
-```{r figure1, fig.height=10}
+TODO: Density Plots
+```{r figure1, fig.height=50}
 #ggplot(data = gather(training), mapping = aes(x = value)) + 
 #  geom_histogram(aes(y=..density..,), colour="black", fill="white")+
 #  geom_density(alpha=.2, fill="lightgrey")+
