@@ -36,9 +36,9 @@ We are interested in this problem as data scientists because our field is a mixe
 
 ## Data 
 [American Community Survey](https://www.census.gov/data/developers/data-sets/acs-1year.html)  
-[Annual Survey of State Finances](https://www.census.gov/programs-surveys/state.html)
-[World Bank Data](https://data.worldbank.org/indicator)
-[IEE MAC Address Blocks](http://standards-oui.ieee.org/oui.txt)
+[Annual Survey of State Finances](https://www.census.gov/programs-surveys/state.html)  
+[World Bank Data](https://data.worldbank.org/indicator)  
+[IEE MAC Address Blocks](http://standards-oui.ieee.org/oui.txt)  
 [List of Internet Exchange Points](https://en.wikipedia.org/wiki/List_of_Internet_exchange_points#Active_internet_exchanges)
 
 
