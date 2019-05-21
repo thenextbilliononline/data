@@ -395,7 +395,7 @@ r2.glm.test <- R2(predict(model5, glm_test), glm_test_label)
 kable(data.frame(Model=c("GLM"), RMSE.train=c(rmse.glm.train), RSquared.train=c(r2.glm.train), RMSE.test=c(rmse.glm.test), RSquared.test=c(r2.glm.test)))
 ```
 
-# Conclusion: Correlary Factors
+## Conclusion: Social Indicators
 
 Since we see that the Random Forest model produced the lowest RMSE on the withheld training data, we select it as the best model to predict poverty rates.
 
@@ -471,16 +471,16 @@ finances
 
 set.seed(123)
 set.seed(123)
+
+sample = sample.split(finances$Poverty, SplitRatio = .75)
+training_forest = subset(finances, sample == TRUE)
+test_forest = subset(finances, sample == FALSE)
 rfFit <- randomForest::randomForest(Poverty ~ ., data = training_forest, importance = TRUE,
                                     ntree = 100, keep.forest = TRUE)
 model6 <- rfFit
 
 varImpPlot(rfFit, n.var=10,
            main="Important Variables in Random Forest Model (top 10 shown)")
-
-sample = sample.split(finances$Poverty, SplitRatio = .75)
-training_forest = subset(finances, sample == TRUE)
-test_forest = subset(finances, sample == FALSE)
 as.data.frame(training_forest)
 training_forest2 = dplyr::select(training_forest, -Poverty)
 rfPred.train = predict(rfFit, training_forest2)
@@ -494,7 +494,7 @@ kable(data.frame(Model=c("Random Forest"), RMSE.train=c(rmse.rf.train), RSquared
 
 ```
 
-```{r glm1, eval=T, echo=T, warning=F, message=F}
+```{r glm2, eval=T, echo=T, warning=F, message=F}
 set.seed(123)
 training_glm = subset(finances, sample == TRUE)
 test_glm = subset(finances, sample == FALSE)
@@ -520,6 +520,7 @@ rmse.glm.test <- rmse(predict(model5, glm_test), glm_test_label)
 r2.glm.test <- R2(predict(model5, glm_test), glm_test_label)
 kable(data.frame(Model=c("GLM"), RMSE.train=c(rmse.glm.train), RSquared.train=c(r2.glm.train), RMSE.test=c(rmse.glm.test), RSquared.test=c(r2.glm.test)))
 ```
+
 # Next Steps
 
 There are many ways we can continue improving the model performance, one method could be running more times of cross validation on more folds than 3 times 3-fold we have now for SVM and GBM models. It would take a longer time to compute, but the results would likely be better. Finally, more data would help us build a better model, in particular because the gap between the test and train sets tends to be relatively large across all of the models, with the exception of the Random Forest regressor because it builds its model over 1000 iterations.
