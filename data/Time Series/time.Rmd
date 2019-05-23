@@ -13,6 +13,9 @@ library("censusapi")
 ```
 
 ```{r}
+library(tidycensus)
+library(tidyverse)
+library(viridis)
 indicators <- c(
 "HC03_EST_VC61",
 "HC01_EST_VC37",
@@ -63,7 +66,12 @@ indicators <- c(
 "HC02_EST_VC15",
 "HC04_EST_VC01"
 )
-
-df <- getCensus(name = "acs", vintage = 2017, vars = indicators, key ="")
+```
+```{r}
+census_api_key(Sys.getenv("CENSUS_KEY"))
+i = 34
+print(indicators[i])
+get_acs(geography = "State", variables = "SR2091" )
+Sys.getenv("CENSUS_KEY")
 ```
 
