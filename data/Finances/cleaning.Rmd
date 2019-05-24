@@ -1,0 +1,64 @@
+---
+title: "cleaning.Rmd"
+author: "simplymathematics"
+date: "5/18/2019"
+output: html_document
+---
+[Data Source](
+https://www.census.gov/data/tables/2017/econ/state/historical-tables.html)
+
+```{r}
+library(readxl)
+library(bnstruct)
+library(tidyverse)
+finances <- read_excel("2017_ ASFIN_State_Totals.xlsx" , skip = 0)
+names <- finances$`(Thousands of Dollars)`
+
+finances <- t(finances)
+colnames(finances) <- names
+finances <- as.data.frame(finances)
+finances <- finances[-1,]
+finances <- finances[-1,]
+
+df <- finances
+emptycols <- sapply(df, function (k) all(is.na(k)))
+df <- df[!emptycols]
+df
+```
+
+```{r}
+df <- read.csv("../Cleaned_Finance_Data.csv")
+states <- as.factor(df$X)
+df$X <- NULL
+
+df <- sapply(df, function(x){x <- as.numeric(as.character(x))/df$Total.revenue})
+df <- as.data.frame(df)
+df$Liquor.stores.expenditure <- NULL
+df$Liquor.stores.revenue <- NULL
+df$State <- states
+df
+```
+
+```{r}
+df2 <- read.csv("../Cleaned_Community_Data.csv")
+df2 <- df2[- grep("Puerto", df2$State),]
+df2 <- df2[- grep("District", df2$State),]
+
+```
+
+
+
+```{r}
+df$Poverty <- df2$Percent.Below.Poverty.Line
+df$Internet <- df2$Percent.No.of.Internet.Subscriptions
+df$Smartphone <- df2$Percent.Smartphone.In.Household
+df$Computer <- df2$Percent.Computer.in.Household
+df$Broadband <- df2$Percent.With.Broadband
+df
+```
+
+```{r}
+write.csv(df, "../Cleaned_Finance_Data.csv")
+```
+
+`

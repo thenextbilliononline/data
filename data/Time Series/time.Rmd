@@ -1,0 +1,77 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+install.packages("censusapi")
+library("censusapi")
+```
+
+```{r}
+library(tidycensus)
+library(tidyverse)
+library(viridis)
+indicators <- c(
+"HC03_EST_VC61",
+"HC01_EST_VC37",
+"HC01_EST_VC38",
+"HD01_VD01",
+"HD01_VD02",
+"HD01_VD03",
+"HD01_VD04",
+"HD01_VD05",
+"HD01_VD07",
+"HD01_VD10",
+"HC02_EST_VC01",
+"HC03_EST_VC01",
+"HC04_EST_VC01",
+"HC03_EST_VC02",
+"HC03_EST_VC01",
+"HC01_EST_VC27",
+"HC02_EST_VC04",
+"HC02_EST_VC07",
+"HC02_EST_VC16",
+"HC02_EST_VC03",
+"HC04_EST_VC03",
+"HC03_EST_VC61",
+"HC01_EST_VC37",
+"HC01_EST_VC38",
+"HD01_VD01",
+"HD01_VD02",
+"HD01_VD03",
+"HD01_VD04",
+"HD01_VD05",
+"HD01_VD07",
+"HD01_VD10",
+"HC02_EST_VC01",
+"HC03_EST_VC01",
+"HC04_EST_VC01",
+"HC03_EST_VC02",
+"HC03_EST_VC01",
+"HC01_EST_VC27",
+"HC02_EST_VC04",
+"HC02_EST_VC07",
+"HC02_EST_VC16",
+"HC02_EST_VC03",
+"HC04_EST_VC03",
+"HC02_EST_VC10",
+"HC02_EST_VC11",
+"HC02_EST_VC12",
+"HC02_EST_VC14",
+"HC02_EST_VC15",
+"HC04_EST_VC01"
+)
+```
+```{r}
+census_api_key(Sys.getenv("CENSUS_KEY"))
+i = 34
+print(indicators[i])
+get_acs(geography = "State", variables = "SR2091" )
+Sys.getenv("CENSUS_KEY")
+```
+

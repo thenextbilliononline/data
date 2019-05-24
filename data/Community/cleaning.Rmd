@@ -1,0 +1,274 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+We selected data from the American Community we thought would be relevant. In particular, we looked at a poverty modelling study conducted about Eritrea in which a wide 
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+poverty <- as.data.frame(read_csv("ACS_17_1YR_S1701_with_ann.csv"), header = TRUE)
+poverty
+poverty <- cbind(poverty$`GEO.display-label`, poverty$HC03_EST_VC61)
+poverty <- as.data.frame(poverty)
+poverty <- poverty[-1,]
+colnames(poverty) <- c("State", "Percent.Below.Poverty.Line")
+poverty
+
+
+```
+
+
+```{r}
+sex.and.age <- as.data.frame(read_csv("ACS_17_1YR_S0101_with_ann.csv"), header = TRUE)
+sex.and.age <- cbind(sex.and.age$`GEO.display-label`, sex.and.age$HC01_EST_VC37, as.numeric(as.character(sex.and.age$HC01_EST_VC38))/2)
+sex.and.age <- as.data.frame(sex.and.age)
+sex.and.age <- sex.and.age[-1,]
+colnames(sex.and.age) <- c("State", "Median.Age", "Percent.male")
+sex.and.age
+
+
+```
+
+```{r}
+population <- as.data.frame(read_csv("ACS_17_1YR_B01003_with_ann.csv"), header = TRUE)
+population <- cbind(population$`GEO.display-label`, population$HD01_VD01)
+population <- population[-1,]
+population <- as.data.frame(population, header = TRUE)
+colnames(population) <- c("State" , "Population")
+population
+
+
+#population
+```
+```{r}
+state.pops <- as.numeric(as.character(race$Population))
+
+```
+```{r}
+race <- as.data.frame(read_csv("ACS_17_1YR_B02001_with_ann.csv"), header = TRUE)
+
+
+
+race <- cbind(race$HD01_VD01, race$`GEO.display-label`, race$HD01_VD02, race$HD01_VD03, race$HD01_VD04, race$HD01_VD05, race$HD01_VD07, race$HD01_VD10)
+race <- as.data.frame(race, header = TRUE)
+race <- race[-1,]
+
+colnames(race) <- c("Population", "State", 
+"Percent.White", "Percent.Black", "Percent.Native", "Percent.Asian", "Percent.Other", "Percent.Two.or.more.races" )
+
+
+race$White <- as.numeric(as.character(race$White))/state.pops
+race$Black <- as.numeric(as.character(race$Black))/state.pops
+race$Native <- as.numeric(as.character(race$Native))/state.pops
+race$Other <- as.numeric(as.character(race$Other))/state.pops
+race$Asian <- as.numeric(as.character(race$Asian))/state.pops
+race$Two.or.more <- as.numeric(as.character(race$Two.or.more))/state.pops
+race$Population <- NULL
+
+
+
+```
+```{r}
+state.pops <- as.numeric(as.character(geo.mobility$Population))
+```
+
+
+
+```{r}
+foreign.born <- as.data.frame(read_csv("ACS_17_1YR_S0501_with_ann.csv"), header = TRUE)
+foreign.born['HC03_EST_VC01']
+
+foreign.born <- cbind(foreign.born$`GEO.display-label`, foreign.born$HC02_EST_VC01, foreign.born$HC03_EST_VC01
+)
+foreign.born <- as.data.frame(foreign.born, header = TRUE)
+
+foreign.born <- foreign.born[-1,]
+colnames(foreign.born) <- c("State", "Native", "Foreign.Born")
+foreign.born$Percent.Foreign.Born <- as.numeric(as.character(foreign.born$Foreign.Born))/as.numeric(as.character(foreign.born$Native))
+foreign.born$Native <- NULL
+foreign.born$Foreign.Born <- NULL
+foreign.born
+
+
+```
+
+```{r}
+school.enrollment <- as.data.frame(read_csv("ACS_17_1YR_S1401_with_ann.csv"), header = TRUE)
+school.enrollment["HC04_EST_VC01"]
+school.enrollment <- cbind(school.enrollment$`GEO.display-label`, school.enrollment$HC04_EST_VC01)
+school.enrollment <- as.data.frame(school.enrollment)
+school.enrollment <- school.enrollment[-1,]
+colnames(school.enrollment) <- c("State","Percent.in.Public.School")
+school.enrollment
+
+
+
+```
+
+```{r}
+median.income <- as.data.frame(read_csv("ACS_17_1YR_S1903_with_ann.csv"), header = TRUE)
+median.income['HC03_EST_VC02']
+median.income <- cbind(median.income$`GEO.display-label`, median.income$HC03_EST_VC02)
+median.income <- as.data.frame(median.income)
+median.income <- median.income[-1,]
+colnames(median.income) <- c("State","Median.Annual.Income")
+median.income
+
+```
+
+
+
+
+
+```{r}
+employment.unemployment <- as.data.frame(read_csv("ACS_17_1YR_S2301_with_ann.csv"), header = TRUE)
+employment.unemployment['HC03_EST_VC01']
+employment.unemployment <- cbind(employment.unemployment$`GEO.display-label`, employment.unemployment$HC03_EST_VC01)
+employment.unemployment <- as.data.frame(employment.unemployment)
+
+employment.unemployment <- employment.unemployment[-1,]
+colnames(employment.unemployment) <- c("State","Employment.Rate")
+employment.unemployment
+
+```
+
+
+```{r}
+housing <- as.data.frame(read_csv("ACS_17_1YR_S2503_with_ann.csv"), header = TRUE)
+housing['HC01_EST_VC27']
+housing <- cbind(housing$`GEO.display-label`, housing$HC01_EST_VC27 )
+housing <- as.data.frame(housing)
+
+housing <- housing[-1,]
+colnames(housing) <- c("State","Median.Monthly.Housing.Costs")
+housing
+
+```
+
+
+```{r}
+computers <- as.data.frame(read_csv("ACS_17_1YR_S2801_with_ann.csv"), header = TRUE)
+computers['HC02_EST_VC07']
+computers <- cbind(computers$`GEO.display-label`, computers$HC02_EST_VC04, computers$HC02_EST_VC07, computers$HC02_EST_VC16)
+computers <- as.data.frame(computers)
+computers <- computers[-1,]
+colnames(computers) <- c("State", "Percent.Computer.in.Household", "Percent.Smartphone.In.Household" , "Percent.Internet.Subscriptions")
+computers
+
+
+```
+
+
+
+```{r}
+education.type <- as.data.frame(read_csv("ACS_17_1YR_S1502_with_ann.csv"), header = TRUE)
+education.type["HC02_EST_VC03"]
+education.type <- cbind(education.type$`GEO.display-label`, education.type$	
+HC02_EST_VC03)
+
+education.type <- as.data.frame(education.type)
+education.type <- education.type[-1,]
+colnames(education.type) <- c("State", "Percent.STEM.education")
+education.type
+
+```
+
+```{r}
+employment.type <- as.data.frame(read_csv("ACS_17_1YR_S2406_with_ann.csv"), header = TRUE)
+employment.type["HC02_EST_VC03"]
+employment.type <- cbind(employment.type$`GEO.display-label`, employment.type$HC02_EST_VC03)
+employment.type <- as.data.frame(employment.type)
+employment.type <- employment.type[-1,]
+colnames(employment.type) <- c("State", "Percent.In.Service.Industry")
+employment.type
+
+```
+
+```{r}
+empty.housing <- as.data.frame(read_csv("ACS_17_1YR_S2504_with_ann.csv"), header = TRUE)
+empty.housing["HC04_EST_VC03"]
+empty.housing <- cbind(empty.housing$`GEO.display-label`, empty.housing$HC04_EST_VC03)
+empty.housing <- as.data.frame(empty.housing)
+empty.housing <- empty.housing[-1,]
+colnames(empty.housing) <- c("State", "Percent.Occupied.Single.Family.Homes")
+empty.housing
+
+
+
+```
+
+```{r}
+internet <- as.data.frame(read_csv("ACS_17_1YR_S2802_with_ann.csv"), header = TRUE)
+internet["HC03_EST_VC01"]
+internet <- cbind(internet$`GEO.display-label`, internet$HC03_EST_VC01)
+internet <- as.data.frame(internet)
+internet <- internet[-1,]
+colnames(internet) <- c("State", "Percent.With.Broadband")
+internet
+
+
+
+```
+
+
+```{r}
+education.level <- as.data.frame(read_csv("ACS_17_1YR_S1501_with_ann.csv"), header = TRUE)
+education.level["HC02_EST_VC14"]
+education.level <- cbind(education.level$`GEO.display-label`, education.level$HC02_EST_VC10,  education.level$HC02_EST_VC11, education.level$	
+HC02_EST_VC12,  education.level$HC02_EST_VC14, education.level$HC02_EST_VC15)
+education.level <- as.data.frame(education.level)
+education.level <- education.level[-1,]
+colnames(education.level) <- c("State", "Percent.Less.Than.High.School", "Percent.High.School", "Percent.Some.College", "Percent.Bachelors", "Population.Graduate")
+education.level
+
+```
+
+```{r}
+limited.english.households <- as.data.frame(read_csv("ACS_17_1YR_S1602_with_ann.csv"), header = TRUE)
+limited.english.households["HC04_EST_VC01"]
+limited.english.households <- cbind(limited.english.households$`GEO.display-label`, limited.english.households$HC04_EST_VC01)
+limited.english.households <- as.data.frame(limited.english.households)
+limited.english.households <- limited.english.households[-1,]
+colnames(limited.english.households) <- c("State", "Percent.Limited.English.Households")
+limited.english.households
+
+```
+```{r}
+df <- merge(limited.english.households, internet, all =TRUE, by = "State")
+df <- merge(df, empty.housing, all = TRUE, by = "State")
+df <- merge(df, employment.type, all = TRUE, by = "State")
+df <- merge(df, education.type,  all = TRUE, by = "State")
+df <- merge(df, computers, all=TRUE, by = "State")
+df <- merge(df, housing, all = TRUE, by = "State")
+df <- merge(df, housing, all = TRUE, by = "State")
+df <- merge(df, employment.unemployment, all = TRUE, by = "State")
+df <- merge(df, median.income, all = TRUE, by = "State")
+df <- merge(df, school.enrollment, all = TRUE, by = "State")
+df <- merge(df, foreign.born, all = TRUE, by = "State")
+df <- merge(df, race, all = TRUE, by = "State")
+df <- merge(df, population, all = TRUE, by = "State")
+df <- merge(df, sex.and.age, all = TRUE, by = "State")
+df <- merge(df, education.level, all = TRUE, by = "State")
+df <- merge(df, poverty, all = TRUE, by = "State")
+df$Median.Monthly.Housing.Costs.x <- NULL
+df$Median.Monthly.Housing.Costs <- df$Median.Monthly.Housing.Costs.y
+df$Median.Monthly.Housing.Costs.y <- NULL
+```
+
+```{r}
+df
+```
+
+```{r}
+write.csv(x = df, file = "../Cleaned_Community_Data.csv")
+#list(x,y,z) %>% reduce(left_join, by = "i")
+```
+
+
+Source: 
+
+http://repec.org/esAUSM04/up.26810.1088476172.pdf
