@@ -46,73 +46,77 @@ The contribution of internet to development economic, and more specifically to t
 and Koutroumpis 2012)[7]. One of the studies found that mobile broadband actually has a negative impact possibly due to its complementarity effect and non-productive application 
 (Thompson and Garbacz 2011) [8]
 
-A different approach to appreciate the impact of the internet on development is to consider its distributed effect.  Several studies take into account the effect on labor demand to examine the impact of internet technologies. For instance, Atasoy in 2013 conduct a research about broadband diffusion and the labor market in the US between 1999 and 2007. Their finding show that broadband 
-availability has a positive impact on the country employment rate (H. Galperin (2017). 
-Those impacts are more accrued in country with large portion of college-educated 
-workers.   In general, most of the studies made around the distributivity of internet 
-agree that internet diffusion positively affect wages.
-The lack of data to study profoundly the issue at hand makes it difficult to 
-appreciate thoroughly the impact of internet on economic growth.  But most of the 
-research point out that the advance countries are the principal beneficial of the 
-propagation of the internet and for less advanced economies the impact of internet 
-on the reduction of poverty is questionable
+A different approach to appreciate the impact of the internet on development is to consider its distributed effect.  Several studies take into account the effect on labor demand to examine the impact of internet technologies. For instance, Atasoy in 2013 conduct a research about broadband diffusion and the labor market in the US between 1999 and 2007. Their finding show that broadband availability has a positive impact on the country employment rate (H. Galperin (2017). Those impacts are more accrued in country with large portion of college-educated workers. In general, most of the studies made around the distributivity of internet agree that internet diffusion positively affect wages. The lack of data to study profoundly the issue at hand makes it difficult to appreciate thoroughly the impact of internet on economic growth.  But most of the research point out that the advance countries are the principal beneficial of the propagation of the internet and for less advanced economies the impact of interneton the reduction of poverty is questionable
 
+[American Community Survey](https://www.census.gov/data/developers/data-sets/acs-1year.html)  
 
+**Poverty:** Percent below poverty line; Estimate
 
-Modelling techniques used:
-Logistic Regression
-European Scientific Journal published study where logistic regression was 
-employed to detect the most important factors that influence poverty in Albania: 
-household size, the educational level and gender of the head of household, the 
-zone [3]
-European Journal of Social Sciences published study which examines the 
-determinants of poverty in Kenya using Principal components analysis (an asset 
-index which gave the social economic status of each household [4]
-Mwabu et al. (2000) used regression analysis and identified the following 
-variables as the key determinants of poverty: size of household, places of 
-residence(urban or rural), level of schooling and livestock [9]
-Random Forest
-Random forest is in many fields of research a common method for data driven 
-predictions. Within economics and prediction of poverty, random forest is rarely 
-used. World Bank published a paper that studies poverty in Ethiopia and made an 
-attempt to employ Random forest to predict poverty there. The results show that 
-none of the methods including Random Forest consistently provides accurate 
-predictions of poverty over time [10]
+**Median.Age:** Median age; Estimate;
 
+**Percent Male:** (number of males per 100 females) /2; Estimate
 
-## Data 
-[American Community Survey](https://www.census.gov/data/developers/data-sets/acs-1year.html)    
+**Population:** Population; Estimate
+
+**Percent.White:** Percent of people identifying as white alone; Estimate
+
+**Percent.Black:** Percent of people identifying as black alone; Estimate
+
+**Percent.Native:** Percent of people identifying as Native alone; Estimate
+
+**Percent.Asian:** Percent of people identifying as Asian alone; Estimate
+
+**Percent.Other:** Percent of people identifying as other alone; Estimate
+
+**Percent.Two.or.more.races:** Percent of people identifying as two or more races; Estimate
+
+**Percent.Foreign.Born:** Count of Foreign Born / Count of Native
+
+**Percent.in.Public.School:** Percent in public school; Estimate; Population 3 years and over enrolled in school
+
+**Median.Annual.Income:** Median income (dollars); Estimate; Households
+
+**Employment.Rate:** Employment/Population Ratio; Estimate; Population 16 years and over
+
+**Median.Monthly.Housing.Costs:** Occupied housing units; Estimate; MONTHLY HOUSING COSTS - Median (dollars)
+
+**Percent.Computer.In.Home:** Percent; Estimate; TYPES OF COMPUTER - Has one or more types of computing devices: - Desktop or laptop
+
+**Percent.Smartphone.In.Home:** Percent; Estimate; TYPES OF COMPUTER - Has one or more types of computing devices: - Smartphone    
+
+**Percent.Internet.Subscriptions:** Percent; Estimate; TYPE OF INTERNET SUBSCRIPTIONS - With an Internet subscription:    
+
+**Percent.STEM.education:** Percent; Estimate; Trained/Educated in Science and Engineering
+
+**Employee of private company workers; Estimate; Service occupations:** Percent in Service Industry
+
+**Percent.Occupied.Single.Family.Homes:** Percent owner-occupied housing units; Estimate; UNITS IN STRUCTURE - 1, detached    
+
+**Percent.With.Broadband:**: With a computer - Percent Broadband Internet Subscription; Estimate; Total population in households
+
+**Percent.Educationl level:** Percent; Estimate; Population 25 years and over with respective education levels, broken into high school, some college, bachelor's, and graduate degrees
+
+**Percent.Limited.English.Households:** Percent limited English-speaking households; Estimate; All households
 
 [Annual Survey of State Finances](https://www.census.gov/programs-surveys/state.html)  
+For the financial analysis section, we investigated state spending on social programs and infrastructure as divided into the following categories: Hospitals, Health, Highways, Parks.and.recreation, Police protection, Public Welfar, Governmental Administration, Correction, Natural Resources and State debt. Additionally, we included the technological infrastructure indicators from above so that we could see how they compare to state spending efforts to combat poverty.
 
-[World Bank Data](https://data.worldbank.org/indicator)  
+[World Bank Data](https://data.worldbank.org/indicator)  was used for the map data including high tech exports, internet subscription rates, cell phone subscription rates, and broadband subscription rates.
 
-[IEE MAC Address Blocks](http://standards-oui.ieee.org/oui.txt)  
+[IEE MAC Address Blocks](http://standards-oui.ieee.org/oui.txt) are were used as an indicator of the number of internet-related manufacturers in a country.
 
-[List of Internet Exchange Points](https://en.wikipedia.org/wiki/List_of_Internet_exchange_points#Active_internet_exchanges)
-
-
+[This list of Internet Exchange Points](https://en.wikipedia.org/wiki/List_of_Internet_exchange_points#Active_internet_exchanges) was used as an indicator to which countries have the most internet infrastructure available to 
 
 ## Methodology
-
 First we will examine the problem on a global scale using chloropleth maps that will inform our future choices.
 
-We will build several models for predicting poverty rate, using both the generalized logistic model and the generalized linear model. In this way, we'll see how things like internet access and infrastructure investment influence poverty rates. The American Community Survey includes internet access rates, poverty, race, industry, language, occupation, place of birth, and familial origin. Using this data alone, we should be able to see if race or occupation is a better indicator of aggregate poverty than internet access rates.
-
-
-
+We will build several models for predicting poverty rate, using a support vector machine, a neural net, a random forest regressor and the generalized linear model. In this way, we'll see how things like internet access and infrastructure investment influence poverty rates. The American Community Survey includes internet access rates, poverty, race, industry, language, occupation, place of birth, and familial origin. Using this data alone, we should be able to see if race or occupation is a better indicator of aggregate poverty than internet access rates. Using the financial data, we can investigate if state spending on infrastructure affects poverty more or less than technological infrastructure.
 
 ## Hypothesis
 
 Pew Research says that [20% of teens are unable to finish their homework](https://www.pewresearch.org/fact-tank/2018/10/26/nearly-one-in-five-teens-cant-always-finish-their-homework-because-of-the-digital-divide/) due to the digital divide. The end result of this is likely low-skill careers and lower incomes. In fact, the internet tends to raise the tide for all, as a breadth study (also by Pew) showed that [per capita income and access rates are highly correlated](https://www.pewglobal.org/2016/02/22/internet-access-growing-worldwide-but-remains-higher-in-advanced-economies/technology-report-02-06c/). We'd like to investigate the relationship between technology and the economy and see if we can build models resilient to the particle type of device. [Previous work](https://www.mdpi.com/2072-4292/11/4/375) has used infrastructure investment to build logistic models for poverty using satellite images of infrastructure. It is also well known that poverty and broadband access rates are [highly correlated](http://overflow.solutions/demographic-data/how-poverty-status-in-each-u-s-county-relates-to-internet-access/). However, it is unknown if there is an underlying causal factor or if internet can, _by itself_, lift people out of poverty. The McKinney Global Institute did a massive study on the economic potential of [internet investment in China](https://www.mckinsey.com/~/media/McKinsey/Industries/High%20Tech/Our%20Insights/Chinas%20digital%20transformation/MGI%20China%20digital%20Full%20report.ashx) that will inform our approach in this matter. Finally, the Internet Society, a global organization that builds internet infrastructure (mostly in the developing world), has compiled [a list of internet penetration rates and other such metrics](https://www.internetsociety.org/wp-content/uploads/2017/08/Global_Internet_Report_2014_0.pdf) by country across the world. However, due to data collection limitations and the quality of data sources across continents, it would be impossible to investigate these things with respect to more generic features like race and infrastructure. Since the United States has a non-uniform income distribution across states, this should allow us to draw from a breadth of circumstances. Due to the multiplicative of effects in education, business opportunities, and spending opportunities available on the Internet, we suspect that governmental investment in digital infrastructure will have at least as much affect as road or school spending. Additionally, we suspect that this multiplier is reduced for cellular infrastructure relative to fixed (broadband) infrastructure because of the productivity gains associated with PCs over smartphones. This research will reveal to governments (both local and national) what kinds of infrastructure investment yields the most economic gains in the digital age. To our knowledge, this particular question has not been answered.
 
-# Executive Summary
-
-
-TODO
-
-
-```{r libs, eval=T, echo=F, warning=F, message=F}
+```{r libs, eval=T, echo=F, warning=F, message=F, results = F}
 library(caret)
 library(caTools)
 library(corrplot)
@@ -138,7 +142,9 @@ library(tidycensus)
 ```
 # Internet Inequality-- A Global Perspective
 
-```{r map1, eval=T, echo=F, warning=F, message=F}
+TODO: Make this section an appendix if it doesn't fit into the 12 page limit
+
+```{r map1, eval=T, echo=F, warning=F, message=F, results = F}
 df <- read.csv("Global/InternetIndicators.csv")
 
 map <- suppressWarnings( joinCountryData2Map(df, nameJoinColumn = "Country", joinCode = "ISO3"))
@@ -189,9 +195,6 @@ The net result of the modern Internet infrastructure is a centralized model with
 
 ## Data Initialization and Preprocessing
 
-
-
-
 ```{r init1, eval=T, echo=F, warning=F, message=F}
 training <- read_csv(file = "Cleaned_Community_Data.csv")
 states <- training$State
@@ -202,7 +205,7 @@ training$X1 <- NULL
 
 ### Fixing Missing Data
 
-To fill in any missing values, we replaced the empty fields with the mean effect of 
+To fill in any missing values, we replaced the empty fields with the mean of the column in which they come from. The has the result of not changing the variance of the column, improving the fit of our models. 
 
 ```{r impute1, eval=T, echo=F, warning=F, message=F}
 f=function(x){
@@ -213,41 +216,43 @@ f=function(x){
 training <- data.frame(sapply(training, f))
 ```
 
-Below we can see the mean and standard deviation for each data vector. As we can see, our data occurs across many orders of magnitude. For the best fit, the data should be centered and scaled. 
+### Evaulation of metrics
 
-```{r mean_sd, eval=T, echo=F, warning=F, message=F}
+Our data occurs across many orders of magnitude. For the best fit, the data should be centered and scaled. Additionally, we have to impute some values because they are missing and we don't have enough data to discard those lines.
+
+```{r mean_sd, eval=F, echo=F, warning=F, message=F, results = F}
 means <- sapply(training, mean, na.rm = TRUE)
 sds   <- sapply(training, sd, na.rm = TRUE)
 explore <- as.data.frame(cbind( means, sds))
-ggplot(explore, aes(x = row.names(explore), y = means))+ 
+p <- ggplot(explore, aes(x = row.names(explore), y = means))+ 
   geom_bar(stat = 'identity') + 
   labs(title = "Means of Various Features") + 
   xlab("Data Features") + 
   ylab("Mean of Data") +
   theme(panel.background = element_blank()) + 
   geom_errorbar(aes(ymin = means - sds, ymax = means + sds))
+p + theme(axis.text.x = element_text(angle = 90))
 ```
 
 
-## Correlation Plot of Predictors
+### Correlation Plot of Predictors
 
-We can see significant covariance in the data. Additionally, many data points have near-zero variance. Excluding these confounding variables will improve our model.
+We can see significant covariance in the data. Additionally, many data points have near-zero variance. Excluding the confounding variables will improve our model while reducing the number of irrelevant variables will make our correlation analysis stronger.
 
-```{r corrplot, eval=T, echo=F, warning=F, message=F, fig.height=50}
+```{r corrplot, eval=F, echo=F, warning=F, message=F, results=F}
 results <- cor(training, method = 'pearson')
 corrplot::corrplot(results, method = 'circle')
 ```
 
 
 
-## Data Pre-processing
+### Data Pre-processing
 
 For preprocessing of data, we remove near zero predictors, fill in missing values with KNN method, and transform predictors using the Yeo-Johnson transformation method. We also center and scale the data. Additionally, we remove the covariant terms and the ones with near zero variance here, since they will not improve our models.
 
 ```{r pre_proc, eval=T, echo=F, warning=F, message=F}
 x_train <- subset(training, select = -Percent.Below.Poverty.Line )
 y_train <- training$Percent.Below.Poverty.Line
-x_train
 transformed <- preProcess(x_train, method = c("center", "scale", "YeoJohnson", "nzv", "corr"))
 
 x_train <- predict(transformed, x_train)
@@ -270,8 +275,8 @@ sample = sample.split(y_train.orig, SplitRatio = .75)
 y_train_svm = subset(y_train.orig, sample == TRUE)
 y_test_svm = subset(y_train.orig, sample == FALSE)
 
-training_svm = subset(trainTransformed, sample == TRUE)
-test_svm = subset(trainTransformed, sample == FALSE)
+training_svm = subset(x_train, sample == TRUE)
+test_svm = subset(x_train, sample == FALSE)
 
 fitControl <- trainControl(## 10-fold CV
                            method = "repeatedcv",
@@ -327,17 +332,14 @@ test_forest = subset(training, sample == FALSE)
 
 set.seed(123)
 rfFit <- randomForest::randomForest(Percent.Below.Poverty.Line ~ ., data = training_forest, importance = TRUE,
-                                    ntree = 100, keep.forest = TRUE)
+                                    ntree = 1000, keep.forest = TRUE)
 model2 <- rfFit
 
 varImpPlot(rfFit, n.var=10,
            main="Important Variables in Random Forest Model (top 10 shown)")
 ```
 
-The variable importance plot is composed of two subplots. The left one indicates the mean square error introduced by excluding a given variable and is a measure of an indicator's relevance to the model. The right one indicates the nodes that allow for the fewest number of decision splits in our model and are very similar to the linear model below, likely due to our minimization of AIC. Since the random forest model is iterative and recursive, it seems like an appropriate model for describing our observatoins although some authors dispute it's integrity in predicting time-series data [3]. 
-
-
-We now compute RMSE values for the Random Forest model on both the training and the test (withheld) portion of the data set.
+The variable importance plot is composed of two subplots. The left one indicates the mean square error introduced by excluding a given variable and is a measure of an indicator's relevance to the model. The right one indicates the nodes that allow for the fewest number of decision splits in our model and are very similar to the linear model below, likely due to our minimization of model complexity (as measured by AIC). The random forest regressor works by using automation and sampling to make many regression models before investigating the resulting output relative to the sensitivty and precision of the input. In effect, it builds hundreds or thousands of generalized regression models to determine the variables that affect the output the most. Since the random forest model is iterative and recursive, it seems like an appropriate model for describing our observatoins although some authors dispute it's integrity in predicting time-series data [3]. Since our purpose here is descriptive rather than prescriptive, the RMSE and $R^2$ will determine its efficacy.
 
 ```{r RF_rmse, eval=T, echo=F, warning=F, message=F}
 training_forest2 = dplyr::select(training_forest, -Percent.Below.Poverty.Line)
@@ -387,7 +389,7 @@ The neural net, however, has inferior RMSE and %R^2% values and is rather poor a
 
 ## Generalized Linear Model
 
-Because our output value is continuous and our data is numeric, we can use a generalized linear model to compute the pH. These models are generic and assume linearity in response. We will use the "Gaussian" type which assumes normally distributed variables
+Because our output value is continuous and our data is numeric, we can use a generalized linear model to compute the pH. These models are generic and assume linearity in response. We will use the "Gaussian" type which assumes normally distributed variables. Mwabu et al. (2000) used regression analysis and identified the following variables as the key determinants of poverty: size of household, places of residence(urban or rural), level of schooling and livestock [9]. We tried to pick indicators specific to the culture in which they were measured-- that of America in 2017. So, we looked at race, education, and occupational indicators.
 
 ```{r glm1, eval=T, echo=F, warning=F, message=F}
 set.seed(123)
@@ -431,7 +433,7 @@ This model shows a somewhat even distribution of the value of poverty indicators
 We were successfully able to evaluate the efficacy of serveral different models. The non-parametric models did not perform as well as the parametric one, perhaps because we had reduced our dimensionality during pre-processing. Additionally, they both suffer from large test/train splits. The linear model performed very well, but the strongest indicators were raced based-- seeming to an indicate geography as a confounding factor.  The random forest method performed only slightly worse than the generalized linear model, but due to the iterative nature of the algorithm, it had a superior test/train split indicating more generalizability. The generalized linear model indicates that race is the most important factor, but is optimized for the smallest number of parameters. Additionally, our results could be explained by the confounding effects of geography, since race appears to be a significant factor across the board. The random forest model corroborates this idea, by highlighting the estimation purity factors as similar to the results from the linear model. However, the data vectors that explain poverty rates the most are not at all surprising -- housing prices, median income, and the unemployment. However, computer accesss seems to be a stronger indicator than any given education level and either the broadband metric or the smartphone metric. Maybe there's so economic that we can isolate to the creative potential of having a computer in the house. Below, we see the RMSE and $R^2$ values for all models. Because the glm and random forest have human-readable coefficients/factors and performed the best, we will continue using them moving forward.
 
 
-```{r compare_and_predict, eval=T, echo=F, warning=F, message=F}
+```{r compare_and_predict, eval=T, echo=F, warning=F, message=F, results=F}
 modelperf = data.frame(matrix(ncol=4, nrow=8))
 colnames(modelperf) = c("Dataset", "Model", "RMSE", "RSquared")
 
@@ -453,10 +455,6 @@ ggplot(data=modelperf, aes(x=reorder(Model, RMSE), y=RMSE, fill=Dataset)) +
 ggplot(data=modelperf, aes(x=reorder(Model, -RSquared), y=round(RSquared,3), fill=Dataset)) +
     geom_bar(stat="identity", position=position_dodge()) +
     ggtitle("Model RSquared for Percent.Below.Poverty.Line Prediction")
-
-bestFit = model2
-
-
 ```
 
 # Finance Analysis
@@ -495,7 +493,7 @@ finances$Poverty <- target
 
 ```
 
-First, we use the random forest model because the variable importance that it measures will inform our linear model below.
+First, we use the random forest model because the variable importance that it measures will inform our linear model below. As above, this model works by iteratively building regression models and measuring the resulting change to the response variable.
 
 ```{r RF2, eval=T, echo=F, warning=F, message=F}
 
@@ -504,7 +502,6 @@ First, we use the random forest model because the variable importance that it me
 
 set.seed(123)
 set.seed(123)
-finances$Internet
 sample = sample.split(finances$Poverty, SplitRatio = .75)
 training_forest = subset(finances, sample == TRUE)
 test_forest = subset(finances, sample == FALSE)
@@ -514,7 +511,6 @@ model6 <- rfFit
 
 varImpPlot(rfFit, n.var=10,
            main="Important Variables in Random Forest Model (top 10 shown)")
-as.data.frame(training_forest)
 training_forest2 = dplyr::select(training_forest, -Poverty)
 rfPred.train = predict(rfFit, training_forest2)
 rmse.rf.train = rmse(training_forest$Poverty, rfPred.train)
