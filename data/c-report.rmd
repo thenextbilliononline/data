@@ -194,39 +194,23 @@ The net result of the modern Internet infrastructure is a centralized model with
 
 ```{r init1, eval=T, echo=F, warning=F, message=F}
 training <- read_csv(file = "Cleaned_Community_Data.csv")
-#test     <- read_excel("StudentEvaluation.xlsx")
-
-
-#test <- dummy_cols(test, select_columns = test$Brand.Code)training <- as.data.frame(sapply(training, as.numeric))
-#test     <- as.data.frame(sapply(test, as.numeric))
-
-
-#names(test) <- make.names(names(test))
-
-#training$Brand.Code <- NULL
-#test$Brand.Code <- NULL
 states <- training$State
 training$State <- NULL
 training$X1 <- NULL
-head(training)
-
 ```
 
 
 ### Fixing Missing Data
 
-Below we impute the missing values using a monotone cubic approximator (known as a Stineman interpolation). It has a tendency to perform well on linear as well as higher-order data vectors.
+To fill in any missing values, we replaced the empty fields with the mean effect of 
 
 ```{r impute1, eval=T, echo=F, warning=F, message=F}
-training <- na.interpolation(training)
 f=function(x){
    x<-as.numeric(as.character(x)) #first convert each column into numeric if it is from factor
-   x[is.na(x)] =median(x, na.rm=TRUE) #convert the item with NA to median value from the column
-   x #display the column
+   x[is.na(x)] =mean(x, na.rm=TRUE) #convert the item with NA to median value from the column
+   x 
 }
 training <- data.frame(sapply(training, f))
-training
-#test <- na.interpolation(test, option = 'stine')
 ```
 
 Below we can see the mean and standard deviation for each data vector. As we can see, our data occurs across many orders of magnitude. For the best fit, the data should be centered and scaled. 
@@ -242,15 +226,6 @@ ggplot(explore, aes(x = row.names(explore), y = means))+
   ylab("Mean of Data") +
   theme(panel.background = element_blank()) + 
   geom_errorbar(aes(ymin = means - sds, ymax = means + sds))
-```
-
-These plots confirm the non-normality of most of our data. For the non-linear models, we must center and scale them. Additionally, we will need other data transformations (discussed below).
-TODO: Density Plots
-```{r figure1, fig.height=50}
-#ggplot(data = gather(training), mapping = aes(x = value)) + 
-#  geom_histogram(aes(y=..density..,), colour="black", fill="white")+
-#  geom_density(alpha=.2, fill="lightgrey")+
-#  facet_wrap(~key, ncol = 1, scales = 'free') 
 ```
 
 
@@ -272,9 +247,11 @@ For preprocessing of data, we remove near zero predictors, fill in missing value
 ```{r pre_proc, eval=T, echo=F, warning=F, message=F}
 x_train <- subset(training, select = -Percent.Below.Poverty.Line )
 y_train <- training$Percent.Below.Poverty.Line
+x_train
+transformed <- preProcess(x_train, method = c("center", "scale", "YeoJohnson", "nzv", "corr"))
 
-preProcValues <- preProcess(x_train, method = c("center", "scale", "YeoJohnson", "nzv", "corr"))
-trainTransformed <- predict(preProcValues, x_train)
+x_train <- predict(transformed, x_train)
+
 ```
 
 
@@ -306,7 +283,6 @@ svmFit <- train(training_svm, y_train_svm,
                  trControl = fitControl,
                  tuneLength = 8,
                  metric = "RMSE")
-svmFit
 model1 <- svmFit
 
 rmse.svm.train = rmse(predict(svmFit, training_svm), y_train_svm)
@@ -347,7 +323,6 @@ are seen to generalize very well to unseen real-world data.
 set.seed(123)
 sample = sample.split(training$Percent.Below.Poverty.Line, SplitRatio = .75)
 training_forest = subset(training, sample == TRUE)
-training_forest
 test_forest = subset(training, sample == FALSE)
 
 set.seed(123)
@@ -398,7 +373,6 @@ nnetFit <- nnet(training_nn, training_nn_y,
                 ## Number of parameters used by the model
                 MaxNWts= 4 * (ncol(training_nn) + 1) + 5 + 1)
 model3 <- nnetFit
-nnetFit
 rmse.nnet.train = rmse(training_nn_y, predict(nnetFit, training_nn))
 r2.nnet.train = mean(cor(training_nn_y, training_nn)^2)
 rmse.nnet.test = rmse(test_nn_y, predict(nnetFit, test_nn))
@@ -431,12 +405,15 @@ model5 <- step(model4, direction = "backward", trace = FALSE)
 sum4 <- summary(model4)
 sum5 <- summary(model5)
 
+sum4 <- as.data.frame(sum4$coefficients,)
+sorted <- sum4[order(abs(sum4$Estimate), decreasing = TRUE),]
+sorted <- add_rownames(sorted, "Indicator")
 sum5 <- as.data.frame(sum5$coefficients,)
 sorted <- sum5[order(abs(sum5$Estimate), decreasing = TRUE),]
 sorted <- add_rownames(sorted, "Indicator")
 
 
-plot <- ggplot(data = sorted[2:14,], aes(x=Indicator[2:14], y=Estimate[2:14])) + geom_bar(stat="identity", position=position_dodge()) + ggtitle("Coefficients of Poverty Indicators")
+plot <- ggplot(data = sorted[2:14,], aes(x=Indicator[1:13], y=Estimate[1:13])) + geom_bar(stat="identity", position=position_dodge()) + ggtitle("Coefficients of Poverty Indicators")
 plot + theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 rmse.glm.train <- rmse(predict(model5, glm_train), glm_train_label)
