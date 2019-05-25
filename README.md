@@ -38,6 +38,11 @@ Pew Research says that [20% of teens are unable to finish their homework](https:
 	* Finance: Contains state spending data from ACS
 	* Time: Contains an attempt at using the census api to scrape for time-series data, uncomplete
 	* Cleaned...csv cleaned data used in the report file
+* Presentation.Rpres: R slides document
+* Presentation-cache: holds pre-modelled data for slides document
+* Presentation-figure: holds images for slides document
+* Presentation.md: Markdown version of slides document
+* Report.pdf: The final report
 * Readme.md: this document
 
 

@@ -1,9 +1,6 @@
 ---
 title: "The Correlation between Poverty and various Internet infrastructure indicators"
 output:
-  pdf_document:
-    toc: yes
-    toc_depth: '2'
   html_document:
     code_folding: hide
     df_print: paged
@@ -11,6 +8,9 @@ output:
     toc: yes
     toc_depth: 6
     toc_float: yes
+  pdf_document:
+    toc: yes
+    toc_depth: '2'
   word_document:
     toc: yes
     toc_depth: '1'
@@ -269,23 +269,23 @@ training_forest = subset(training, sample == TRUE)
 test_forest = subset(training, sample == FALSE)
 
 set.seed(123)
-rfFit <- randomForest::randomForest(Percent.Below.Poverty.Line ~ ., data = training_forest, importance = TRUE,
+rfFit1 <- randomForest::randomForest(Percent.Below.Poverty.Line ~ ., data = training_forest, importance = TRUE,
                                     ntree = 1000, keep.forest = TRUE)
-model2 <- rfFit
+model2 <- rfFit1
 
-varImpPlot(rfFit, n.var = 10, type = 1)
-varImpPlot(rfFit, n.var = 10, type = 2)
+varImpPlot(rfFit1, n.var = 10, type = 1)
+varImpPlot(rfFit1, n.var = 10, type = 2)
 ```
 
 The variable importance plot is composed of two subplots. The left one indicates the mean square error introduced by excluding a given variable and is a measure of an indicator's relevance to the model. The right one indicates the nodes that allow for the fewest number of decision splits in our model and are very similar to the linear model below, likely due to our minimization of model complexity (as measured by AIC). The random forest regressor works by using automation and sampling to make many regression models before investigating the resulting output relative to the sensitivity and precision of the input. In effect, it builds hundreds or thousands of generalized regression models to determine the variables that affect the output the most. Since the random forest model is iterative and recursive, it seems like an appropriate model for describing our observations although some authors dispute it's integrity in predicting time-series data. Since our purpose here is descriptive rather than prescriptive, the RMSE and $R^2$ will determine its efficacy.
 
 ```{r RF_rmse, eval=T, echo=F, warning=F, message=F}
 training_forest2 = dplyr::select(training_forest, -Percent.Below.Poverty.Line)
-rfPred.train = predict(rfFit, training_forest2)
+rfPred.train = predict(rfFit1, training_forest2)
 rmse.rf.train = rmse(training_forest$Percent.Below.Poverty.Line, rfPred.train)
 r2.rf.train = R2(training_forest$Percent.Below.Poverty.Line, rfPred.train)
 test_forest2 = dplyr::select(test_forest, -Percent.Below.Poverty.Line)
-rfPred.test = predict(rfFit, test_forest2)
+rfPred.test = predict(rfFit1, test_forest2)
 rmse.rf.test = rmse(test_forest$Percent.Below.Poverty.Line, rfPred.test)
 r2.rf.test = R2(test_forest$Percent.Below.Poverty.Line, rfPred.test)
 kable(data.frame(Model=c("Random Forest"), RMSE.train=c(rmse.rf.train), RSquared.train=c(r2.rf.train), RMSE.test=c(rmse.rf.test), RSquared.test=c(r2.rf.test)))
@@ -561,7 +561,7 @@ Across the board, our models seem to indicate that having a laptop or desktop co
   
 # Next Steps
 
-There are many ways we can continue improving the model performance, one method could be running more times of cross validation on more folds than 3 times 3-fold we have now for SVM and GBM models. It would take a longer time to compute, but the results would likely be better. Finally, more data would help us build a better model, in particular because the gap between the test and train sets tends to be relatively large across all of the models, with the exception of the Random Forest regressor because it builds its model over 1000 iterations.
+There are many ways we can continue improving the model performance, one method could be running more times of cross validation on more folds than 10 times 10-fold we have now for SVM. It would take a longer time to compute, but the results would likely be better. Finally, more data would help us build a better model, in particular because the gap between the test and train sets tends to be relatively large across all of the models, with the exception of the Random Forest regressor because it builds its model over 1000 iterations.
 
 We could also use time-series data to examine causal relationships between the data using either Bayesian networks or Granger inference. The former requires a much larger amount of data (perhaps all county level census data since 2010) and the Granger analysis requires continuous time-series data. We simply didn't have time to collect the sheet volume of data needed to do those analysis, but that is planned for the future.
 
@@ -670,3 +670,8 @@ mapCountryData(map, nameColumnToPlot = "Exports", mapTitle = "High Tech Exports 
 ```
 
 The net result of the modern Internet infrastructure is a centralized model with a few players making all of the profits. Above we see the total amount of high tech exports as measured in 2017 USD. Three countries account for the bulk of the profit here, seeming to indicate that a centralized Internet infrastructure does not raise the standards for everybody. It is apparent that today's paradigm encourages consumption over creation.
+
+```{r, include = F}
+save.image(file = "c-report.Rdata")
+```
+
