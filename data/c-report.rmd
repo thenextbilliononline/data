@@ -1,6 +1,9 @@
 ---
 title: "The Correlation between Poverty and various Internet infrastructure indicators"
 output:
+  pdf_document:
+    toc: yes
+    toc_depth: '2'
   html_document:
     code_folding: hide
     df_print: paged
@@ -8,9 +11,6 @@ output:
     toc: yes
     toc_depth: 6
     toc_float: yes
-  pdf_document:
-    toc: yes
-    toc_depth: '2'
   word_document:
     toc: yes
     toc_depth: '1'
@@ -36,14 +36,14 @@ We are interested in this problem as data scientists because our field is a mixe
 
 ## Literature Review
 
-   Poverty studies have a long history and ranges from the confirmation that poverty is a natural process to the fact that it was artificially created by the society itself. There is no doubt that poverty is more complex concept than just separation of people who live below set poverty line. Kuznets argues that growth and inequality go hand in hand, only stabilizing as an economy matures. However, [1] Kuznets’ analysis is heavily critiqued by Binerjee et all “Inequality dynamics depend primarily on the policies and institutions adopted by governments and societies as a whole”[2]. 
-   Almost every study, despite the methodology and whether it was cross-country or single country, found a positive economic impact from fixed broadband [3][4]. However the "World Development Report 2016" raises the question of causality[5] -- does internet access exclude poverty or is it merely an indicator of a growing economy?
+   Poverty studies have a long history and ranges from the confirmation that poverty is a natural process to the fact that it was artificially created by the society itself. There is no doubt that poverty is more complex concept than just separation of people who live below set poverty line. Kuznets argues that growth and inequality go hand in hand, only stabilizing as an economy matures. However,Kuznets’ analysis is heavily critiqued by Binerjee et all “Inequality dynamics depend primarily on the policies and institutions adopted by governments and societies as a whole”. 
+   Almost every study, despite the methodology and whether it was cross-country or single country, found a positive economic impact from fixed broadband. However the "World Development Report 2016" raises the question of causality -- does internet access exclude poverty or is it merely an indicator of a growing economy?
    
 The contribution of internet to development economic, and more specifically to the reduction of poverty has been studied by scholars and policy makers.  Most of them try to get a response to one specific question: Does the increase of internet services and applications will increase GDP and improve the well-being of the poor? In 2006 Gillet examine the impact of broadband availability on economic activity in the US and the zip code. Using Ordinary Least Square model and data from 1998-2002 the study shows that the availability of broadband services adds as much as 1.4% to the employment growth regardless of actual adoption” (H. Galperin 2006).
 
-   In general there appears to be agreement with most studies that the impact is only noticeable after a certain threshold of broadband penetration (though the exact level remains imprecise) with several exceptions. One study found that of allICTs (i.e., fixed telephones, mobile, Internet use and broadband), broadband has the biggest economic impact (Qiang et al. 2009)[6]. However another study found that in a low-income economy, mobile has a bigger impact, both in terms of basic subscriptions and mobile broadband (Katz 
-and Koutroumpis 2012)[7]. One of the studies found that mobile broadband actually has a negative impact possibly due to its complimentary effect and non-productive application 
-(Thompson and Garbacz 2011) [8]
+   In general there appears to be agreement with most studies that the impact is only noticeable after a certain threshold of broadband penetration (though the exact level remains imprecise) with several exceptions. One study found that of allICTs (i.e., fixed telephones, mobile, Internet use and broadband), broadband has the biggest economic impact (Qiang et al. 2009). However another study found that in a low-income economy, mobile has a bigger impact, both in terms of basic subscriptions and mobile broadband (Katz 
+and Koutroumpis 2012). One of the studies found that mobile broadband actually has a negative impact possibly due to its complimentary effect and non-productive application 
+(Thompson and Garbacz 2011) 
 
 A different approach to appreciate the impact of the internet on development is to consider its distributed effect.  Several studies take into account the effect on labor demand to examine the impact of internet technologies. For instance, Atasoy in 2013 conduct a research about broadband diffusion and the labor market in the US between 1999 and 2007. Their finding show that broadband availability has a positive impact on the country employment rate (H. Galperin (2017). Those impacts are more accrued in country with large portion of college-educated workers. In general, most of the studies made around the distributive of internet agree that internet diffusion positively affect wages. The lack of data to study profoundly the issue at hand makes it difficult to appreciate thoroughly the impact of internet on economic growth.  But most of the research point out that the advance countries are the principal beneficial of the propagation of the internet and for less advanced economies the impact of internet on the reduction of poverty is questionable
 
@@ -252,20 +252,10 @@ The support vector machine performed decently well, but since it optimizes for t
 
 ## Random Forest Model
 
-Random forests are a modification of bagging that builds a large collection of de-correlated
-trees [1]. They are considered to belong in the category of non-parametric models since 
-the number of parameters grows with the size of the training set. They are considered to be
-an improvement to the use of CART (Classification and Regression Tree) models because they
-do not suffer from some of the problems associated with CART models, such as the fact that
-CART models are unstable: small changes to the structure of the input data can have large
-effects on the CART model [2]. Random forests are designed to be low-variance estimators.
+Random forests are a modification of bagging that builds a large collection of de-correlated trees. They are considered to belong in the category of non-parametric models since the number of parameters grows with the size of the training set. They are considered to be an improvement to the use of CART (Classification and Regression Tree) models because they do not suffer from some of the problems associated with CART models, such as the fact that CART models are unstable: small changes to the structure of the input data can have large effects on the CART model . Random forests are designed to be low-variance estimators.
 
-Random forests are based on the basic idea of aggregating uncorrelated sets of predictors,
-since one way to reduce the variance of an estimate is to average several estimates together [2].
-A random forest trains a randomly chosen set of input variables over a randomly chosen subset of
-the data, and aggregates together several such trees to produce an overall estimator. Random
-forests have proven to be quite successful in a variety of real-world applications and often
-are seen to generalize very well to unseen real-world data.
+Random forests are based on the basic idea of aggregating uncorrelated sets of predictors, since one way to reduce the variance of an estimate is to average several estimates together. A random forest trains a randomly chosen set of input variables over a randomly chosen subset of the data, and aggregates together several such trees to produce an overall estimator. Random
+forests have proven to be quite successful in a variety of real-world applications and often are seen to generalize very well to unseen real-world data.
 
 
 ```{r RF1, eval=T, echo=F, warning=F, message=F}
@@ -287,7 +277,7 @@ varImpPlot(rfFit, n.var = 10, type = 1)
 varImpPlot(rfFit, n.var = 10, type = 2)
 ```
 
-The variable importance plot is composed of two subplots. The left one indicates the mean square error introduced by excluding a given variable and is a measure of an indicator's relevance to the model. The right one indicates the nodes that allow for the fewest number of decision splits in our model and are very similar to the linear model below, likely due to our minimization of model complexity (as measured by AIC). The random forest regressor works by using automation and sampling to make many regression models before investigating the resulting output relative to the sensitivity and precision of the input. In effect, it builds hundreds or thousands of generalized regression models to determine the variables that affect the output the most. Since the random forest model is iterative and recursive, it seems like an appropriate model for describing our observations although some authors dispute it's integrity in predicting time-series data [3]. Since our purpose here is descriptive rather than prescriptive, the RMSE and $R^2$ will determine its efficacy.
+The variable importance plot is composed of two subplots. The left one indicates the mean square error introduced by excluding a given variable and is a measure of an indicator's relevance to the model. The right one indicates the nodes that allow for the fewest number of decision splits in our model and are very similar to the linear model below, likely due to our minimization of model complexity (as measured by AIC). The random forest regressor works by using automation and sampling to make many regression models before investigating the resulting output relative to the sensitivity and precision of the input. In effect, it builds hundreds or thousands of generalized regression models to determine the variables that affect the output the most. Since the random forest model is iterative and recursive, it seems like an appropriate model for describing our observations although some authors dispute it's integrity in predicting time-series data. Since our purpose here is descriptive rather than prescriptive, the RMSE and $R^2$ will determine its efficacy.
 
 ```{r RF_rmse, eval=T, echo=F, warning=F, message=F}
 training_forest2 = dplyr::select(training_forest, -Percent.Below.Poverty.Line)
@@ -304,7 +294,7 @@ Like the generalized linear model below, the Random Forest regressor is able to 
 
 ## Neural Network Model
 
-Neural Networks are a powerful nonlinear technique inspired by theories about how the human brain works [5]. Neural Networks can be classifiers (when the output variable is categorical) or regression (when the output variable is numeric). In this problem we use a regression artificial neural network (ANN) using the nnet package in R. Below we build and evaluate a Neural Network model of the regression problem.
+Neural Networks are a powerful nonlinear technique inspired by theories about how the human brain works. Neural Networks can be classifiers (when the output variable is categorical) or regression (when the output variable is numeric). In this problem we use a regression artificial neural network (ANN) using the nnet package in R. Below we build and evaluate a Neural Network model of the regression problem.
 
 
 ```{r nnet1, eval=T, echo=F, warning=F, message=F}
@@ -568,7 +558,7 @@ As we can see above, both models are good enough to be relied on for describing 
 
 Across the board, our models seem to indicate that having a laptop or desktop computer is a far more valuable indicator of poverty rate than smartphone or broadband subscription rates. While the social models are dominated by racial considerations, the positive value of all racial coefficients seems to favor diversity over a given race. Additionally, this indicates that geography is a confounding factor in these models as the wealthiest states have the most immigration and the most diverse populations. When it comes to the economic models, technological access is a much strong indicator of poverty rates than state spending on education, schools or police. Since our models are not totally consistent, it's impossible to draw a strong conclusion about correlation or causality. However, it's clear that technological access is important to a healthy economy and a reduction of poverty rates. Luckily, there are ways to measure these things more directly. Unfortunately, they are outside the scope of this investigation.
 
-
+  
 # Next Steps
 
 There are many ways we can continue improving the model performance, one method could be running more times of cross validation on more folds than 3 times 3-fold we have now for SVM and GBM models. It would take a longer time to compute, but the results would likely be better. Finally, more data would help us build a better model, in particular because the gap between the test and train sets tends to be relatively large across all of the models, with the exception of the Random Forest regressor because it builds its model over 1000 iterations.
@@ -677,8 +667,6 @@ The undersea cables mentioned earlier wind up at one of 600 buildings around the
 
 ```{r map6, eval=T, echo=F, warning=F, message=F}
 mapCountryData(map, nameColumnToPlot = "Exports", mapTitle = "High Tech Exports (2017 USD)", catMethod = 'fixedWidth', colourPalette = "diverging" , missingCountryCol = "grey")
-
-
 ```
 
 The net result of the modern Internet infrastructure is a centralized model with a few players making all of the profits. Above we see the total amount of high tech exports as measured in 2017 USD. Three countries account for the bulk of the profit here, seeming to indicate that a centralized Internet infrastructure does not raise the standards for everybody. It is apparent that today's paradigm encourages consumption over creation.
