@@ -1,0 +1,56 @@
+---
+title: "Proposal. Data 624."
+author: "Mikhail Groysman"
+date: "April 26, 2019"
+output: 
+  html_document:
+    theme: cerulean
+    toc: true
+    toc_depth: 3
+---
+
+#Proposal
+
+##A description of the problem: Digital Divide.
+
+It was 1996, my computer lab at Baruch had access to Internet. By logging in Netscape, I could get latest news, I could search for explanation of terms I did not know. I could get so much new information I could use for my college classes. Internet has changed my life. Fast forward 23 years, as of 2019, there are places on Earth that are still behind in internet access. Countries and communities that negatively effected by digital divide. How does it effect them? How much does it hold them back? Can and should they try to catch up? Does Internet make global inequality worse or does it help poorer countries to close a gap with richer ones? Does digital divide get worse? 
+
+Internet access becomes crucial for success and prosperity of society. However, unfortunately, many countries still do not have adequate access to internet.
+
+Through this project, we seek to understand the relationship between internet access and inequality on a global scale. We will use data from the United Nations and US Census Community Survey to compare selected socio-economic indexes to international/US States communication measurements.
+
+##Why Digital Divide is interesting.
+
+By now, internet access is mature technology. We here in USA take for granted. However, there are still many places on Earth where access is limited or non existent. To understand differences in internet access could help us to understand why some society are so much logging in many different areas of development such as economics, education, political, cultural and so on. If we can undeniable link internet access to growth in economy, improvement in healthcare and education, political stability, life satisfaction, and overall equality, we could motivate governments/charitable organizations to invest into improvement of the internet access. 
+
+##Other approaches tried to research effect of Digital Divide.
+
+Global digital divide becomes a hot topic of research as we risk to face an increase in gap between have and have-not societies. Google proposed to use balloons to help to reach remote areas that lack internet. Companies work on an inexpensive tablets to provide ways for low income members of society to have internet access.
+
+Global digital divide looks at
+
+1) Availability of internet
+2) Quality of internet people can access (if you have internet access but it takes forever to load simple web page, it might not be that useful)
+
+We know that very few countries (USA, China, Japan, EU) have most of available bandwidth. 
+
+Please note that internally USA faces similar problems as there are regions mostly rural that have much more limited internet access in comparison to big urbanized metro areas.
+
+Examples of research in digital divide
+
+1) https://www.pewresearch.org/fact-tank/2019/04/22/some-americans-dont-use-the-internet-who-are-they/; looks at the Americans who do not use Internet. Gender, race, age, income, education, rural vs urban.
+
+2) https://broadbandusa.ntia.doc.gov/webinar_190220; looks at US Census data to understand differences between different groups in USA in use of internet.
+
+3) https://newsroom.fb.com/news/2019/02/2019-inclusive-internet-index/; looks at Global data trying to understand progress done to gap digital divide.
+
+4) https://www.nytimes.com/2018/12/04/technology/digital-divide-us-fcc-microsoft.html; looks at rural areas of USA and its lack of broadband connection.
+
+5) https://www.politico.com/agenda/story/2018/02/07/digital-divide-in-america-graphic-000639; visualization of digital divide across USA.
+
+##Our Hypotheses: Digital Divide gets better, but more work ahead of us.
+
+We hypotheses that, overall, internet helps to bring prosperity and overcome inequality globally and here across USA. However, we still need more work to be done to overcome digital divide. We plan methodically go through available UN/Census data to measure internet access and its effect on different aspects of society. By building robust model of internet access vs different economical and social measures, we can quantify what drives internet access and what influence internet access has on society.
+
+
+
