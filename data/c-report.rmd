@@ -584,57 +584,51 @@ TO DO: APA format
 4. Support Vector Machines. http://web.mit.edu/6.034/wwwbob/svm.pdf  
 5. Kuhn et al (2013). Applied Predictive Modeling  
 
+Atasoy, H., (2013) The Effects of Broadband Internet Expansion on Labor Market 
+Outcomes. Industrial and Labor Relations Review, 66(2): 315–45.
 
-References:
-Atasoy, H. (2013) ‘The Effects of Broadband Internet Expansion on Labor Market 
-Outcomes’, Industrial and Labor Relations Review 66(2): 315–45
-Galperin, H.; Fernanda Viecens (2017) Connected for Development. Theory and 
-evidence about the impact of internet technologies on poverty alleviation. 
-Development Policy Review, o(o) :1-22 
-Gillett, S.; Lehr, W.; Osorio, C. and Marvin, S. (2006) Measuring the Economic Impact
+Galperin, H.; & Viecens, F., (2017) Connected for Development. Theory and Evidence About the Impact of Internet Technologies on Poverty Alleviation. Development Policy Review, o(o): 1-22 
+
+Gillett, S., Lehr, W., Osorio, C., and Marvin, S., (2006) Measuring the Economic Impact
 of Broadband  Deployment. Washington, DC: US Department of Commerce, 
 Economic Development Administration.
-Koutroumpis, P. (2009) ‘The Economic Impact of Broadband on Growth: A simultaneous approach’, Telecommunications Policy 33(9): 471–85. StatCounter. (2014). StatCounter Global Stats. http://gs.statcounter.com/ 
 
-UNPACS. (2014). United Nations Public Administration Country Studies Data Center.  
+Koutroumpis, P., (2009) The Economic Impact of Broadband on Growth: A simultaneous approach. Telecommunications Policy 33(9): 471–85. 
 
-We Are Social. (2014). Global Digital Statistics 2014. 
-http://wearesocial.net/tag/sdmw/. 
+StatCounter (2014). StatCounter Global Stats. http://gs.statcounter.com/.
 
+UNPACS (2014). United Nations Public Administration Country Studies Data Center.  
 
-WHO. (2014). World Health Statistics 2014. Geneva: World Health Organization. 
+We Are Social (2014). Global Digital Statistics 2014. http://wearesocial.net/tag/sdmw/. 
 
-World Bank. (2009). Information and Communications for Development 2009: 
+WHO (2014). Geneva: World Health Organization. World Health Statistics 2014. 
 
+World Bank (2009). Information and Communications for Development 2009: 
 Extending Reach and Increasing Impact. Washington. 
-World Bank. (2014). Enterprise Surveys: What Business Experience.  
+
+World Bank (2014). Enterprise Surveys: What Business Experience.  
 http://www.enterprisesurveys.org/ 
 
-World Bank. (2014). World Bank Open Data. http://data.worldbank.org/.
+World Bank (2014). World Bank Open Data. http://data.worldbank.org/.
 
-World Wide Worx. (2012). Internet Matters: The Quiet Engine of the South African 
-Economy
+World Wide Worx (2012). Internet Matters: The Quiet Engine of the South African 
+Economy. Review of Development Economics, 6 (2), 183–203, 2002 
 
-Review of Development Economics, 6(2), 183–203, 2002 
+Banerjee, A., Benabou, R., Mookherjee, D., (2006). Understanding Poverty. European Scientific Journal August 2014 edition, 10 (24) ISSN: 1857 – 7881 (Print) e - ISSN 1857- 7431
 
-Abhijit Banerjee , Roland Benabou, Dilip Mookherjee (2006), “Understanding Poverty”. 
+“A logistic Regression Model to Identify Key Determinants of Poverty Using Demographic and Health Survey Data” (2010). European Journal of Social Sciences, 13 (1).
 
-European Scientific Journal, August 2014 edition vol.10, No.24 ISSN: 1857 – 7881 (Print) e - ISSN 1857- 7431
+“Exploring the Relationship Between Broadband and Economic Growth” (2016). World Development Report.
 
-European Journal of Social Sciences – Volume 13, Number 1 (2010) : “A Logistic Regression Model to Identify Key Determinants of Poverty Using Demographic and Health Survey Data”
+Qiang, C. Z., Rossotto, C. M., Kimura, K.(2009) “Economic Impacts of Broadband”.
 
-World development report (2016), "Exploring the Relationship Between 
-Broadband and Economic Growth". 
+Katz, R. L., (2012). “Economic and Social Impact of Broadband and Development of Digital Agendas”.
 
-Christine Zhen-Wei Qiang and Carlo M. Rossotto with Kaoru Kimura (2009) Economic Impacts of Broadband.
+Thompson, & Garbacz (2011). “Economic impacts of mobile versus fixed broadband”.
 
-Dr. Raúl L. Katz (2012), Economic and Social Impact of Broadband and Development of Digital Agendas
+Sohnesen, T. P., & Stender, N., (2016). “Is Random Forest a Superior Methodology for Predicting Poverty?”.
 
-Thompson and Garbacz (2011), “Economic impacts of mobile versus fixed broadband”.
-
-Thomas Pave Sohnesen Niels Stender (2016) “Is Random Forest a SuperiorMethodology for Predicting Poverty?”
-Journal of Economic Literature Classification: I30, I32, N97 “
-Determinants of  Poverty in Kenya”
+“Determinants of Poverty in Kenya” Journal of Economic Literature Classification, I30, I32, N97.
 
 # Appendices:
 
