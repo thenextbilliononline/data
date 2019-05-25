@@ -1,6 +1,9 @@
 ---
 title: "The Correlation between Poverty and various Internet infrastructure indicators"
 output:
+  pdf_document:
+    toc: yes
+    toc_depth: '2'
   html_document:
     code_folding: hide
     df_print: paged
@@ -8,9 +11,6 @@ output:
     toc: yes
     toc_depth: 6
     toc_float: yes
-  pdf_document:
-    toc: yes
-    toc_depth: '2'
   word_document:
     toc: yes
     toc_depth: '1'
