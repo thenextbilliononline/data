@@ -577,12 +577,7 @@ We could also use time-series data to examine causal relationships between the d
 
 
 # References
-TO DO: APA format  
-1. Random Forests. https://uc-r.github.io/random_forests  
-2. Kevin Murphy (2012). Machine Learning a Probabilistic Perspective.  
-3. Support Vector Machine. https://uc-r.github.io/svm  
-4. Support Vector Machines. http://web.mit.edu/6.034/wwwbob/svm.pdf  
-5. Kuhn et al (2013). Applied Predictive Modeling  
+
 
 Atasoy, H., (2013) The Effects of Broadband Internet Expansion on Labor Market 
 Outcomes. Industrial and Labor Relations Review, 66(2): 315–45.
