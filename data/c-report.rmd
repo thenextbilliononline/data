@@ -1,6 +1,9 @@
 ---
 title: "The Correlation between Poverty and various Internet infrastructure indicators"
 output:
+  pdf_document:
+    toc: yes
+    toc_depth: '2'
   html_document:
     code_folding: hide
     df_print: paged
@@ -8,9 +11,6 @@ output:
     toc: yes
     toc_depth: 6
     toc_float: yes
-  pdf_document:
-    toc: yes
-    toc_depth: '2'
   word_document:
     toc: yes
     toc_depth: '1'
@@ -415,8 +415,7 @@ kable(data.frame(Model=c("GLM"), RMSE.train=c(rmse.glm.train), RSquared.train=c(
 
 We were successfully able to evaluate the efficacy of several different models. The non-parametric models did not perform as well as the parametric one, perhaps because we had reduced our dimensional during pre-processing. Additionally, they both suffer from large test/train splits. The linear model performed very well, but the strongest indicators were raced based-- seeming to an indicate geography as a confounding factor.  The random forest method performed only slightly worse than the generalized linear model, but due to the iterative nature of the algorithm, it had a superior test/train split indicating more generalizability. The generalized linear model indicates that race is the most important factor, but is optimized for the smallest number of parameters. Additionally, our results could be explained by the confounding effects of geography, since race appears to be a significant factor across the board. The random forest model corroborates this idea, by highlighting the estimation purity factors as similar to the results from the linear model. However, the data vectors that explain poverty rates the most are not at all surprising -- housing prices, median income, and the unemployment. However, computer access seems to be a stronger indicator than any given education level and either the broadband metric or the smartphone metric. Maybe there's so economic that we can isolate to the creative potential of having a computer in the house. Below, we see the RMSE and $R^2$ values for all models. Because the glm and random forest have human-readable coefficients/factors and performed the best, we will continue using them moving forward.
 
-TODO: Remove this code chunk from the pdf. I couldn't figure out why/how it's staying when the others have the same options.
-```{r compare_and_predict, eval=T, echo=F, warning=F, message=F, results='hide', includes=F}
+```{r compare_and_predict, eval=T, echo=F, warning=F, message=F, results='hide', include=F}
 modelperf = data.frame(matrix(ncol=4, nrow=8))
 colnames(modelperf) = c("Dataset", "Model", "RMSE", "RSquared")
 
@@ -541,7 +540,7 @@ plot + theme(axis.text.x = element_text(angle = 45, hjust = 1))
 When examined from the context of state spending, computers, highways, smart phones, and state.debt are the most important measures for poverty rates. Interestingly, a higher computer ownership rate indicators a lower poverty rate while the opposite is true of smartphones. Additionally, state debt spending (particularly on highways) has a larger effect on explained variance than any social indicator (like education spending, hospital budgets, or prison spending). 
 
 
-```{r}
+```{r, include = FALSE}
 
 modelperf = data.frame(matrix(ncol=4, nrow=4))
 colnames(modelperf) = c("Dataset", "Model", "RMSE", "RSquared")
@@ -673,7 +672,7 @@ mapCountryData(map, nameColumnToPlot = "Servers", mapTitle = "Servers per 10,000
 
 ```
 
-When we look at the number of servers available in each country, we find that Western Europe has the highest per capita server load. Countries like New Zeal and and South Africa are also high because they are conveniently located for undersea cables that compose the back-bone of the internet. TODO Source
+When we look at the number of servers available in each country, we find that Western Europe has the highest per capita server load. Countries like New Zeal and and South Africa are also high because they are conveniently located for undersea cables that compose the back-bone of the internet. 
 
 ```{r map4, eval=T, echo=F, warning=F, message=F}
 mapCountryData(map, nameColumnToPlot = "mac.addresses", mapTitle = "Mac Addresses Blocks Assigned per Country", catMethod = 'FixedWidth',colourPalette = "diverging" , missingCountryCol = "grey")
@@ -685,7 +684,7 @@ The IEEE is a global organization that manages technological standards, publishe
 mapCountryData(map, nameColumnToPlot = "IXP", mapTitle = "Internet Exchange Points by Country", catMethod = 'FixedWidth',colourPalette = "diverging" , missingCountryCol = "grey")
 ```
 
-The undersea cables mentioned earlier wind up at one of 600 buildings around the world where network operators connect their computers to their peers and create what we think of as the 'inter' net. These 600 buildings are not even distributed, with most countries only have a single access point to the Internet. In addition, regimes known for censorship (ie Egypt, Turkey, and China) have relatively few internet exchange points, allowing for centralized control and censorship. TODO: Source
+The undersea cables mentioned earlier wind up at one of 600 buildings around the world where network operators connect their computers to their peers and create what we think of as the 'inter' net. These 600 buildings are not even distributed, with most countries only have a single access point to the Internet. In addition, regimes known for censorship (ie Egypt, Turkey, and China) have relatively few internet exchange points, allowing for centralized control and censorship. 
 
 ```{r map6, eval=T, echo=F, warning=F, message=F}
 mapCountryData(map, nameColumnToPlot = "Exports", mapTitle = "High Tech Exports (2017 USD)", catMethod = 'fixedWidth', colourPalette = "diverging" , missingCountryCol = "grey")
