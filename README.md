@@ -43,6 +43,7 @@ Pew Research says that [20% of teens are unable to finish their homework](https:
 * Presentation-figure: holds images for slides document
 * Presentation.md: Markdown version of slides document
 * Report.pdf: The final report
+* [Rpubs Presentation](https://rpubs.com/simplymathematics/internet-data)
 * Readme.md: this document
 
 
